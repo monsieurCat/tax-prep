@@ -1,0 +1,52 @@
+@import '@trussworks/react-uswds/lib/index.css';
+
+.usa-nav__list {
+  list-style: none;
+  padding: 0; 
+  margin: 0; 
+}
+.usa-nav-container {
+  display: flex;
+  width: 100%; 
+}
+
+.usa-navbar {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  flex-grow: 1;
+  justify-content: space-between;
+  background-color: #005ea2; 
+  color: #ffffff; 
+  padding: 1rem 2rem; 
+
+  width: 100%;
+  
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* shadow for depth? optional */
+  transition: background-color 0.3s; /* transition for smooth color change? optional */
+}
+
+
+.usa-nav__item {
+ 
+  margin-right: 1rem; /* spacing between items */
+}
+
+.usa-nav__link {
+  text-decoration: none; 
+  color: inherit; 
+  font-weight: bold; 
+  font-size: 1rem;
+  line-height: 1.5; 
+  font-family: 'Montserrat', sans-serif;
+  margin-right: 1.5rem; /* spacing between nav items */
+  padding: 0.5rem 1rem; /* padding to the links */
+  border-right: 1px solid #ffffff; /* border to separate links */
+}
+
+.usa-nav__link:hover {
+  color: #f8f9fa; /* text color on hover */
+}
+
+
+
