@@ -7,7 +7,28 @@ const Login = (): React.ReactElement => {
     const [showPassword, setShowPassword] = React.useState(false);
 
 
-     
+    function handleLogin(event: any) {
+      event.preventDefault();
+      const url = 'http://localhost:8282/login';
+    
+      const formData = new URLSearchParams();
+      formData.append("username", event.target.email.value);
+      formData.append("password", event.target.password.value);
+    
+      fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded", // Use form-urlencoded content type
+        },
+        body: formData.toString(), // Convert form data to string
+      })
+        .then((response) => {
+          // Handle the response here
+          console.log("Raw response:", response);
+          return response.json();
+        })
+        .catch((error) => console.error("Error:", error));
+    }
  
     return <>
         
@@ -44,7 +65,7 @@ const Login = (): React.ReactElement => {
               }}>
                   <div className="bg-white padding-y-3 padding-x-5 border border-base-lighter">
                     <h1 className="margin-bottom-0">Sign in</h1>
-                   {/* <Form onSubmit={mockSubmit}>*/}
+                   <Form onSubmit={handleLogin}>
                       <Fieldset legend="Access your account" legendStyle="large">
                         <Label htmlFor="email">Email address</Label>
                         <TextInput id="email" name="email" type="email" autoCorrect="off" autoCapitalize="off" required={true} />
@@ -62,7 +83,7 @@ const Login = (): React.ReactElement => {
                         <Link to="/create-account">forgot password? </Link>
                         </p>
                       </Fieldset>
-                   {/* </Form>*/}
+                   </Form>
                   </div>
   
                   <p className="text-center">

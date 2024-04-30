@@ -20,19 +20,19 @@ public class Dependent {
 
   @ManyToOne
   @JoinColumn(name = "tax_info_id")
-  private TaxInfo tax_info;
+  private TaxInfo taxInfo;
 
   @Column
   private int age;
 
-  public Dependent(int id, TaxInfo tax_info, int age) {
+  public Dependent(int id, TaxInfo taxInfo, int age) {
     this.id = id;
-    this.tax_info = tax_info;
+    this.taxInfo = taxInfo;
     this.age = age;
   }
 
-  public Dependent(TaxInfo tax_info, int age) {
-    this.tax_info = tax_info;
+  public Dependent(TaxInfo taxInfo, int age) {
+    this.taxInfo = taxInfo;
     this.age = age;
   }
 
@@ -44,12 +44,12 @@ public class Dependent {
     this.id = id;
   }
 
-  public TaxInfo getTax_info() {
-    return tax_info;
+  public TaxInfo gettaxInfo() {
+    return taxInfo;
   }
 
-  public void setTax_info(TaxInfo tax_info) {
-    this.tax_info = tax_info;
+  public void settaxInfo(TaxInfo taxInfo) {
+    this.taxInfo = taxInfo;
   }
 
   public int getAge() {
@@ -65,7 +65,7 @@ public class Dependent {
     final int prime = 31;
     int result = 1;
     result = prime * result + id;
-    result = prime * result + ((tax_info == null) ? 0 : tax_info.hashCode());
+    result = prime * result + ((taxInfo == null) ? 0 : taxInfo.hashCode());
     result = prime * result + age;
     return result;
   }
@@ -81,10 +81,10 @@ public class Dependent {
     Dependent other = (Dependent) obj;
     if (id != other.id)
       return false;
-    if (tax_info == null) {
-      if (other.tax_info != null)
+    if (taxInfo == null) {
+      if (other.taxInfo != null)
         return false;
-    } else if (!tax_info.equals(other.tax_info))
+    } else if (!taxInfo.equals(other.taxInfo))
       return false;
     if (age != other.age)
       return false;
@@ -93,7 +93,7 @@ public class Dependent {
 
   @Override
   public String toString() {
-    return "Dependent [id=" + id + ", tax_info=" + tax_info + ", age=" + age + "]";
+    return "Dependent [id=" + id + ", taxInfo=" + taxInfo + ", age=" + age + "]";
   }
   
 }

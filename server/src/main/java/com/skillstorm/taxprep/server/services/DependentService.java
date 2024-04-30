@@ -16,7 +16,7 @@ public class DependentService {
   DependentRepository dependentRepository;
 
   public List<Dependent> findDependentsByTaxInfoId(int taxInfoId) {
-    Optional<List<Dependent>> dependents = dependentRepository.findByTax_Info_Id(taxInfoId);
+    Optional<List<Dependent>> dependents = dependentRepository.findByTaxInfo_Id(taxInfoId);
 
     if (dependents.isPresent()) {
       return dependents.get();

@@ -19,6 +19,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import com.skillstorm.taxprep.server.models.AuthenticationSuccessHandler;
 import com.skillstorm.taxprep.server.services.UserService;
@@ -45,7 +46,7 @@ public class SecurityConfiguration {
 
     http.authorizeHttpRequests(authorizeHttpRequests -> {
       authorizeHttpRequests
-        .requestMatchers("/api/auth/login").permitAll()
+        .requestMatchers("/api/auth/**").permitAll()
         .requestMatchers("/privateData").authenticated()
         .anyRequest().authenticated();
     })
@@ -53,36 +54,35 @@ public class SecurityConfiguration {
     //.formLogin(Customizer.withDefaults())
     //.httpBasic(withDefaults())
     .formLogin(form -> form
-      .loginPage("/api/auth/login")
+      .loginPage("/login")
       .loginProcessingUrl("/login")
-      .failureUrl("/api/auth/login?error")
-      .defaultSuccessUrl("/user/home")
+      .failureUrl("/personal-form")
+      .defaultSuccessUrl("/")
       .permitAll())
     //.oauth2Login(withDefaults())
     .logout(logout -> logout
       .invalidateHttpSession(true)
       .clearAuthentication(true)
       .logoutRequestMatcher(new AntPathRequestMatcher("/api/auth/logout"))
-      .logoutSuccessUrl("/api/auth/login?logout"))
-    .cors(cors -> {
-      cors.configurationSource(request -> {
-        CorsConfiguration cors_config = new CorsConfiguration();
-
-        cors_config.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
-        cors_config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
-        cors_config.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
-        cors_config.setAllowCredentials(true);
-        cors_config.setMaxAge(3600L);
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-
-        source.registerCorsConfiguration("/**", cors_config);
-
-        return cors_config;
-      });
-    });
+      .logoutSuccessUrl("/api/auth/login?logout"));
     
     return http.build();
+  }
+
+  @Bean
+  public CorsFilter corsFilter() {
+    CorsConfiguration corsConfig = new CorsConfiguration();
+
+    corsConfig.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+    corsConfig.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+    corsConfig.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
+    corsConfig.setAllowCredentials(true);
+    corsConfig.setMaxAge(3600L);
+
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", corsConfig);
+
+    return new CorsFilter(source);
   }
 
   @Bean
