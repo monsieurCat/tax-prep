@@ -1,0 +1,47 @@
+@import '@trussworks/react-uswds/lib/index.css';
+@import '@trussworks/react-uswds/lib/uswds.css';  
+
+
+.usa-nav-container {
+    display: flex; /* Ensure the container behaves as a flex container */
+    justify-content: space-between; /* Spread elements evenly */
+    align-items: center; /* Center items vertically */
+  
+    width: 100%;
+   
+    min-height: 50px; /* Provide a minimum height for balance */
+}
+
+.usa-navbar {
+    width: 100%; /* Make navbar span the full width */
+    align-items: center; /* Center items vertically */
+    min-height: 50px; /* Provide a minimum height for balance */
+    display: flex; /* Flexbox for better layout management */
+    justify-content: space-between; /* Space out children elements evenly */
+}
+
+#extended-logo img {
+    max-height: 10px; /* Set a maximum height for the logo image */
+    margin-right: 10px; /* Add spacing to prevent overlap */
+}
+
+.usa-nav__link {
+    color: #f8f5f5; /* Set a color for navigation links */
+    padding: 10px 20px; /* Add some padding for visual appeal */
+}
+
+.usa-nav__link span {
+    font-weight: bold; /* Make navigation link text bold */
+}
+body, html {
+    margin: 0; /* Remove margins to avoid affecting layout */
+    padding: 0; /* Remove padding for the same reason */
+}
+
+.header {
+    margin: 0; /* Ensure no margin around the header */
+}
+
+
+
+
