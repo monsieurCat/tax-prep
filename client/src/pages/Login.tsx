@@ -1,6 +1,7 @@
 import React from 'react';
 import logoImg from '../assets/logoImg.png';
-import { Button, Fieldset, Footer, Form, GovBanner, Grid, GridContainer, Header, Identifier, IdentifierGov, IdentifierIdentity, IdentifierLink, IdentifierLinkItem, IdentifierLinks, IdentifierLogo, IdentifierLogos, IdentifierMasthead, Label, Link, TextInput, Title } from '@trussworks/react-uswds';
+import { Link } from "react-router-dom";
+import { Button, Fieldset, Footer, Form, GovBanner, Grid, GridContainer, Header, Identifier, IdentifierGov, IdentifierIdentity, IdentifierLink, IdentifierLinkItem, IdentifierLinks, IdentifierLogo, IdentifierLogos, IdentifierMasthead, Label, TextInput, Title } from '@trussworks/react-uswds';
 
 const Login = (): React.ReactElement => {
     const [showPassword, setShowPassword] = React.useState(false);
@@ -13,18 +14,27 @@ const Login = (): React.ReactElement => {
   
         
         <Header extended>
-          <div className="usa-navbar">
+          <div className="usa-navbar bg-primary-dark" >
+          <GridContainer className="usa-grid-full  ">
+          <Grid row={true} className="flex-justify-center">
+                <Grid col={12} tablet={{
+                col: 8
+              }} desktop={{
+                col: 6
+              }}>
             <Title id="extended-logo">
               <a href="/" title="Home" aria-label="Home">
                 Project title
               </a>
             </Title>
-           
+            </Grid>
+              </Grid>
+           </GridContainer>
           </div>
         </Header>
   
         <main id="main-content">
-          <div className="bg-base-lightest">
+          <div className="bg-primary-lighter">
             <GridContainer className="usa-section">
               <Grid row={true} className="flex-justify-center">
                 <Grid col={12} tablet={{
@@ -49,7 +59,7 @@ const Login = (): React.ReactElement => {
                         <Button type="submit">Sign in</Button>
   
                         <p>
-                          <Link href="javascript:void();">Forgot password?</Link>
+                        <Link to="/create-account">forgot password? </Link>
                         </p>
                       </Fieldset>
                    {/* </Form>*/}
@@ -57,7 +67,7 @@ const Login = (): React.ReactElement => {
   
                   <p className="text-center">
                     {"Don't have an account? "}
-                    <Link href="javascript:void();">Create your account now</Link>
+                    <Link to="/create-account">Create your account now</Link>
                     .
                   </p>
   
@@ -81,7 +91,7 @@ const Login = (): React.ReactElement => {
             </IdentifierLogos>
             <IdentifierIdentity domain="domain.gov">
               <span aria-hidden="true">An</span> official website of the{' '}
-              <Link href="#">{`<Parent agency>`}</Link>
+              <Link to="/create-account">{`<Parent agency>`}</Link>
             </IdentifierIdentity>
           </IdentifierMasthead>
          
@@ -90,7 +100,7 @@ const Login = (): React.ReactElement => {
               Looking for U.S. government information and services?
             </div>
             &nbsp;
-            <Link href="https://www.usa.gov/" className="usa-link">
+            <Link to="/create-account" className="usa-link">
               Visit USA.gov
             </Link>
           </IdentifierGov>
