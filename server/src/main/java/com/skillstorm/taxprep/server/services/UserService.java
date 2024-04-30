@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.skillstorm.taxprep.server.exceptions.UsernameAlreadyExistsException;
 import com.skillstorm.taxprep.server.models.AppUser;
 import com.skillstorm.taxprep.server.repositories.UserRepository;
 
@@ -18,9 +19,6 @@ public class UserService implements UserDetailsService {
   
   @Autowired
   UserRepository userRepository;
-
-  @Autowired
-  PasswordEncoder passwordEncoder;
 
   /**
    * search through the db for a user with username, or throw an exception if it can't find it
@@ -37,17 +35,15 @@ public class UserService implements UserDetailsService {
     return user;
   }
 
-  public void register(AppUser user) {
+  public AppUser register(AppUser user) {
     Optional<AppUser> foundUser = userRepository.findByUsername(user.getUsername());
     if (foundUser.isPresent()) {
-      throw new RuntimeException("User with that username already exists.");
+      throw new UsernameAlreadyExistsException(user.getUsername());
     }
 
-    user.setPassword(passwordEncoder.encode(user.getPassword()));
+    user.setRole("USER");
 
-    user.setRole("ROLE_USER");
-
-    userRepository.save(user);
+    return userRepository.save(user);
   }
 
   public void registerAdmin(AppUser user) {
@@ -61,15 +57,8 @@ public class UserService implements UserDetailsService {
         throw new RuntimeException("User with that username already exists.");
     }
 
-    /**
-     * next we need to ENCODE the user's password
-     *      spring security is expecting you to use BCrypt
-     *          - otherwise error: "Password doesn't look like BCrypt"
-     */
-    user.setPassword(passwordEncoder.encode(user.getPassword()));
-
     // setting the incoming user to the default level of access
-    user.setRole("ROLE_USER");
+    user.setRole("ADMIN");
 
     // finally save to db
     userRepository.save(user);

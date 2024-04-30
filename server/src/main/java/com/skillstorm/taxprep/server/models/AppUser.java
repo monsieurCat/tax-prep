@@ -14,6 +14,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -23,7 +25,7 @@ public class AppUser implements UserDetails {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column
-  private long id;
+  private int id;
 
   @Column
   private String first_name;
@@ -37,6 +39,10 @@ public class AppUser implements UserDetails {
   @Column
   private String password;
 
+  @ManyToOne
+  @JoinColumn(name = "address_id")
+  private Address address;
+
   @Column
   private String email;
 
@@ -49,25 +55,31 @@ public class AppUser implements UserDetails {
   public AppUser() {
   }
 
+  public AppUser(String username, String password) {
+    this.username = username;
+    this.password = password;
+  }
 
-  public AppUser(long id, String first_name, String last_name, String username, String password, String email,
+  public AppUser(int id, String first_name, String last_name, String username, String password, Address address, String email,
       LocalDate birthday, String role) {
     this.id = id;
     this.first_name = first_name;
     this.last_name = last_name;
     this.username = username;
     this.password = password;
+    this.address = address;
     this.email = email;
     this.birthday = birthday;
     this.role = role;
   }
 
-  public AppUser(String first_name, String last_name, String username, String password, String email,
+  public AppUser(String first_name, String last_name, String username, String password, Address address, String email,
       LocalDate birthday, String role) {
     this.first_name = first_name;
     this.last_name = last_name;
     this.username = username;
     this.password = password;
+    this.address = address;
     this.email = email;
     this.birthday = birthday;
     this.role = role;
@@ -78,7 +90,7 @@ public class AppUser implements UserDetails {
   }
 
 
-  public void setId(long id) {
+  public void setId(int id) {
     this.id = id;
   }
 
@@ -122,6 +134,13 @@ public class AppUser implements UserDetails {
     this.password = password;
   }
 
+  public Address getAddress() {
+    return address;
+  }
+
+  public void setAddress(Address address) {
+    this.address = address;
+  }
 
   public String getEmail() {
     return email;
@@ -152,20 +171,17 @@ public class AppUser implements UserDetails {
     this.role = role;
   }
 
-  
-
-  // methods to use to manage users regarding security
-  // if any of them return false, the user will not be able to log in
 
   @Override
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + (int) (id ^ (id >>> 32));
+    result = prime * result + id;
     result = prime * result + ((first_name == null) ? 0 : first_name.hashCode());
     result = prime * result + ((last_name == null) ? 0 : last_name.hashCode());
     result = prime * result + ((username == null) ? 0 : username.hashCode());
     result = prime * result + ((password == null) ? 0 : password.hashCode());
+    result = prime * result + ((address == null) ? 0 : address.hashCode());
     result = prime * result + ((email == null) ? 0 : email.hashCode());
     result = prime * result + ((birthday == null) ? 0 : birthday.hashCode());
     result = prime * result + ((role == null) ? 0 : role.hashCode());
@@ -204,6 +220,11 @@ public class AppUser implements UserDetails {
         return false;
     } else if (!password.equals(other.password))
       return false;
+    if (address == null) {
+      if (other.address != null)
+        return false;
+    } else if (!address.equals(other.address))
+      return false;
     if (email == null) {
       if (other.email != null)
         return false;
@@ -222,11 +243,6 @@ public class AppUser implements UserDetails {
     return true;
   }
 
-  @Override
-  public String toString() {
-    return "AppUser [id=" + id + ", first_name=" + first_name + ", last_name=" + last_name + ", username=" + username
-        + ", password=" + password + ", email=" + email + ", birthday=" + birthday + ", role=" + role + "]";
-  }
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
