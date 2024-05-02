@@ -22,30 +22,30 @@ public class TaxBracket {
 
   @ManyToOne
   @JoinColumn(name = "filing_status_id")
-  private FilingStatus filing_status;
+  private FilingStatus filingStatus;
 
   @Column
   private BigDecimal rate;
 
-  @Column
-  private int min_income;
+  @Column(name = "min_income")
+  private int minIncome;
 
-  @Column
-  private int max_income;
+  @Column(name = "max_income")
+  private int maxIncome;
 
-  public TaxBracket(int id, FilingStatus filing_status, BigDecimal rate, int min_income, int max_income) {
+  public TaxBracket(int id, FilingStatus filingStatus, BigDecimal rate, int minIncome, int maxIncome) {
     this.id = id;
-    this.filing_status = filing_status;
+    this.filingStatus = filingStatus;
     this.rate = rate;
-    this.min_income = min_income;
-    this.max_income = max_income;
+    this.minIncome = minIncome;
+    this.maxIncome = maxIncome;
   }
 
-  public TaxBracket(FilingStatus filing_status, BigDecimal rate, int min_income, int max_income) {
-    this.filing_status = filing_status;
+  public TaxBracket(FilingStatus filingStatus, BigDecimal rate, int minIncome, int maxIncome) {
+    this.filingStatus = filingStatus;
     this.rate = rate;
-    this.min_income = min_income;
-    this.max_income = max_income;
+    this.minIncome = minIncome;
+    this.maxIncome = maxIncome;
   }
 
   public int getId() {
@@ -53,7 +53,7 @@ public class TaxBracket {
   }
 
   public FilingStatus getFiling_status() {
-    return filing_status;
+    return filingStatus;
   }
 
   public BigDecimal getRate() {
@@ -61,11 +61,11 @@ public class TaxBracket {
   }
 
   public int getMin_income() {
-    return min_income;
+    return minIncome;
   }
 
   public int getMax_income() {
-    return max_income;
+    return maxIncome;
   }
 
   @Override
@@ -73,10 +73,10 @@ public class TaxBracket {
     final int prime = 31;
     int result = 1;
     result = prime * result + id;
-    result = prime * result + ((filing_status == null) ? 0 : filing_status.hashCode());
+    result = prime * result + ((filingStatus == null) ? 0 : filingStatus.hashCode());
     result = prime * result + ((rate == null) ? 0 : rate.hashCode());
-    result = prime * result + min_income;
-    result = prime * result + max_income;
+    result = prime * result + minIncome;
+    result = prime * result + maxIncome;
     return result;
   }
 
@@ -91,26 +91,26 @@ public class TaxBracket {
     TaxBracket other = (TaxBracket) obj;
     if (id != other.id)
       return false;
-    if (filing_status == null) {
-      if (other.filing_status != null)
+    if (filingStatus == null) {
+      if (other.filingStatus != null)
         return false;
-    } else if (!filing_status.equals(other.filing_status))
+    } else if (!filingStatus.equals(other.filingStatus))
       return false;
     if (rate == null) {
       if (other.rate != null)
         return false;
     } else if (!rate.equals(other.rate))
       return false;
-    if (min_income != other.min_income)
+    if (minIncome != other.minIncome)
       return false;
-    if (max_income != other.max_income)
+    if (maxIncome != other.maxIncome)
       return false;
     return true;
   }
 
   @Override
   public String toString() {
-    return "TaxBracket [id=" + id + ", filing_status=" + filing_status + ", rate=" + rate + ", min_income=" + min_income
-        + ", max_income=" + max_income + "]";
+    return "TaxBracket [id=" + id + ", filingStatus=" + filingStatus + ", rate=" + rate + ", minIncome=" + minIncome
+        + ", maxIncome=" + maxIncome + "]";
   }
 }

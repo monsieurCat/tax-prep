@@ -15,6 +15,8 @@ import Deductions from './pages/Deductions';
 import Review from './pages/Review';
 import Breakdown from './pages/Breakdown';
 import PrivateData from './pages/PrivateData';
+import PrivateData from './pages/PrivateData';
+
 
 function App() {
 

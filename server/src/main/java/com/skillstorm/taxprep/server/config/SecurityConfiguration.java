@@ -31,7 +31,6 @@ import static org.springframework.security.config.Customizer.withDefaults;
 import java.util.Arrays;
 
 @Configuration
-
 //@EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true, jsr250Enabled = true) // what allows for security checks
 @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -71,7 +70,6 @@ public class SecurityConfiguration {
 
       return new CorsFilter(source);
    }
-
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 

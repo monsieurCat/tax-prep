@@ -20,7 +20,7 @@ public class UserController {
   @GetMapping("/home")
   public String home(Principal principal) {
     UserDetails userDetails = userService.loadUserByUsername(principal.getName());
-    return "home";
+    return userDetails.getUsername();
   }
   
 }

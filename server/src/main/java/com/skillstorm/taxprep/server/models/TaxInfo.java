@@ -53,32 +53,14 @@ public class TaxInfo {
   public TaxInfo() {
   }
 
-  public TaxInfo(AppUser user) {
-    this.user = user;
-  }
-
-  public TaxInfo(int id, AppUser user, FilingStatus filing_status, Set<Dependent> dependents, BigDecimal annual_income,
-      BigDecimal withholdings, BigDecimal deductions, BigDecimal tuition_and_fees) {
-    this.id = id;
-    this.user = user;
-    this.filing_status = filing_status;
-    this.dependents = dependents;
-    this.annual_income = annual_income;
-    this.withholdings = withholdings;
-    this.deductions = deductions;
-    this.tuition_and_fees = tuition_and_fees;
-  }
-
-  public TaxInfo(AppUser user, FilingStatus filing_status, Set<Dependent> dependents, BigDecimal annual_income,
-      BigDecimal withholdings, BigDecimal deductions, BigDecimal tuition_and_fees) {
-    this.user = user;
-    this.filing_status = filing_status;
-    this.dependents = dependents;
-    this.annual_income = annual_income;
-    this.withholdings = withholdings;
-    this.deductions = deductions;
-    this.tuition_and_fees = tuition_and_fees;
-  }
+  private TaxInfo(Builder builder) {
+    this.filing_status = builder.filingStatus;
+    this.dependents = builder.dependents;
+    this.annual_income = builder.annualIncome;
+    this.withholdings = builder.withholdings;
+    this.deductions = builder.deductions;
+    this.tuition_and_fees = builder.tuitionAndFees;
+}
 
   public int getId() {
     return id;
@@ -142,6 +124,49 @@ public class TaxInfo {
 
   public void setTuition_and_fees(BigDecimal tuition_and_fees) {
     this.tuition_and_fees = tuition_and_fees;
+  }
+
+  public static class Builder {
+    private FilingStatus filingStatus;
+    private Set<Dependent> dependents;
+    private BigDecimal annualIncome;
+    private BigDecimal withholdings;
+    private BigDecimal deductions;
+    private BigDecimal tuitionAndFees;
+
+    public Builder filingStatus(FilingStatus filingStatus) {
+        this.filingStatus = filingStatus;
+        return this;
+    }
+
+    public Builder dependents(Set<Dependent> dependents) {
+        this.dependents = dependents;
+        return this;
+    }
+
+    public Builder annualIncome(BigDecimal annualIncome) {
+        this.annualIncome = annualIncome;
+        return this;
+    }
+
+    public Builder withholdings(BigDecimal withholdings) {
+        this.withholdings = withholdings;
+        return this;
+    }
+
+    public Builder deductions(BigDecimal deductions) {
+        this.deductions = deductions;
+        return this;
+    }
+
+    public Builder tuitionAndFees(BigDecimal tuitionAndFees) {
+        this.tuitionAndFees = tuitionAndFees;
+        return this;
+    }
+
+    public TaxInfo build() {
+        return new TaxInfo(this);
+    }
   }
 
   @Override
