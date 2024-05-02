@@ -10,5 +10,5 @@ import com.skillstorm.taxprep.server.models.Address;
 @Repository
 public interface AddressRepository extends JpaRepository<Address, Integer> {
   
-  public Optional<Address> findByUser_Id(int userId);
+  public Optional<Address> findByAddress_Id(int userId);
 }

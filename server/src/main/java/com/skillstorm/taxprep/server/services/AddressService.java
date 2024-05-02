@@ -30,7 +30,7 @@ public class AddressService {
   }
 
   public Address findByUserId(int id) {
-    Optional<Address> address = addressRepository.findByUser_Id(id);
+    Optional<Address> address = addressRepository.findByAddress_Id(id);
 
     if (address.isPresent()) {
       return address.get();

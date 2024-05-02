@@ -9,7 +9,8 @@ CREATE TABLE addresses (
     street_2 VARCHAR (50) DEFAULT '',
     city VARCHAR(50) NOT NULL,
     state VARCHAR(50) NOT NULL,
-    postal_code VARCHAR(10) NOT NULL
+    postal_code VARCHAR(10) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
 CREATE TABLE users (
@@ -37,9 +38,9 @@ CREATE TABLE tax_info (
   FOREIGN KEY (filing_status_id) REFERENCES filing_status(id)
 );
 
-CREATE TABLE dependents (
+CREATE_TABLE income (
   id SERIAL PRIMARY KEY,
   tax_info_id INT NOT NULL,
-  age INT NOT NULL,
-  FOREIGN KEY (tax_info_id) REFERENCES tax_info(id)
+  income DECIMAL(20, 2) DEFAULT 0,
+  withholdings DECIMAL (20, 2) DEFAULT 0,
 );

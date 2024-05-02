@@ -27,6 +27,7 @@ public class AddressRepositoryTest {
   public void testFindByUserId() {
 
     int userId = 1;
+    int userAddressId = 2;
 
     AppUser user = new AppUser();
     user.setId(userId);
@@ -39,9 +40,10 @@ public class AddressRepositoryTest {
             .build();
 
 
-    addressRepository.save(address);
+    Address savedAddress = addressRepository.save(address);
+    user.setAddress(savedAddress);
 
-    Optional<Address> foundAddressOptional = addressRepository.findByUser_Id(userId);
+    Optional<Address> foundAddressOptional = addressRepository.findByAddress_Id(userId);
 
     assertTrue(foundAddressOptional.isPresent());
     Address foundAddress = foundAddressOptional.get();

@@ -56,17 +56,17 @@ public class SecurityConfiguration {
   }
 
   @Bean
-   public CorsFilter corsFilter() {
-      CorsConfiguration corsConfig = new CorsConfiguration();
+  public CorsFilter corsFilter() {
+    CorsConfiguration corsConfig = new CorsConfiguration();
 
-      corsConfig.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
-      corsConfig.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
-      corsConfig.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
-      corsConfig.setAllowCredentials(true);
-      corsConfig.setMaxAge(3600L);
+    corsConfig.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+    corsConfig.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+    corsConfig.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
+    corsConfig.setAllowCredentials(true);
+    corsConfig.setMaxAge(3600L);
 
-      UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-      source.registerCorsConfiguration("/**", corsConfig);
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", corsConfig);
 
       return new CorsFilter(source);
    }
