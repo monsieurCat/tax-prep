@@ -34,9 +34,9 @@ public class TaxInfo {
   @JoinColumn(name = "filing_status_id")
   private FilingStatus filing_status;
 
-  @OneToMany(targetEntity = Dependent.class, cascade = CascadeType.REMOVE)
+  /* @OneToMany(targetEntity = Dependent.class, cascade = CascadeType.REMOVE)
   @JsonIgnore
-  private Set<Dependent> dependents;
+  private Set<Dependent> dependents; */
 
   @Column
   private BigDecimal annual_income;
@@ -55,7 +55,6 @@ public class TaxInfo {
 
   private TaxInfo(Builder builder) {
     this.filing_status = builder.filingStatus;
-    this.dependents = builder.dependents;
     this.annual_income = builder.annualIncome;
     this.withholdings = builder.withholdings;
     this.deductions = builder.deductions;
@@ -84,14 +83,6 @@ public class TaxInfo {
 
   public void setFiling_status(FilingStatus filing_status) {
     this.filing_status = filing_status;
-  }
-
-  public Set<Dependent> getDependents() {
-    return dependents;
-  }
-
-  public void setDependents(Set<Dependent> dependents) {
-    this.dependents = dependents;
   }
 
   public BigDecimal getAnnual_income() {
@@ -128,7 +119,6 @@ public class TaxInfo {
 
   public static class Builder {
     private FilingStatus filingStatus;
-    private Set<Dependent> dependents;
     private BigDecimal annualIncome;
     private BigDecimal withholdings;
     private BigDecimal deductions;
@@ -136,11 +126,6 @@ public class TaxInfo {
 
     public Builder filingStatus(FilingStatus filingStatus) {
         this.filingStatus = filingStatus;
-        return this;
-    }
-
-    public Builder dependents(Set<Dependent> dependents) {
-        this.dependents = dependents;
         return this;
     }
 
@@ -167,77 +152,6 @@ public class TaxInfo {
     public TaxInfo build() {
         return new TaxInfo(this);
     }
-  }
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + id;
-    result = prime * result + ((user == null) ? 0 : user.hashCode());
-    result = prime * result + ((filing_status == null) ? 0 : filing_status.hashCode());
-    result = prime * result + ((dependents == null) ? 0 : dependents.hashCode());
-    result = prime * result + ((annual_income == null) ? 0 : annual_income.hashCode());
-    result = prime * result + ((withholdings == null) ? 0 : withholdings.hashCode());
-    result = prime * result + ((deductions == null) ? 0 : deductions.hashCode());
-    result = prime * result + ((tuition_and_fees == null) ? 0 : tuition_and_fees.hashCode());
-    return result;
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    TaxInfo other = (TaxInfo) obj;
-    if (id != other.id)
-      return false;
-    if (user == null) {
-      if (other.user != null)
-        return false;
-    } else if (!user.equals(other.user))
-      return false;
-    if (filing_status == null) {
-      if (other.filing_status != null)
-        return false;
-    } else if (!filing_status.equals(other.filing_status))
-      return false;
-    if (dependents == null) {
-      if (other.dependents != null)
-        return false;
-    } else if (!dependents.equals(other.dependents))
-      return false;
-    if (annual_income == null) {
-      if (other.annual_income != null)
-        return false;
-    } else if (!annual_income.equals(other.annual_income))
-      return false;
-    if (withholdings == null) {
-      if (other.withholdings != null)
-        return false;
-    } else if (!withholdings.equals(other.withholdings))
-      return false;
-    if (deductions == null) {
-      if (other.deductions != null)
-        return false;
-    } else if (!deductions.equals(other.deductions))
-      return false;
-    if (tuition_and_fees == null) {
-      if (other.tuition_and_fees != null)
-        return false;
-    } else if (!tuition_and_fees.equals(other.tuition_and_fees))
-      return false;
-    return true;
-  }
-
-  @Override
-  public String toString() {
-    return "TaxInfo [id=" + id + ", user=" + user + ", filing_status=" + filing_status + ", dependents=" + dependents
-        + ", annual_income=" + annual_income + ", withholdings=" + withholdings + ", deductions=" + deductions
-        + ", tuition_and_fees=" + tuition_and_fees + "]";
   }
   
 }

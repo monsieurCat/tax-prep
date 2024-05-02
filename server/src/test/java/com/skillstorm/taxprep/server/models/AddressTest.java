@@ -86,7 +86,7 @@ public class AddressTest {
               .postalCode("12345")
               .build();
 
-      String expectedToString = "Address [id=0, user=null, street1=123 Testing St, street2=null, city=Irvine, state=CA, postalCode=12345]";
+      String expectedToString = "Address [id=0, street1=123 Testing St, street2=null, city=Irvine, state=CA, postalCode=12345]";
       assertEquals(expectedToString, address.toString());
   }
 }

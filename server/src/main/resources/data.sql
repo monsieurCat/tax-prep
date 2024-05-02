@@ -1,61 +1,14 @@
-/*
-
-CREATE TABLE users (
-  id SERIAL PRIMARY KEY,
-  first_name VARCHAR(50) NOT NULL,
-  last_name VARCHAR(50) NOT NULL,
-  email VARCHAR(50) NOT NULL UNIQUE,
-  username VARCHAR(50) NOT NULL UNIQUE,
-  password VARCHAR(60) NOT NULL UNIQUE,
-  birthday DATE,
-);
-
-CREATE TABLE addresses (
-    id SERIAL PRIMARY KEY,
-    street_1 VARCHAR(100) NOT NULL,
-    street_2 VARCHAR (50) DEFAULT '',
-    city VARCHAR(50) NOT NULL,
-    state VARCHAR(50) NOT NULL,
-    postal_code VARCHAR(10) NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users(id)
-);
-
-CREATE TABLE filing_status (
-  id SERIAL PRIMARY KEY,
-  status VARCHAR(50) NOT NULL UNIQUE,
-);
-
-CREATE TABLE tax_brackets (
-  id SERIAL PRIMARY KEY,
-  rate INT NOT NULL,
-  min_income INT NOT NULL,
-  max_income INT NOT NULL,
-  FOREIGN KEY (filing_status_id) REFERENCES filing_status(id)
-);
-
-CREATE TABLE tax_info (
-  id SERIAL PRIMARY KEY,
-  annual_income DECIMAL(10, 2) DEFAULT 0,
-  withholdings DECIMAL (10, 2) DEFAULT 0,
-  deductions DECIMAL (10, 2) DEFAULT 0,
-  tuition_and_fees DECIMAL (10, 2) DEFAULT 0,
-  FOREIGN KEY (user_id) REFERENCES users(id),
-  FOREIGN KEY (filing_status_id) REFERENCES filing_status(id),
-);
-
-CREATE TABLE dependents (
-  id SERIAL PRIMARY KEY,
-  age INT NOT NULL,
-  FOREIGN KEY (tax_info_id) REFERENCES tax_info(id)
-);
-
-*/
-
 INSERT INTO filing_status (status) VALUES ('Single');
 INSERT INTO filing_status (status) VALUES ('Married filing jointly');
 INSERT INTO filing_status (status) VALUES ('Married filing separately');
 INSERT INTO filing_status (status) VALUES ('Head of Household');
 INSERT INTO filing_status (status) VALUES ('Qualifying Surviving Spouse');
+
+INSERT INTO standardized_deduction (filing_status_id, deduction_amount) VALUES (1, 12950);
+INSERT INTO standardized_deduction (filing_status_id, deduction_amount) VALUES (2, 25900);
+INSERT INTO standardized_deduction (filing_status_id, deduction_amount) VALUES (3, 12950);
+INSERT INTO standardized_deduction (filing_status_id, deduction_amount) VALUES (4, 19400);
+INSERT INTO standardized_deduction (filing_status_id, deduction_amount) VALUES (5, 25900);
 
 INSERT INTO tax_brackets (rate, min_income, max_income, filing_status_id) VALUES (0.10, 0, 11000, 1);
 INSERT INTO tax_brackets (rate, min_income, max_income, filing_status_id) VALUES (0.12, 11001, 44725, 1);
@@ -96,6 +49,8 @@ INSERT INTO tax_brackets (rate, min_income, max_income, filing_status_id) VALUES
 INSERT INTO tax_brackets (rate, min_income, max_income, filing_status_id) VALUES (0.32, 364201, 462500, 5);
 INSERT INTO tax_brackets (rate, min_income, max_income, filing_status_id) VALUES (0.35, 462501, 693750, 5);
 INSERT INTO tax_brackets (rate, min_income, max_income, filing_status_id) VALUES (0.37, 693751, 2147483647, 5);
+
+
 /*
 
 INSERT INTO warehouses (name, description, max_capacity) VALUES ('warehouse1', 'main warehouse', 200);

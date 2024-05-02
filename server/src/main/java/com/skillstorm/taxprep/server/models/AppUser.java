@@ -14,9 +14,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -31,8 +28,14 @@ public class AppUser implements UserDetails {
   @Column(name = "first_name")
   private String firstName;
 
+  @Column(name = "middle_name")
+  private String middleName;
+
   @Column(name = "last_name")
   private String lastName;
+
+  @Column
+  private String email;
 
   @Column
   private String username;
@@ -40,18 +43,11 @@ public class AppUser implements UserDetails {
   @Column
   private String password;
 
-  @OneToOne
-  @JoinColumn(name = "address_id")
-  private Address address;
-
-  @Column
-  private String email;
-
   @Column
   private LocalDate birthday;
 
   @Column(name = "user_role")
-  private String role;              // USER, ADMIN, MOD, etc. that we define
+  private String role;
   
   public AppUser() {
   }
@@ -78,6 +74,11 @@ public class AppUser implements UserDetails {
         return this;
     }
 
+    public AppUserBuilder middleName(String middleName) {
+      user.setMiddleName(middleName);
+      return this;
+    }
+
     public AppUserBuilder lastName(String lastName) {
         user.setLastName(lastName);
         return this;
@@ -90,11 +91,6 @@ public class AppUser implements UserDetails {
 
     public AppUserBuilder password(String password) {
         user.setPassword(password);
-        return this;
-    }
-
-    public AppUserBuilder address(Address address) {
-        user.setAddress(address);
         return this;
     }
 
@@ -143,7 +139,7 @@ public class AppUser implements UserDetails {
     this.role = role;
   } */
 
-  public long getId() {
+  public int getId() {
     return id;
   }
 
@@ -160,6 +156,15 @@ public class AppUser implements UserDetails {
 
   public void setFirstName(String firstName) {
     this.firstName = firstName;
+  }
+
+  public String getMiddleName() {
+    return middleName;
+  }
+
+
+  public void setMiddleName(String middleName) {
+    this.middleName = middleName;
   }
 
 
@@ -190,14 +195,6 @@ public class AppUser implements UserDetails {
 
   public void setPassword(String password) {
     this.password = password;
-  }
-
-  public Address getAddress() {
-    return address;
-  }
-
-  public void setAddress(Address address) {
-    this.address = address;
   }
 
   public String getEmail() {
@@ -236,16 +233,15 @@ public class AppUser implements UserDetails {
     int result = 1;
     result = prime * result + id;
     result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
+    result = prime * result + ((middleName == null) ? 0 : middleName.hashCode());
     result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
+    result = prime * result + ((email == null) ? 0 : email.hashCode());
     result = prime * result + ((username == null) ? 0 : username.hashCode());
     result = prime * result + ((password == null) ? 0 : password.hashCode());
-    result = prime * result + ((address == null) ? 0 : address.hashCode());
-    result = prime * result + ((email == null) ? 0 : email.hashCode());
     result = prime * result + ((birthday == null) ? 0 : birthday.hashCode());
     result = prime * result + ((role == null) ? 0 : role.hashCode());
     return result;
   }
-
 
   @Override
   public boolean equals(Object obj) {
@@ -263,10 +259,20 @@ public class AppUser implements UserDetails {
         return false;
     } else if (!firstName.equals(other.firstName))
       return false;
+    if (middleName == null) {
+      if (other.middleName != null)
+        return false;
+    } else if (!middleName.equals(other.middleName))
+      return false;
     if (lastName == null) {
       if (other.lastName != null)
         return false;
     } else if (!lastName.equals(other.lastName))
+      return false;
+    if (email == null) {
+      if (other.email != null)
+        return false;
+    } else if (!email.equals(other.email))
       return false;
     if (username == null) {
       if (other.username != null)
@@ -277,16 +283,6 @@ public class AppUser implements UserDetails {
       if (other.password != null)
         return false;
     } else if (!password.equals(other.password))
-      return false;
-    if (address == null) {
-      if (other.address != null)
-        return false;
-    } else if (!address.equals(other.address))
-      return false;
-    if (email == null) {
-      if (other.email != null)
-        return false;
-    } else if (!email.equals(other.email))
       return false;
     if (birthday == null) {
       if (other.birthday != null)
@@ -301,6 +297,12 @@ public class AppUser implements UserDetails {
     return true;
   }
 
+  @Override
+  public String toString() {
+    return "AppUser [id=" + id + ", firstName=" + firstName + ", middleName=" + middleName + ", lastName=" + lastName
+        + ", email=" + email + ", username=" + username + ", password=" + password + ", birthday=" + birthday
+        + ", role=" + role + "]";
+  }
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
