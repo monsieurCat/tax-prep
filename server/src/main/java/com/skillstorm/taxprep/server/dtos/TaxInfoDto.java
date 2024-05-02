@@ -48,3 +48,4 @@ public class TaxInfoDTO {
     this.tuitionAndFees = tuitionAndFees;
   }
 }
+
