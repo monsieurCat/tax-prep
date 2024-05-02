@@ -13,12 +13,6 @@ public class AppUserTest {
 
   @Test
   public void testBuilder() {
-    Address address = new Address();
-    address.setId(1);
-    address.setStreet1("123 Main St");
-    address.setCity("Springfield");
-    address.setState("IL");
-    address.setPostalCode("12345");
 
     AppUser user = new AppUser.AppUserBuilder()
             .id(1)
@@ -26,7 +20,6 @@ public class AppUserTest {
             .lastName("Doe")
             .username("johndoe")
             .password("password123")
-            .address(address)
             .email("john@example.com")
             .birthday(LocalDate.of(1990, 5, 15))
             .role("USER")
@@ -38,7 +31,6 @@ public class AppUserTest {
     assertEquals("Doe", user.getLastName());
     assertEquals("johndoe", user.getUsername());
     assertEquals("password123", user.getPassword());
-    assertEquals(address, user.getAddress());
     assertEquals("john@example.com", user.getEmail());
     assertEquals(LocalDate.of(1990, 5, 15), user.getBirthday());
     assertEquals("USER", user.getRole());
@@ -53,8 +45,6 @@ public class AppUserTest {
         user.setLastName("Doe");
         user.setUsername("johndoe");
         user.setPassword("password123");
-        Address address = new Address();
-        user.setAddress(address);
         user.setEmail("john@example.com");
         user.setBirthday(LocalDate.of(1990, 5, 15));
         user.setRole("USER");
@@ -64,7 +54,6 @@ public class AppUserTest {
         assertEquals("Doe", user.getLastName());
         assertEquals("johndoe", user.getUsername());
         assertEquals("password123", user.getPassword());
-        assertEquals(address, user.getAddress());
         assertEquals("john@example.com", user.getEmail());
         assertEquals(LocalDate.of(1990, 5, 15), user.getBirthday());
         assertEquals("USER", user.getRole());

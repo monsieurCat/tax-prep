@@ -37,7 +37,7 @@ public class AddressServiceTest {
                                     .build();
     mockAddress.setId(addressId);
     
-    Mockito.when(addressRepository.findByAddress_Id(userId)).thenReturn(Optional.of(mockAddress));
+    Mockito.when(addressRepository.findByUserId(userId)).thenReturn(Optional.of(mockAddress));
 
     Address result = addressService.findByUserId(userId);
 

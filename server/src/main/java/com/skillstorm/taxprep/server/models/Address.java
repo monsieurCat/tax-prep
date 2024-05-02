@@ -14,13 +14,16 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "addresses")
+@Table(name = "user_address")
 public class Address {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column
   private int id;
+
+  @Column(name = "user_id")
+  private int userId;
 
   @Column(name = "street_1")
   private String street1;
@@ -51,6 +54,7 @@ public class Address {
   } */
 
   private Address(AddressBuilder builder) {
+    this.userId = builder.userId;
     this.street1 = builder.street1;
     this.street2 = builder.street2;
     this.city = builder.city;
@@ -64,6 +68,14 @@ public class Address {
 
   public void setId(int id) {
     this.id = id;
+  }
+
+  public int getUserId() {
+    return userId;
+  }
+
+  public void setUserId(int userId) {
+    this.userId = userId;
   }
 
   public String getStreet1() {
@@ -107,6 +119,7 @@ public class Address {
   }
 
   public static class AddressBuilder {
+    private int userId;
     private String street1;
     private String street2;
     private String city;
@@ -115,6 +128,11 @@ public class Address {
 
     public AddressBuilder() {
         // Initialize any default values if needed
+    }
+
+    public AddressBuilder userId(int userId) {
+      this.userId = userId;
+      return this;
     }
 
     public AddressBuilder street1(String street1) {

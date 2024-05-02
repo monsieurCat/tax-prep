@@ -2,37 +2,39 @@ package com.skillstorm.taxprep.server.repositories;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import com.skillstorm.taxprep.server.models.Address;
 import com.skillstorm.taxprep.server.models.AppUser;
 
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@SpringBootTest
-@AutoConfigureDataJpa
+@DataJpaTest
 public class AddressRepositoryTest {
 
   @Autowired
   private AddressRepository addressRepository;
 
+  @Autowired
+  private UserRepository userRepository;
+
   @Test
   public void testFindByUserId() {
 
-    int userId = 1;
-    int userAddressId = 2;
-
+    // Save the user and get the generated user ID
     AppUser user = new AppUser();
-    user.setId(userId);
+    user.setUsername("test");
+    user.setPassword("test");
+    user.setRole("ROLE_USER");
+    user = userRepository.save(user);
+    int userId = user.getId(); // Get the generated user ID
 
+    // Create the address using the generated user ID
     Address address = new Address.AddressBuilder()
+            .userId(userId) // Use the generated user ID
             .street1("123 Testing Blvd.")
             .city("Irvine")
             .state("CA")
@@ -41,9 +43,8 @@ public class AddressRepositoryTest {
 
 
     Address savedAddress = addressRepository.save(address);
-    user.setAddress(savedAddress);
 
-    Optional<Address> foundAddressOptional = addressRepository.findByAddress_Id(userId);
+    Optional<Address> foundAddressOptional = addressRepository.findByUserId(userId);
 
     assertTrue(foundAddressOptional.isPresent());
     Address foundAddress = foundAddressOptional.get();
