@@ -61,26 +61,12 @@ const LandingPage: React.FC = () => {
       </Grid>
     </>;
   return <>
-      <a className="usa-skipnav" href="#main-content">
-        Skip to main content
-      </a>
-    
-      <Header extended showMobileOverlay={mobileNavOpen}>
-        <div className="usa-navbar">
-          <Title id="extended-logo">
-            <a href="/" title="Home" aria-label="Home">
-              Project title
-            </a>
-          </Title>
-          <NavMenuButton label="Menu" onClick={toggleMobileNav} className="usa-menu-btn" />
-        </div>
-        <ExtendedNav aria-label="Primary navigation" primaryItems={primaryNavItems} secondaryItems={secondaryNavItems} onToggleMobileNav={toggleMobileNav} mobileExpanded={mobileNavOpen}>
-          <Search size="small" onSubmit={handleSearch} />
-        </ExtendedNav>
-      </Header>
 
+  
+   
+  
       <main id="main-content">
-        <section className="usa-hero" aria-label="Introduction">
+        <section className="" aria-label="Introduction">
           <GridContainer>
             <div className="usa-hero__callout">
               <h1 className="usa-hero__heading">
@@ -126,7 +112,7 @@ const LandingPage: React.FC = () => {
           </Grid>
         </section>
 
-        <section className="usa-graphic-list usa-section usa-section--dark">
+        <section className="usa-graphic-list usa-section bg-primary-lighter">
           <GridContainer>
             <Grid row gap className="usa-graphic-list__row">
               <Grid tablet={{

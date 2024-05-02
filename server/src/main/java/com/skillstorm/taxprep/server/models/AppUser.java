@@ -14,6 +14,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -23,19 +26,23 @@ public class AppUser implements UserDetails {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column
-  private long id;
+  private int id;
 
-  @Column
-  private String first_name;
+  @Column(name = "first_name")
+  private String firstName;
 
-  @Column
-  private String last_name;
+  @Column(name = "last_name")
+  private String lastName;
 
   @Column
   private String username;
 
   @Column
   private String password;
+
+  @OneToOne
+  @JoinColumn(name = "address_id")
+  private Address address;
 
   @Column
   private String email;
@@ -49,57 +56,120 @@ public class AppUser implements UserDetails {
   public AppUser() {
   }
 
+  public AppUser(String username, String password) {
+    this.username = username;
+    this.password = password;
+  }
 
-  public AppUser(long id, String first_name, String last_name, String username, String password, String email,
+  public static class AppUserBuilder {
+    private AppUser user;
+
+    public AppUserBuilder() {
+        user = new AppUser();
+    }
+
+    public AppUserBuilder id(int id) {
+        user.setId(id);
+        return this;
+    }
+
+    public AppUserBuilder firstName(String firstName) {
+        user.setFirstName(firstName);
+        return this;
+    }
+
+    public AppUserBuilder lastName(String lastName) {
+        user.setLastName(lastName);
+        return this;
+    }
+
+    public AppUserBuilder username(String username) {
+        user.setUsername(username);
+        return this;
+    }
+
+    public AppUserBuilder password(String password) {
+        user.setPassword(password);
+        return this;
+    }
+
+    public AppUserBuilder address(Address address) {
+        user.setAddress(address);
+        return this;
+    }
+
+    public AppUserBuilder email(String email) {
+        user.setEmail(email);
+        return this;
+    }
+
+    public AppUserBuilder birthday(LocalDate birthday) {
+        user.setBirthday(birthday);
+        return this;
+    }
+
+    public AppUserBuilder role(String role) {
+        user.setRole(role);
+        return this;
+    }
+
+    public AppUser build() {
+        return user;
+    }
+  }
+
+  /* public AppUser(int id, String firstName, String lastName, String username, String password, Address address, String email,
       LocalDate birthday, String role) {
     this.id = id;
-    this.first_name = first_name;
-    this.last_name = last_name;
+    this.firstName = firstName;
+    this.lastName = lastName;
     this.username = username;
     this.password = password;
+    this.address = address;
     this.email = email;
     this.birthday = birthday;
     this.role = role;
   }
 
-  public AppUser(String first_name, String last_name, String username, String password, String email,
+  public AppUser(String firstName, String lastName, String username, String password, Address address, String email,
       LocalDate birthday, String role) {
-    this.first_name = first_name;
-    this.last_name = last_name;
+    this.firstName = firstName;
+    this.lastName = lastName;
     this.username = username;
     this.password = password;
+    this.address = address;
     this.email = email;
     this.birthday = birthday;
     this.role = role;
-  }
+  } */
 
   public long getId() {
     return id;
   }
 
 
-  public void setId(long id) {
+  public void setId(int id) {
     this.id = id;
   }
 
 
-  public String getFirst_name() {
-    return first_name;
+  public String getFirstName() {
+    return firstName;
   }
 
 
-  public void setFirst_name(String first_name) {
-    this.first_name = first_name;
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
   }
 
 
-  public String getLast_name() {
-    return last_name;
+  public String getLastName() {
+    return lastName;
   }
 
 
-  public void setLast_name(String last_name) {
-    this.last_name = last_name;
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
   }
 
 
@@ -122,6 +192,13 @@ public class AppUser implements UserDetails {
     this.password = password;
   }
 
+  public Address getAddress() {
+    return address;
+  }
+
+  public void setAddress(Address address) {
+    this.address = address;
+  }
 
   public String getEmail() {
     return email;
@@ -152,20 +229,17 @@ public class AppUser implements UserDetails {
     this.role = role;
   }
 
-  
-
-  // methods to use to manage users regarding security
-  // if any of them return false, the user will not be able to log in
 
   @Override
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + (int) (id ^ (id >>> 32));
-    result = prime * result + ((first_name == null) ? 0 : first_name.hashCode());
-    result = prime * result + ((last_name == null) ? 0 : last_name.hashCode());
+    result = prime * result + id;
+    result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
+    result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
     result = prime * result + ((username == null) ? 0 : username.hashCode());
     result = prime * result + ((password == null) ? 0 : password.hashCode());
+    result = prime * result + ((address == null) ? 0 : address.hashCode());
     result = prime * result + ((email == null) ? 0 : email.hashCode());
     result = prime * result + ((birthday == null) ? 0 : birthday.hashCode());
     result = prime * result + ((role == null) ? 0 : role.hashCode());
@@ -184,15 +258,15 @@ public class AppUser implements UserDetails {
     AppUser other = (AppUser) obj;
     if (id != other.id)
       return false;
-    if (first_name == null) {
-      if (other.first_name != null)
+    if (firstName == null) {
+      if (other.firstName != null)
         return false;
-    } else if (!first_name.equals(other.first_name))
+    } else if (!firstName.equals(other.firstName))
       return false;
-    if (last_name == null) {
-      if (other.last_name != null)
+    if (lastName == null) {
+      if (other.lastName != null)
         return false;
-    } else if (!last_name.equals(other.last_name))
+    } else if (!lastName.equals(other.lastName))
       return false;
     if (username == null) {
       if (other.username != null)
@@ -203,6 +277,11 @@ public class AppUser implements UserDetails {
       if (other.password != null)
         return false;
     } else if (!password.equals(other.password))
+      return false;
+    if (address == null) {
+      if (other.address != null)
+        return false;
+    } else if (!address.equals(other.address))
       return false;
     if (email == null) {
       if (other.email != null)
@@ -222,11 +301,6 @@ public class AppUser implements UserDetails {
     return true;
   }
 
-  @Override
-  public String toString() {
-    return "AppUser [id=" + id + ", first_name=" + first_name + ", last_name=" + last_name + ", username=" + username
-        + ", password=" + password + ", email=" + email + ", birthday=" + birthday + ", role=" + role + "]";
-  }
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -241,7 +315,8 @@ public class AppUser implements UserDetails {
      */
     
     Set<SimpleGrantedAuthority> authorities = new HashSet<>();
-    SimpleGrantedAuthority userRole = new SimpleGrantedAuthority(role);
+    String authority = "ROLE_" + role;
+    SimpleGrantedAuthority userRole = new SimpleGrantedAuthority(authority);
     authorities.add(userRole);
 
     return authorities;
@@ -272,6 +347,4 @@ public class AppUser implements UserDetails {
     return true;
     //throw new UnsupportedOperationException("Unimplemented method 'isEnabled'");
   }
-
-  
 }

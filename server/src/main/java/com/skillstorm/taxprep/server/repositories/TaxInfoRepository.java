@@ -5,9 +5,9 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.skillstorm.taxprep.server.models.AppUser;
+import com.skillstorm.taxprep.server.models.TaxInfo;
 
 @Repository
-public interface UserRepository extends JpaRepository<AppUser, Integer> {
-  public Optional<AppUser> findByUsername(String username);
+public interface TaxInfoRepository extends JpaRepository<TaxInfo, Integer> {
+  public Optional<TaxInfo> findByUser_Id(int userId);
 }
