@@ -22,15 +22,11 @@ public class Address {
   @Column
   private int id;
 
-  @OneToMany(targetEntity = AppUser.class, mappedBy = "address", cascade = CascadeType.REMOVE)
-  @JsonIgnore
-  private Set<AppUser> user;
+  @Column(name = "street_1")
+  private String street1;
 
-  @Column
-  private String street_1;
-
-  @Column
-  private String street_2;
+  @Column(name = "street_2")
+  private String street2;
 
   @Column
   private String city;
@@ -38,27 +34,28 @@ public class Address {
   @Column
   private String state;
 
-  @Column
-  private String postal_code;
+  @Column(name = "postal_code")
+  private String postalCode;
 
-  public Address(int id, Set<AppUser> user, String street_1, String street_2, String city, String state,
-      String postal_code) {
+  public Address() { }
+
+  /* public Address(int id, Set<AppUser> user, String street1, String street2, String city, String state,
+      String postalCode) {
     this.id = id;
     this.user = user;
-    this.street_1 = street_1;
-    this.street_2 = street_2;
+    this.street1 = street1;
+    this.street2 = street2;
     this.city = city;
     this.state = state;
-    this.postal_code = postal_code;
-  }
+    this.postalCode = postalCode;
+  } */
 
-  public Address(Set<AppUser> user, String street_1, String street_2, String city, String state, String postal_code) {
-    this.user = user;
-    this.street_1 = street_1;
-    this.street_2 = street_2;
-    this.city = city;
-    this.state = state;
-    this.postal_code = postal_code;
+  private Address(AddressBuilder builder) {
+    this.street1 = builder.street1;
+    this.street2 = builder.street2;
+    this.city = builder.city;
+    this.state = builder.state;
+    this.postalCode = builder.postalCode;
   }
 
   public int getId() {
@@ -69,28 +66,20 @@ public class Address {
     this.id = id;
   }
 
-  public Set<AppUser> getUser() {
-    return user;
+  public String getStreet1() {
+    return street1;
   }
 
-  public void setUser(Set<AppUser> user) {
-    this.user = user;
+  public void setStreet1(String street1) {
+    this.street1 = street1;
   }
 
-  public String getStreet_1() {
-    return street_1;
+  public String getStreet2() {
+    return street2;
   }
 
-  public void setStreet_1(String street_1) {
-    this.street_1 = street_1;
-  }
-
-  public String getStreet_2() {
-    return street_2;
-  }
-
-  public void setStreet_2(String street_2) {
-    this.street_2 = street_2;
+  public void setStreet2(String street2) {
+    this.street2 = street2;
   }
 
   public String getCity() {
@@ -109,12 +98,53 @@ public class Address {
     this.state = state;
   }
 
-  public String getPostal_code() {
-    return postal_code;
+  public String getPostalCode() {
+    return postalCode;
   }
 
-  public void setPostal_code(String postal_code) {
-    this.postal_code = postal_code;
+  public void setPostalCode(String postalCode) {
+    this.postalCode = postalCode;
+  }
+
+  public static class AddressBuilder {
+    private String street1;
+    private String street2;
+    private String city;
+    private String state;
+    private String postalCode;
+
+    public AddressBuilder() {
+        // Initialize any default values if needed
+    }
+
+    public AddressBuilder street1(String street1) {
+        this.street1 = street1;
+        return this;
+    }
+
+    public AddressBuilder street2(String street2) {
+        this.street2 = street2;
+        return this;
+    }
+
+    public AddressBuilder city(String city) {
+        this.city = city;
+        return this;
+    }
+
+    public AddressBuilder state(String state) {
+        this.state = state;
+        return this;
+    }
+
+    public AddressBuilder postalCode(String postalCode) {
+        this.postalCode = postalCode;
+        return this;
+    }
+
+    public Address build() {
+        return new Address(this);
+    }
   }
 
   @Override
@@ -122,12 +152,11 @@ public class Address {
     final int prime = 31;
     int result = 1;
     result = prime * result + id;
-    result = prime * result + ((user == null) ? 0 : user.hashCode());
-    result = prime * result + ((street_1 == null) ? 0 : street_1.hashCode());
-    result = prime * result + ((street_2 == null) ? 0 : street_2.hashCode());
+    result = prime * result + ((street1 == null) ? 0 : street1.hashCode());
+    result = prime * result + ((street2 == null) ? 0 : street2.hashCode());
     result = prime * result + ((city == null) ? 0 : city.hashCode());
     result = prime * result + ((state == null) ? 0 : state.hashCode());
-    result = prime * result + ((postal_code == null) ? 0 : postal_code.hashCode());
+    result = prime * result + ((postalCode == null) ? 0 : postalCode.hashCode());
     return result;
   }
 
@@ -142,20 +171,15 @@ public class Address {
     Address other = (Address) obj;
     if (id != other.id)
       return false;
-    if (user == null) {
-      if (other.user != null)
+    if (street1 == null) {
+      if (other.street1 != null)
         return false;
-    } else if (!user.equals(other.user))
+    } else if (!street1.equals(other.street1))
       return false;
-    if (street_1 == null) {
-      if (other.street_1 != null)
+    if (street2 == null) {
+      if (other.street2 != null)
         return false;
-    } else if (!street_1.equals(other.street_1))
-      return false;
-    if (street_2 == null) {
-      if (other.street_2 != null)
-        return false;
-    } else if (!street_2.equals(other.street_2))
+    } else if (!street2.equals(other.street2))
       return false;
     if (city == null) {
       if (other.city != null)
@@ -167,17 +191,17 @@ public class Address {
         return false;
     } else if (!state.equals(other.state))
       return false;
-    if (postal_code == null) {
-      if (other.postal_code != null)
+    if (postalCode == null) {
+      if (other.postalCode != null)
         return false;
-    } else if (!postal_code.equals(other.postal_code))
+    } else if (!postalCode.equals(other.postalCode))
       return false;
     return true;
   }
 
   @Override
   public String toString() {
-    return "Address [id=" + id + ", user=" + user + ", street_1=" + street_1 + ", street_2=" + street_2 + ", city="
-        + city + ", state=" + state + ", postal_code=" + postal_code + "]";
+    return "Address [id=" + id + ", street1=" + street1 + ", street2=" + street2 + ", city="
+        + city + ", state=" + state + ", postalCode=" + postalCode + "]";
   }
 }

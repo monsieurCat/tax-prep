@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,11 +29,8 @@ import com.skillstorm.taxprep.server.exceptions.UsernameAlreadyExistsException;
 import com.skillstorm.taxprep.server.models.AppUser;
 import com.skillstorm.taxprep.server.services.UserService;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
-
 @RestController
-@CrossOrigin("*")
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/auth")
 public class LoginController {
 
@@ -45,13 +43,13 @@ public class LoginController {
   @Autowired
   private PasswordEncoder passwordEncoder;
 
-  @GetMapping("/login")
+  /* @GetMapping("/login")
   public String login(@RequestParam(name = "error", required = false) String error) {
     if (error != null) {
       return error;
     }
     return "login";
-  }
+  } */
 
   /* @PostMapping("/login")
   public ResponseEntity<String> login(HttpServletRequest request, @RequestBody AppUser user){
