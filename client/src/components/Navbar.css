@@ -20,10 +20,7 @@
     justify-content: space-between; /* Space out children elements evenly */
 }
 
-#extended-logo img {
-    max-height: 10px; /* Set a maximum height for the logo image */
-    margin-right: 10px; /* Add spacing to prevent overlap */
-}
+
 
 .usa-nav__link {
     color: #f8f5f5; /* Set a color for navigation links */

@@ -1,5 +1,5 @@
 import React, { useState} from "react";
-import { Header, NavDropDownButton, Menu, NavMenuButton, Button, Search, ExtendedNav, Footer, FooterNav, GovBanner, GridContainer, Logo, Address, Grid, SocialLinks, SocialLink, PrimaryNav, LanguageSelector, Title } from "@trussworks/react-uswds";
+import { Header, NavDropDownButton, Menu, NavMenuButton, Button, Search, ExtendedNav, Footer, FooterNav, GovBanner, GridContainer, Logo, Address, Grid, SocialLinks, SocialLink, PrimaryNav, LanguageSelector, Title, IdentifierLogo, IdentifierLogos } from "@trussworks/react-uswds";
 import logoImg from '../assets/logoImg.png';
 import './Navbar.css';
 import { Link } from 'react-router-dom';
@@ -30,15 +30,8 @@ const Navbar = (): React.ReactElement => {
   }
 
   const primaryPages = [
-    <Link to="/" key="home" className="usa-nav__link">
-      <span>Home</span>
-    </Link>,
-    <Link to="/login" key="login" className="usa-nav__link">
-      <span>Sign In</span>
-    </Link>,
-     <Link to="/personal-form" key="personal" className="usa-nav__link">
-     <span>File Taxes</span>
-   </Link>,
+    
+   
     <LanguageSelector
     label="Languages"
     langs={[
@@ -88,9 +81,16 @@ const Navbar = (): React.ReactElement => {
      <>
      <NavDropDownButton menuId="testDropDownOne" onToggle={(): void => {
      onToggle(0, setIsOpen);
-   }} isOpen={isOpen[0]} label="Nav Label" isCurrent={true} />
+   }} isOpen={isOpen[0]} label="Languages" isCurrent={true} />
      <Menu key="one" items={testMenuItems} isOpen={isOpen[0]} id="testDropDownOne" />
-   </>
+   </>,
+   
+   <Link to="/personal-form" key="personal" className="usa-nav__link">
+   <span>File Taxes</span>
+ </Link>,
+  <Link to="/login" key="login" className="usa-nav__link">
+  <span>Sign In</span>
+</Link>
   ];
  
   /*
@@ -111,11 +111,17 @@ const Navbar = (): React.ReactElement => {
         <div className="usa-nav-container">
         
           <div className="usa-navbar">
+          <IdentifierLogos>
+              <IdentifierLogo href="/">
+                <img className="logo-img" src={logoImg} alt="logo" />
+              </IdentifierLogo>
+            </IdentifierLogos>
+            {/*
           <Title id="extended-logo">
             <a href="/" title="Home" aria-label="Home">
                         <Logo image={<img src={logoImg} alt="Logo" />} />
                         </a>
-          </Title>
+  </Title>   */}
                         
                         <NavMenuButton onClick={onClick} label="Menu" />
             </div>
