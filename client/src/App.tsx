@@ -15,6 +15,9 @@ import Deductions from './pages/Deductions';
 import Review from './pages/Review';
 import Breakdown from './pages/Breakdown';
 import PrivateData from './pages/PrivateData';
+import LoginHome from './pages/LoginHome';
+import Logout from './components/Logout';
+import MyAccount from './components/MyAccount';
 
 
 function App() {
@@ -26,6 +29,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/logout" element={<Logout />} />
         <Route path="/create-account" element={<CreateAccount />} />
         <Route path="/personal-form" element={<PersonalForm />} />
         <Route path="/private-data" element={<PrivateData />} />
@@ -36,6 +40,8 @@ function App() {
         <Route path="/deductions" element={<Deductions />} />
         <Route path="/review" element={<Review />} />
         <Route path="/breakdown" element={<Breakdown />} />
+        <Route path="/login-home" element={<LoginHome />} />
+        <Route path="/my-account" element={<MyAccount />} />
       </Routes>
     </Router>
 
