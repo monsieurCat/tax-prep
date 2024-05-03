@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import circle from '../assets/circle.png';
 import logoImg from '../assets/circle.png';
+import App from '../App.css';
 import { Address, Button, ExtendedNav, Footer, FooterNav, GovBanner, Grid, GridContainer, Header, Logo, MediaBlockBody, Menu, NavDropDownButton, NavMenuButton, Search, SocialLink, SocialLinks, Title } from '@trussworks/react-uswds';
 
 const LandingPage: React.FC = () => {
@@ -68,7 +69,7 @@ const LandingPage: React.FC = () => {
   
       
 <main id="main-content">
-      <div className="bg-warning-light" style={{ padding: '6rem',  marginTop: '2rem'}}>
+      <div className="bg-warning-light" style={{ padding: '5rem',  marginTop: '2rem'}}>
         <section id="test-section-id" className="usa-graphic-list usa-section bg-warning-light">
           <GridContainer  >
             <Grid row>
@@ -85,17 +86,24 @@ const LandingPage: React.FC = () => {
               </h2>
              
            
-              <Grid row>
-      <Grid col={4}>
-        <Button type="button" size = "big" onClick={() => window.location.href = '/personal-form'}>Get started</Button>
+              <Grid row style={{
+                marginLeft: '9rem'
+            }}>
+      <Grid col={3}>
+        <Button type="button" size = "big" className="usa-button--big usa-button--outline-dark" style={{ backgroundColor: '#007BFF', color: 'white', border: 'none', borderRadius: '5px' }} onClick={() => window.location.href = '/personal-form'}>Get started</Button>
       </Grid>
 
-      <Grid col={4}>
-        <Button type="button" size = "big" onClick={() => window.location.href = '/login'}>Sign In</Button>
+      <Grid col={1}></Grid>
+
+
+      <Grid col={3}>
+        <Button type="button" size = "big" className="usa-button--big usa-button--outline-dark"onClick={() => window.location.href = '/login'}>Sign In</Button>
       </Grid>
 
-      <Grid col={4}>
-        <Button type="button"  onClick={() => window.location.href = '/create-account'}>Create Account</Button>
+    
+
+      <Grid col={5}>
+        <Button type="button"  className="usa-button--big usa-button--outline-dark"onClick={() => window.location.href = '/create-account'}>Create Account</Button>
       </Grid>
     </Grid>
       

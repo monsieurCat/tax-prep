@@ -1,10 +1,18 @@
 import React, { useState } from 'react';
 import logoImg from '../assets/logoImg.png';
+import { useSelector, useDispatch } from 'react-redux';
+import { login, logout , setUsername} from '../redux/slices/authSlice'; 
+import { RootState } from '../redux/storeTypes';
 import { Address, Button, ExtendedNav, Footer, FooterNav, GovBanner, Grid, GridContainer, Header, Logo, MediaBlockBody, Menu, NavDropDownButton, NavMenuButton, Search, SocialLink, SocialLinks, Title } from '@trussworks/react-uswds';
 
 const MyAccount: React.FC = () => {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [navDropdownOpen, setNavDropdownOpen] = useState([false, false]);
+  const username = useSelector((state: RootState) => state.auth.username);
+
+
+
+
   const handleToggleNavDropdown = (index: number): void => {
     setNavDropdownOpen(prevNavDropdownOpen => {
       const newOpenState = Array(prevNavDropdownOpen.length).fill(false);
@@ -75,23 +83,36 @@ const MyAccount: React.FC = () => {
            
          
 
-            <h1 className="font-sans text-black text-center margin-top-0 tablet:margin-bottom-1" style={{ fontSize: '6rem' }}>
-                My Account
+            <h1 className="font-sans text-black text-center margin-top-0 tablet:margin-bottom-1" style={{ fontSize: '5rem' }}>
+            Welcome to your account,
               </h1>
               <h2 className="font-sans text-black text-center margin-top-0" style={{ fontSize: '4rem' , color: '#4B4B4B'}}>
-                Let's storm these taxes.
+                 {username}
               </h2>
              
            
-              <Grid row>
+              
       
+    <Grid row style={{
+                marginLeft: '9rem'
+            }}>
+      <Grid col={3}>
+        
+      </Grid>
 
-      <Grid col={4}>
-        <Button type="button"  onClick={() => window.location.href = '/create-account'}>Account Settings</Button>
+    
+
+
+      <Grid col={5}>
+        <Button type="button" size = "big" className="usa-button--big usa-button--outline-dark"onClick={() => window.location.href = '/login'}>Account Settings</Button>
+      </Grid>
+
+    
+
+      <Grid col={5}>
+       
       </Grid>
     </Grid>
-      
-
 
 
    

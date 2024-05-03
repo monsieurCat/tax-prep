@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import logoImg from '../assets/logoImg.png';
+import { useSelector, useDispatch } from 'react-redux';
+import { login, logout , setUsername} from '../redux/slices/authSlice'; 
+import { RootState } from '../redux/storeTypes';
 import { Address, Button, ButtonGroup, Card, CardBody, CardFooter, CardHeader, CardMedia, ExtendedNav, Footer, FooterNav, GovBanner, Grid, GridContainer, Header, Link, Logo, MediaBlockBody, Menu, NavDropDownButton, NavMenuButton, Search, SocialLink, SocialLinks, Title } from '@trussworks/react-uswds';
 
 const LoginHome: React.FC = () => {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [navDropdownOpen, setNavDropdownOpen] = useState([false, false]);
-  const [username, setUsername] = useState('');
+  const username = useSelector((state: RootState) => state.auth.username);
 
 
 
@@ -71,39 +74,48 @@ const LoginHome: React.FC = () => {
    
   
       <main id="main-content">
-      <div className="bg-warning-light" style={{ padding: '8rem',  marginTop: '2rem'}}>
-        <section id="test-section-id" className="usa-graphic-list usa-section bg-warning-light">
+      <div className="bg-accent-warm" style={{ padding: '6rem',  marginTop: '2rem'}}>
+        <section id="test-section-id" className="usa-graphic-list usa-section">
           <GridContainer  >
             <Grid row>
             <Grid col={12} style={{ marginLeft: 'auto', marginRight: 'auto' }}>
-          <div className="usa-hero__heading bg-accent-warm" style={{ padding: '3rem', width: '80%' }}>
+         
          
            
-              <h1 className="usa-hero__heading">
-                <span className="usa-hero__heading--alt">Welcome Back, {username}!</span>
-            
+            <h1 className="font-sans text-white text-center margin-top-0 tablet:margin-bottom-1" style={{ fontSize: '6rem' }}>
+                Welcome back, {username}!
               </h1>
+              <h2 className="font-sans text-black text-center margin-top-0" style={{ fontSize: '4rem' , color: '#4B4B4B'}}>
+                We're happy to see you.
+              </h2>
              
            
-              <Grid row>
-      <Grid col={4}>
-        <Button type="button" size = "big" onClick={() => window.location.href = '/personal-form'}>Start Filing</Button>
+        
+      
+    <Grid row style={{
+                marginLeft: '9rem'
+            }}>
+      <Grid col={3}>
+        <Button type="button" size = "big" className="usa-button--big usa-button--outline-dark" style={{ backgroundColor: '#007BFF', color: 'white', border: 'none', borderRadius: '5px' }} onClick={() => window.location.href = '/personal-form'}>Start Filing</Button>
       </Grid>
 
-      <Grid col={4}>
-        <Button type="button" size = "big" onClick={() => window.location.href = '/review'}>My Taxes</Button>
+      <Grid col={1}></Grid>
+
+
+      <Grid col={3}>
+        <Button type="button" size = "big" className="usa-button--big usa-button--outline-dark"onClick={() => window.location.href = '/review'}>My Taxes</Button>
       </Grid>
 
-      <Grid col={4}>
-        <Button type="button"  onClick={() => window.location.href = '/my-account'}>My Account</Button>
+    
+
+      <Grid col={5}>
+        <Button type="button"  className="usa-button--big usa-button--outline-dark"onClick={() => window.location.href = '/my-account'}>My Account</Button>
       </Grid>
     </Grid>
-      
-
 
 
    
-            </div>
+            
             </Grid>
             </Grid>
       

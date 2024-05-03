@@ -3,7 +3,7 @@ import logoImg from '../assets/logoImg.png';
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import { login } from '../redux/slices/authSlice'; 
-import { Alert, Button, ButtonGroup, Fieldset, Footer, Form, GovBanner, Grid, GridContainer, Header, Identifier, IdentifierGov, IdentifierIdentity, IdentifierLink, IdentifierLinkItem, IdentifierLinks, IdentifierLogo, IdentifierLogos, IdentifierMasthead, Label, TextInput, Title } from '@trussworks/react-uswds';
+import { Address, Alert, Button, ButtonGroup, Fieldset, Footer, FooterNav, Form, GovBanner, Grid, GridContainer, Header, Identifier, IdentifierGov, IdentifierIdentity, IdentifierLink, IdentifierLinkItem, IdentifierLinks, IdentifierLogo, IdentifierLogos, IdentifierMasthead, Label, Logo, SocialLinks, TextInput, Title } from '@trussworks/react-uswds';
 const Login = (): React.ReactElement => {
    const [showPassword, setShowPassword] = React.useState(false);
    const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
@@ -90,9 +90,9 @@ const Login = (): React.ReactElement => {
                      col: 6
                   }}>
                      <div className="bg-white padding-y-3 padding-x-5 border border-base-lighter">
-                        <h1 className="margin-bottom-0">Sign in</h1>
+                        <h1 className="margin-bottom-0"></h1>
                         <Form onSubmit={handleLogin}>
-                           <Fieldset legend="Access your account" legendStyle="large">
+                           <Fieldset legend="Sign in" legendStyle="large" >
                               <Label htmlFor="email">Email address</Label>
                               <TextInput id="email" name="email" type="email" autoCorrect="off" autoCapitalize="off" required={true} />
 
@@ -103,18 +103,18 @@ const Login = (): React.ReactElement => {
                                  {showPassword ? 'Hide password' : 'Show password'}
                               </button>
 
-                              <Button type="submit" >Submit</Button>
+                              <Button type="submit" >Sign in</Button>
 
 
 
-                              <Button type="button" onClick={handlePrivateData}>See Private Data</Button>
+                            {/*  <Button type="button" onClick={handlePrivateData}>See Private Data</Button>*/}
 
 
 
                             
 
                               <p>
-                                 <Link to="/create-account">forgot password? </Link>
+                                 <Link to="/create-account">Forgot password? </Link>
                               </p>
                            </Fieldset>
                         </Form>
@@ -135,31 +135,22 @@ const Login = (): React.ReactElement => {
          </div>
       </main>
 
+      <Footer size="medium" primary={<FooterNav size="medium" links={Array(4).fill(<a className="usa-footer__primary-link" href="#">
+          
+          </a>)} />} secondary={<div className="grid-row grid-gap">
+        <Logo size="big" image={<img className="usa-footer__logo-img" alt="img alt text" src={logoImg} />} heading={<p className="usa-footer__logo-heading"></p>} />
+      
+         
+          <h3 className="usa-footer__contact-heading"></h3>
+          <Address size="medium" items={[<a key="telephone" href="tel:1-800-555-5555">
+                (800) CALL-GOVT
+              </a>, <a key="email" href="mailto:info@agency.gov">
+                info@agency.gov
+              </a>]} />
+        
+      </div>} />
 
-
-      <Identifier>
-         <IdentifierMasthead aria-label="Agency identifier">
-            <IdentifierLogos>
-               <IdentifierLogo href="#">
-                  <img className="usa-identifier__logo-img" src={logoImg} alt="<Parent agency> logo" />
-               </IdentifierLogo>
-            </IdentifierLogos>
-            <IdentifierIdentity domain="domain.gov">
-               <span aria-hidden="true">An</span> official website of the{' '}
-               <Link to="/create-account">{`<Parent agency>`}</Link>
-            </IdentifierIdentity>
-         </IdentifierMasthead>
-
-         <IdentifierGov aria-label="U.S. government information and services">
-            <div className="usa-identifier__usagov-description">
-               Looking for U.S. government information and services?
-            </div>
-            &nbsp;
-            <Link to="/create-account" className="usa-link">
-               Visit USA.gov
-            </Link>
-         </IdentifierGov>
-      </Identifier>
+   
 
    </>;
 }

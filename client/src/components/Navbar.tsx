@@ -188,9 +188,7 @@ useEffect(() => {
       <Menu key="one" items={testMenuItems} isOpen={isOpen[0]} id="testDropDownOne" />
     </>,
 
-<Link to="/login" key="personal" className="usa-nav__link">
-<span>TEST LINK!! </span>
-</Link>,
+
 
     <Link to="/personal-form" key="personal" className="usa-nav__link">
       <span>File Taxes</span>
@@ -198,7 +196,7 @@ useEffect(() => {
 
 ...(isAuthenticated ? [
     <Link to="/my-account" key="my-account" className="usa-nav__link">
-      <span>Welcome, {username}</span>
+      <span>{username}</span>
     </Link>,
     <Button type="button" onClick={handleLogout} className="usa-nav__link" key="logout">
       Log out

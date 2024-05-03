@@ -40,7 +40,7 @@ export const Breakdown = (): React.ReactElement => (<div style={{
 
 
             <Grid col={12} style={{
-                marginLeft: '9rem'
+                marginLeft: '5rem'
             }}>
                 {/*
     <Grid col={4} style={{
@@ -142,9 +142,7 @@ export const Breakdown = (): React.ReactElement => (<div style={{
                                         headingLevel: 'h4',
                                     }]
                             } />
-                            <a href="#" className="usa-button usa-button--big">
-                                Sign and submit
-                            </a>
+                           
 
                         </GridContainer>
                     </section>
@@ -159,12 +157,14 @@ export const Breakdown = (): React.ReactElement => (<div style={{
 
                     <section id="test-section-id" className="usa-graphic-list usa-section">
                         <GridContainer>
-
+                            <Grid row style={{
+                marginLeft: '16rem'
+            }}>
                             <a href="#" className="usa-button usa-button--big">
                                 Sign and submit
                             </a>
 
-
+                            </Grid>
 
                         </GridContainer>
                     </section>

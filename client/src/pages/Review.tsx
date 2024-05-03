@@ -1,4 +1,4 @@
-import { Label, TextInput, FormGroup, ErrorMessage, Textarea, Fieldset, Button, Checkbox, Grid, GridContainer, RequiredMarker, Select, DateRangePicker, DatePicker, ButtonGroup, ProcessListHeading, ProcessListItem, StepIndicator, StepIndicatorStep, Radio, TextInputMask } from "@trussworks/react-uswds";
+import { Label, TextInput, FormGroup, ErrorMessage, Textarea, Fieldset, Button, Checkbox, Grid, GridContainer, RequiredMarker, Select, DateRangePicker, DatePicker, ButtonGroup, ProcessListHeading, ProcessListItem, StepIndicator, StepIndicatorStep, Radio, TextInputMask, Accordion, Table } from "@trussworks/react-uswds";
 import { Form, Link } from "react-router-dom";
 
 export const Review = (): React.ReactElement => (<div style={{
@@ -15,7 +15,7 @@ export const Review = (): React.ReactElement => (<div style={{
       stepText="Step"
     >
       <StepIndicatorStep
-        label="Personal information"
+        label="Personal Information"
         status="complete"
       />
       <StepIndicatorStep
@@ -39,7 +39,8 @@ export const Review = (): React.ReactElement => (<div style={{
     <Grid row gap>
 
 
-    <Grid col={4}>
+    <Grid col={8}style={{
+    marginLeft: '14rem'}}>
         {/*
     <Grid col={4} style={{
     marginLeft: '18rem'}}>
@@ -51,68 +52,83 @@ export const Review = (): React.ReactElement => (<div style={{
 <Fieldset legend="Confirm your information" legendStyle="large">
 
 
-<Label htmlFor="w2">1099 Income</Label>
-<TextInput id="w2" name="w2" type="text" />
+<Accordion  bordered={false}  items={
+                                [
+                                    {
+                                        title: <span style={{ color: '#000', fontWeight: 'bold' }}>Personal Information</span>,
+                                        content: (
+                                            <p style={{ color: '#000' }}>
+                                               
+          <Label htmlFor="first-name">Name</Label>
+          <TextInput id="input-disabled" name="first-name" type="text"  defaultValue="Alice Smith" disabled/>
+          
 
-  <Label htmlFor="first-name">Employer name</Label>
-  <TextInput id="first-name" name="first-name" type="text" />
-  <Label htmlFor="middle-name" hint=" ">
-    Middle initial
-  </Label>
-  <TextInput id="middle-name" name="middle-name" type="text" />
-  <Label htmlFor="last-name">Last name</Label>
-  <TextInput id="last-name" name="last-name" type="text" />
+          <Label htmlFor="birthdate">Date of birth</Label>
+          <DatePicker id="birthdate" name="birthdate" disabled/>
 
-  <Label id="first-name" htmlFor="first-name">
-      Employer Fed ID Number
+          <Label id="first-name" htmlFor="first-name">
+      Social Security Number
     </Label>
-    <span id="hint-fed-id" className="usa-hint">
-      For example, 12 3456789
-    </span>
-    <TextInputMask id="input-type-ssn" name="input-type-ssn" type="text" aria-labelledby="first-name" aria-describedby="hint-ssn" mask="__ _______" pattern="^(?!(000|666|9))\d{3} (?!00)\d{2} (?!0000)\d{4}$" />
-    
+   
+    <TextInputMask id="input-type-ssn" name="input-type-ssn" type="text" aria-labelledby="first-name" aria-describedby="hint-ssn" mask="___ __ ____" pattern="^(?!(000|666|9))\d{3} (?!00)\d{2} (?!0000)\d{4}$"  disabled />
+
+                                            </p>
+                                        ),
+                                        expanded: false,
+                                        id: '123',
+                                        headingLevel: 'h4',
+                                    }]
+                            } />
+                            <Accordion  bordered={false}  items={
+                                [
+                                    {
+                                        title: <span style={{ color: '#000', fontWeight: 'bold' }}>Filing Status</span>,
+                                        content: (
+                                            <p style={{ color: '#000' }}>
+                                               
+                                            </p>
+                                        ),
+                                        expanded: false,
+                                        id: '123',
+                                        headingLevel: 'h4',
+                                    }]
+                            } />
+                            <Accordion  bordered={false}  items={
+                                [
+                                    {
+                                        title: <span style={{ color: '#000', fontWeight: 'bold' }}>Income</span>,
+                                        content: (
+                                            <p style={{ color: '#000' }}>
+                                               
+                                            </p>
+                                        ),
+                                        expanded: false,
+                                        id: '123',
+                                        headingLevel: 'h4',
+                                    }]
+                            } />
+                            <Accordion  bordered={false}  items={
+                                [
+                                    {
+                                        title: <span style={{ color: '#000', fontWeight: 'bold' }}>Deductions</span>,
+                                        content: (
+                                            <p style={{ color: '#000' }}>
+                                               
+                                            </p>
+                                        ),
+                                        expanded: false,
+                                        id: '123',
+                                        headingLevel: 'h4',
+                                    }]
+                            } />
 </Fieldset>
 </Grid>
 
-<Grid col={1}></Grid>
+<Grid col={4}></Grid>
 
-<Grid col={4}>
+
 {/* <Form onSubmit={mockSubmit}>*/}
-<Fieldset legend="" legendStyle="large">
-  <p>
-    Required fields are marked with an asterisk (<RequiredMarker />
-    ).
-  </p>
-  <Label htmlFor="mailing-address-1">Street address</Label>
-  <TextInput id="mailing-address-1" name="mailing-address-1" type="text" />
 
-  <Label htmlFor="mailing-address-2">Street address line 2</Label>
-  <TextInput id="mailing-address-2" name="mailing-address-2" type="text" />
-
-  <Label htmlFor="city" requiredMarker>
-    City
-  </Label>
-  <TextInput id="city" name="city" type="text" required />
-
-  <Label htmlFor="state" requiredMarker>
-    State, territory, or military post
-  </Label>
-  <Select id="state" name="state" required>
-    <option>- Select -</option>
-   
-  
-  </Select>
-
-  <Label id="zip" htmlFor="first-name">
-      ZIP Code
-    </Label>
-    <span id="hint-zip" className="usa-hint">
-      For example, 12345-6789
-    </span>
-    <TextInputMask id="input-type-zip" name="input-type-zip" type="text" aria-labelledby="zip" aria-describedby="hint-zip" mask="_____-____" pattern="^[0-9]{5}(?:-[0-9]{4})?$" />
-
-
-</Fieldset>
 
 
 
@@ -136,7 +152,7 @@ export const Review = (): React.ReactElement => (<div style={{
         <Link to="/breakdown" className="usa-button">Done </Link>
 
       </ButtonGroup>
-      </Grid>
+      
     </Grid>
   </GridContainer>
 
