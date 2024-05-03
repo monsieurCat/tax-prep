@@ -16,8 +16,8 @@
 
     /* Linting */
     "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "noUnusedLocals": false,              // changed to false to let kubernetes ignore ununsed
+    "noUnusedParameters": false,          // changed to false to let kubernetes ignore ununsed
     "noFallthroughCasesInSwitch": true
   },
   "include": ["src"],

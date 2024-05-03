@@ -22,11 +22,11 @@ const Navbar = (): React.ReactElement => {
       method: 'GET',
       credentials: 'include', // To send cookies/session info
     })
-      .then(response => response.json())
+      .then(response => response.text())
       .then(data => {
-        if (data.username) {
+        if (data) {
           setIsAuthenticated(true);
-          setUsername(data.username);
+          setUsername(data);
         }
       })
       .catch(error => console.error("Error fetching session:", error));

@@ -8,4 +8,8 @@ services:
   server:
     build: ./server
     ports:
-      - "8080:8080"
+      - "8282:8282"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:5432/taxprep?stringtype=unspecified
+      - SPRING_DATASOURCE_USERNAME=postgre
+      - SPRING_DATASOURCE_PASSWORD=eratestfuit
