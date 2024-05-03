@@ -42,7 +42,7 @@ public class AddressRepositoryTest {
             .build();
 
 
-    Address savedAddress = addressRepository.save(address);
+    addressRepository.save(address);
 
     Optional<Address> foundAddressOptional = addressRepository.findByUserId(userId);
 
