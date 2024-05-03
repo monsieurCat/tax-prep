@@ -26,3 +26,10 @@ dist-ssr
 
 **/application.yaml
 **/application.yml
+
+docker-compose.yaml
+docker-compose.yml
+
+**/docker-compose.yaml
+**/docker-compose.yml
+
