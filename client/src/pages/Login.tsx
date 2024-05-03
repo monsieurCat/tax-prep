@@ -1,11 +1,14 @@
 import React from 'react';
 import logoImg from '../assets/logoImg.png';
-import { Link } from "react-router-dom";
-import { Button, ButtonGroup, Fieldset, Footer, Form, GovBanner, Grid, GridContainer, Header, Identifier, IdentifierGov, IdentifierIdentity, IdentifierLink, IdentifierLinkItem, IdentifierLinks, IdentifierLogo, IdentifierLogos, IdentifierMasthead, Label, TextInput, Title } from '@trussworks/react-uswds';
+import { Link, useLocation } from "react-router-dom";
+import { Alert, Button, ButtonGroup, Fieldset, Footer, Form, GovBanner, Grid, GridContainer, Header, Identifier, IdentifierGov, IdentifierIdentity, IdentifierLink, IdentifierLinkItem, IdentifierLinks, IdentifierLogo, IdentifierLogos, IdentifierMasthead, Label, TextInput, Title } from '@trussworks/react-uswds';
 const Login = (): React.ReactElement => {
    const [showPassword, setShowPassword] = React.useState(false);
    const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
-
+   const [isAuthenticated, setIsAuthenticated] = React.useState(false);
+   const location = useLocation(); // Use the useLocation hook
+   const [logoutMessage, setLogoutMessage] = React.useState('');
+   const [logoutError, setLogoutError] = React.useState('');
 
    function handleLogin(event: any) {
       event.preventDefault();
@@ -25,10 +28,20 @@ const Login = (): React.ReactElement => {
       })
          .then((response) => {
             // Handle the response here
+
+            if (response.ok) {
+               // Update authentication state if login is successful
+               setIsAuthenticated(true);
+               // Redirect or perform other actions as needed
+            } else {
+               setErrorMessage('Failed to log in. Please check your credentials and try again.');
+            
+            }
             console.log("Raw response:", response);
 
          })
          .catch((error) => console.error("Error:", error));
+         setErrorMessage('An error occurred during login. Please try again later.');
    }
 
    function handlePrivateData(event: any) {
@@ -36,8 +49,34 @@ const Login = (): React.ReactElement => {
       window.location.href = '/private-data';
    }
 
+
+
+   React.useEffect(() => {
+      const queryParams = new URLSearchParams(location.search);
+      const logoutParam = queryParams.get('logout');
+      const errorParam = queryParams.get('error');
+
+      if (logoutParam) {
+          setLogoutMessage('You have been successfully logged out.');
+      } else if (errorParam) {
+          setLogoutError('Failed to log out. Please try again.');
+      }
+  }, [location]);
+
+
+
+
+
+
+
    return <>
 
+{logoutMessage && <Alert type="info" headingLevel="h4" noIcon>
+                {logoutMessage}
+            </Alert>}
+
+            {logoutError && <Alert type="error" heading="Error status" headingLevel="h4">{logoutError}</Alert>}
+            
 
 
       <main id="main-content">

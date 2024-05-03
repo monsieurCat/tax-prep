@@ -97,8 +97,10 @@ public class SecurityConfiguration {
     .logout(logout -> logout
       .invalidateHttpSession(true)
       .clearAuthentication(true)
+      .deleteCookies("JSESSIONID")  // Instruct the client to delete the session cookie
       .logoutRequestMatcher(new AntPathRequestMatcher("/api/auth/logout"))
       .logoutSuccessUrl("/api/auth/login?logout"));
+      
     
     return http.build();
   }

@@ -84,16 +84,10 @@ const MyAccount: React.FC = () => {
              
            
               <Grid row>
-      <Grid col={4}>
-        <Button type="button" size = "big" onClick={() => window.location.href = '/personal-form'}>Get started</Button>
-      </Grid>
+      
 
       <Grid col={4}>
-        <Button type="button" size = "big" onClick={() => window.location.href = '/login'}>Sign In</Button>
-      </Grid>
-
-      <Grid col={4}>
-        <Button type="button"  onClick={() => window.location.href = '/create-account'}>Create Account</Button>
+        <Button type="button"  onClick={() => window.location.href = '/create-account'}>Account Settings</Button>
       </Grid>
     </Grid>
       

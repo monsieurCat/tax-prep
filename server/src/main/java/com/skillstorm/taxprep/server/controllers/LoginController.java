@@ -33,8 +33,7 @@ import com.skillstorm.taxprep.server.services.UserService;
 @RequestMapping("/api/auth")
 public class LoginController {
 
-  @Autowired
-  private OAuth2AuthorizedClientService authorizedClientService;
+  
   @Autowired
   private UserService userService;
   @Autowired

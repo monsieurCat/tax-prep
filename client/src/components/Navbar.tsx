@@ -2,7 +2,7 @@ import React, { useEffect, useState} from "react";
 import { Header, NavDropDownButton, Menu, NavMenuButton, Button, Search, ExtendedNav, Footer, FooterNav, GovBanner, GridContainer, Logo, Address, Grid, SocialLinks, SocialLink, PrimaryNav, LanguageSelector, Title, IdentifierLogo, IdentifierLogos } from "@trussworks/react-uswds";
 import logoImg from '../assets/logoImg.png';
 import './Navbar.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate} from 'react-router-dom';
 import '@trussworks/react-uswds/lib/index.css';
 import '@trussworks/react-uswds/lib/uswds.css';
 
@@ -12,9 +12,11 @@ const Navbar = (): React.ReactElement => {
   const [username, setUsername] = useState('');
   const [expanded, setExpanded] = useState(false);
   const [isOpen, setIsOpen] = useState([false, false]);
+  const navigate = useNavigate();
+  
 
 
-
+ 
 
   useEffect(() => {
     // Fetch user session data from the backend
@@ -27,17 +29,76 @@ const Navbar = (): React.ReactElement => {
         if (data) {
           setIsAuthenticated(true);
           setUsername(data);
+<<<<<<< Updated upstream
+=======
+        } else {
+          setIsAuthenticated(false); // Update isAuthenticated if no user data is found
+>>>>>>> Stashed changes
         }
       })
-      .catch(error => console.error("Error fetching session:", error));
-  }, []); // Empty dependency array to run only once
+      .catch(error => {
+        console.error("Error fetching session:", error);
+        setIsAuthenticated(false); // Update isAuthenticated if an error occurs
+      });
+  }, [isAuthenticated]); // Run the effect whenever isAuthenticated changes
+  
 
+  function handleLogout(event: any) {
+    event.preventDefault();
+    const url = 'http://localhost:8282/api/auth/logout';
 
+    fetch(url, {
+       method: "POST",
+       credentials: 'include',
+       headers: {
+          "Content-Type": "application/x-www-form-urlencoded", // Use form-urlencoded content type
+       },
+    })
+    .then(response => {
+       if (response.ok) {
+          // Clear any user-related data stored locally (e.g., localStorage)
+          localStorage.removeItem('accessToken');
+          sessionStorage.clear();  // Clear all session storage
+          // Redirect the user to the login page or any other appropriate page
+          navigate('/login');
+       } else {
+          // Handle error cases
+          console.error('Logout failed');
+       }
+    })
+    .catch(error => {
+       console.error('Error:', error);
+    });
+ }
 
+  
+/*
+  function handleLogout(event: any) {
+     event.preventDefault();
+     const url = 'http://localhost:8282/logout';
 
+     fetch(url, {
+        method: "POST",
+        credentials: 'include',
+        headers: {
+           "Content-Type": "application/x-www-form-urlencoded",
+        },
+     })
+     .then(response => {
+        if (response.ok) {
+           localStorage.removeItem('accessToken');
+           // Redirect to logout page after logout
+         
+        } else {
+           console.error('Logout failed');
+        }
+     })
+     .catch(error => {
+        console.error('Error:', error);
+     });
+  }
 
-
-
+*/
 
 
   const onClick = (): void => setExpanded(prvExpanded => !prvExpanded);
@@ -87,7 +148,7 @@ const Navbar = (): React.ReactElement => {
       <Menu key="one" items={testMenuItems} isOpen={isOpen[0]} id="testDropDownOne" />
     </>,
 
-<Link to="/logout" key="personal" className="usa-nav__link">
+<Link to="/login" key="personal" className="usa-nav__link">
 <span>TEST LINK!! </span>
 </Link>,
 
@@ -103,9 +164,9 @@ const Navbar = (): React.ReactElement => {
       <Link to="/my-account" className="usa-nav__link">
         <span>Welcome, {username}</span>
       </Link>
-      <Link to="/log-out" className="usa-nav__link">
-        <span>Logout</span>
-      </Link>
+      <Link onClick={handleLogout} className="usa-nav__link" to={""}>
+        Log out
+    </Link>
     </>
 
   ].filter(Boolean);

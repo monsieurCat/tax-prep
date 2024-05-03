@@ -5,6 +5,11 @@ import { Address, Button, ButtonGroup, Card, CardBody, CardFooter, CardHeader, C
 const LoginHome: React.FC = () => {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [navDropdownOpen, setNavDropdownOpen] = useState([false, false]);
+  const [username, setUsername] = useState('');
+
+
+
+
   const handleToggleNavDropdown = (index: number): void => {
     setNavDropdownOpen(prevNavDropdownOpen => {
       const newOpenState = Array(prevNavDropdownOpen.length).fill(false);
@@ -75,7 +80,7 @@ const LoginHome: React.FC = () => {
          
            
               <h1 className="usa-hero__heading">
-                <span className="usa-hero__heading--alt">Welcome Back, Alice!</span>
+                <span className="usa-hero__heading--alt">Welcome Back, {username}!</span>
             
               </h1>
              
