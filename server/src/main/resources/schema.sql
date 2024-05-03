@@ -7,15 +7,17 @@ DROP TABLE IF EXISTS user_address CASCADE;
 DROP TABLE IF EXISTS tax_info CASCADE;
 DROP TABLE IF EXISTS users CASCADE;
 
-CREATE TABLE standardized_deduction (
-  id SERIAL PRIMARY KEY,
-  filing_status_id INT NOT NULL,
-  deduction_amount INT NOT NULL
-);
 
 CREATE TABLE filing_status (
   id SERIAL PRIMARY KEY,
   status VARCHAR(50) NOT NULL UNIQUE
+);
+
+CREATE TABLE standardized_deduction (
+  id SERIAL PRIMARY KEY,
+  filing_status_id INT NOT NULL,
+  deduction_amount INT NOT NULL,
+  FOREIGN KEY (filing_status_id) REFERENCES filing_status(id)
 );
 
 CREATE TABLE tax_brackets (

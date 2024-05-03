@@ -3,20 +3,15 @@ package com.skillstorm.taxprep.server.models;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AddressTest {
 
   private Address.AddressBuilder addressBuilder;
-  private Set<AppUser> users;
 
   @BeforeEach
   public void setUp() {
     addressBuilder = new Address.AddressBuilder();
-    users = new HashSet<>();
   }
 
   @Test
