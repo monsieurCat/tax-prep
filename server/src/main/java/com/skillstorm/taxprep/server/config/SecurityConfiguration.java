@@ -76,9 +76,10 @@ public class SecurityConfiguration {
     http.authorizeHttpRequests(authorizeHttpRequests -> {
       authorizeHttpRequests
         .requestMatchers("/api/auth/**").permitAll()
-        .requestMatchers("/login", "/personal-form").permitAll()
+        .requestMatchers("/login").permitAll()
         .requestMatchers("/privateData").authenticated()
-        .anyRequest().authenticated();
+        .requestMatchers("/user/**").authenticated()
+        .anyRequest().permitAll();
     })
     .addFilterBefore(corsFilter(), SessionManagementFilter.class)
     .cors(cors -> cors.configurationSource(corsConfigurationSource()))
@@ -97,9 +98,9 @@ public class SecurityConfiguration {
     .logout(logout -> logout
       .invalidateHttpSession(true)
       .clearAuthentication(true)
-      .deleteCookies("JSESSIONID")  // Instruct the client to delete the session cookie
-      .logoutRequestMatcher(new AntPathRequestMatcher("/api/auth/logout"))
-      .logoutSuccessUrl("/api/auth/login?logout"));
+      .deleteCookies("JSESSIONID"));  // Instruct the client to delete the session cookie
+      //.logoutRequestMatcher(new AntPathRequestMatcher("/api/auth/logout"))
+      //.logoutSuccessUrl("/api/auth/login?logout"));
       
     
     return http.build();
