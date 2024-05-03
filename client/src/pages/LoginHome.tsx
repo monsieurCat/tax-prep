@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import circle from '../assets/circle.png';
-import logoImg from '../assets/circle.png';
-import { Address, Button, ExtendedNav, Footer, FooterNav, GovBanner, Grid, GridContainer, Header, Logo, MediaBlockBody, Menu, NavDropDownButton, NavMenuButton, Search, SocialLink, SocialLinks, Title } from '@trussworks/react-uswds';
+import logoImg from '../assets/logoImg.png';
+import { Address, Button, ButtonGroup, Card, CardBody, CardFooter, CardHeader, CardMedia, ExtendedNav, Footer, FooterNav, GovBanner, Grid, GridContainer, Header, Link, Logo, MediaBlockBody, Menu, NavDropDownButton, NavMenuButton, Search, SocialLink, SocialLinks, Title } from '@trussworks/react-uswds';
 
-const LandingPage: React.FC = () => {
+const LoginHome: React.FC = () => {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [navDropdownOpen, setNavDropdownOpen] = useState([false, false]);
   const handleToggleNavDropdown = (index: number): void => {
@@ -66,36 +65,32 @@ const LandingPage: React.FC = () => {
   
    
   
-      
-<main id="main-content">
-      <div className="bg-warning-light" style={{ padding: '6rem',  marginTop: '2rem'}}>
+      <main id="main-content">
+      <div className="bg-warning-light" style={{ padding: '8rem',  marginTop: '2rem'}}>
         <section id="test-section-id" className="usa-graphic-list usa-section bg-warning-light">
           <GridContainer  >
             <Grid row>
             <Grid col={12} style={{ marginLeft: 'auto', marginRight: 'auto' }}>
-
-            <img src={circle} alt="Logo" style={{ display: 'block', margin: '0 auto', maxWidth: '200px' }} />
+          <div className="usa-hero__heading bg-accent-warm" style={{ padding: '3rem', width: '80%' }}>
          
-
-            <h1 className="font-sans text-black text-center margin-top-0 tablet:margin-bottom-1" style={{ fontSize: '6rem' }}>
-                Welcome!
+           
+              <h1 className="usa-hero__heading">
+                <span className="usa-hero__heading--alt">Welcome Back, Alice!</span>
+            
               </h1>
-              <h2 className="font-sans text-black text-center margin-top-0" style={{ fontSize: '4rem' , color: '#4B4B4B'}}>
-                Let's storm these taxes.
-              </h2>
              
            
               <Grid row>
       <Grid col={4}>
-        <Button type="button" size = "big" onClick={() => window.location.href = '/personal-form'}>Get started</Button>
+        <Button type="button" size = "big" onClick={() => window.location.href = '/personal-form'}>Start Filing</Button>
       </Grid>
 
       <Grid col={4}>
-        <Button type="button" size = "big" onClick={() => window.location.href = '/login'}>Sign In</Button>
+        <Button type="button" size = "big" onClick={() => window.location.href = '/review'}>My Taxes</Button>
       </Grid>
 
       <Grid col={4}>
-        <Button type="button"  onClick={() => window.location.href = '/create-account'}>Create Account</Button>
+        <Button type="button"  onClick={() => window.location.href = '/my-account'}>My Account</Button>
       </Grid>
     </Grid>
       
@@ -103,7 +98,7 @@ const LandingPage: React.FC = () => {
 
 
    
-            
+            </div>
             </Grid>
             </Grid>
       
@@ -112,6 +107,34 @@ const LandingPage: React.FC = () => {
         </section>
        </div>
         <section className="grid-container usa-section">
+
+
+        <Card layout="flagMediaRight" gridLayout={{
+    tablet: {
+      col: 12
+    }
+  }} containerProps={{
+    className: 'border-primary-vivid'
+  }}>
+      <CardHeader>
+        <h3 className="usa-card__heading">My friend’s friend</h3>
+      </CardHeader>
+      <CardMedia className="flex-align-center" imageClass="circle-card margin-x-auto">
+        <img src={logoImg} alt="" />
+      </CardMedia>
+      <CardBody>
+        <p>
+          He roused up and gave me good-day. I told him a friend of mine had
+          commissioned me to make some inquiries about a cherished companion of
+          his boyhood named Leonidas W. Smiley.
+        </p>
+      </CardBody>
+      <CardFooter>
+        <Link href={'#'} variant="unstyled" allowSpacebarActivation className="usa-button usa-button--outline">
+          Give me good-day
+        </Link>
+      </CardFooter>
+    </Card>
           <Grid row gap>
             <Grid tablet={{
             col: 4
@@ -229,4 +252,4 @@ const LandingPage: React.FC = () => {
     </>;
 }
 
-export default LandingPage;
+export default LoginHome;

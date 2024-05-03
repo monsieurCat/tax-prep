@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import circle from '../assets/circle.png';
-import logoImg from '../assets/circle.png';
+import logoImg from '../assets/logoImg.png';
 import { Address, Button, ExtendedNav, Footer, FooterNav, GovBanner, Grid, GridContainer, Header, Logo, MediaBlockBody, Menu, NavDropDownButton, NavMenuButton, Search, SocialLink, SocialLinks, Title } from '@trussworks/react-uswds';
 
-const LandingPage: React.FC = () => {
+const MyAccount: React.FC = () => {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [navDropdownOpen, setNavDropdownOpen] = useState([false, false]);
   const handleToggleNavDropdown = (index: number): void => {
@@ -66,19 +65,18 @@ const LandingPage: React.FC = () => {
   
    
   
-      
-<main id="main-content">
+      <main id="main-content">
       <div className="bg-warning-light" style={{ padding: '6rem',  marginTop: '2rem'}}>
         <section id="test-section-id" className="usa-graphic-list usa-section bg-warning-light">
           <GridContainer  >
             <Grid row>
             <Grid col={12} style={{ marginLeft: 'auto', marginRight: 'auto' }}>
 
-            <img src={circle} alt="Logo" style={{ display: 'block', margin: '0 auto', maxWidth: '200px' }} />
+           
          
 
             <h1 className="font-sans text-black text-center margin-top-0 tablet:margin-bottom-1" style={{ fontSize: '6rem' }}>
-                Welcome!
+                My Account
               </h1>
               <h2 className="font-sans text-black text-center margin-top-0" style={{ fontSize: '4rem' , color: '#4B4B4B'}}>
                 Let's storm these taxes.
@@ -111,6 +109,7 @@ const LandingPage: React.FC = () => {
           </GridContainer>
         </section>
        </div>
+
         <section className="grid-container usa-section">
           <Grid row gap>
             <Grid tablet={{
@@ -229,4 +228,4 @@ const LandingPage: React.FC = () => {
     </>;
 }
 
-export default LandingPage;
+export default MyAccount;

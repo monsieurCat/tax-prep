@@ -2,11 +2,11 @@ import React from 'react';
 import logoImg from '../assets/logoImg.png';
 import { Link } from "react-router-dom";
 import { Button, ButtonGroup, Fieldset, Footer, Form, GovBanner, Grid, GridContainer, Header, Identifier, IdentifierGov, IdentifierIdentity, IdentifierLink, IdentifierLinkItem, IdentifierLinks, IdentifierLogo, IdentifierLogos, IdentifierMasthead, Label, TextInput, Title } from '@trussworks/react-uswds';
-const Login = (): React.ReactElement => {
+const Logout = (): React.ReactElement => {
    const [showPassword, setShowPassword] = React.useState(false);
    const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
 
-
+   
    function handleLogin(event: any) {
       event.preventDefault();
       const url = 'http://localhost:8282/login';
@@ -41,7 +41,7 @@ const Login = (): React.ReactElement => {
 
 
       <main id="main-content">
-         <div className="bg-warning-light" style={{ padding: '3rem',  marginTop: '2rem'}}>
+         <div className="bg-warning-lighter">
             <GridContainer className="usa-section  ">
                <Grid row={true} className="flex-justify-center">
                   <Grid col={12} tablet={{
@@ -130,4 +130,4 @@ const Login = (): React.ReactElement => {
    </>;
 }
 
-export default Login;
+export default Logout;
