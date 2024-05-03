@@ -79,7 +79,11 @@ public class SecurityConfiguration {
         .requestMatchers("/login").permitAll()
         .requestMatchers("/privateData").authenticated()
         .requestMatchers("/user/**").authenticated()
+<<<<<<< Updated upstream
         .anyRequest().permitAll();
+=======
+        .anyRequest().authenticated();
+>>>>>>> Stashed changes
     })
     .addFilterBefore(corsFilter(), SessionManagementFilter.class)
     .cors(cors -> cors.configurationSource(corsConfigurationSource()))
@@ -99,8 +103,13 @@ public class SecurityConfiguration {
       .invalidateHttpSession(true)
       .clearAuthentication(true)
       .deleteCookies("JSESSIONID"));  // Instruct the client to delete the session cookie
+<<<<<<< Updated upstream
       //.logoutRequestMatcher(new AntPathRequestMatcher("/api/auth/logout"))
       //.logoutSuccessUrl("/api/auth/login?logout"));
+=======
+     // .logoutRequestMatcher(new AntPathRequestMatcher("/api/auth/logout"))
+     // .logoutSuccessUrl("/api/auth/login?logout"));
+>>>>>>> Stashed changes
       
     
     return http.build();

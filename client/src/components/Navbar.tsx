@@ -5,35 +5,73 @@ import './Navbar.css';
 import { Link, useNavigate} from 'react-router-dom';
 import '@trussworks/react-uswds/lib/index.css';
 import '@trussworks/react-uswds/lib/uswds.css';
+import { useSelector, useDispatch } from 'react-redux';
+import { login, logout , setUsername} from '../redux/slices/authSlice'; 
+import { RootState } from '../redux/storeTypes';
 
 const Navbar = (): React.ReactElement => {
 
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [username, setUsername] = useState('');
+ // const [isAuthenticated, setIsAuthenticated] = useState(false);
+  //const [username, setUsername] = useState('');
   const [expanded, setExpanded] = useState(false);
   const [isOpen, setIsOpen] = useState([false, false]);
   const navigate = useNavigate();
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+  const dispatch = useDispatch();
+  const username = useSelector((state: RootState) => state.auth.username);
+
+
+
   
+  const checkUserSession = () => {
+    fetch('http://localhost:8282/user/home', {
+        method: 'GET',
+        credentials: 'include',
+    })
+    //.then(response => response.json())
+    .then(response => {
+      console.log(response);
+     return response.json()})
+    
+    .then(data => {
+      if (data.username) {
+        dispatch(login({ username: data.username }));  // Pass username to login action
+        dispatch(setUsername(data.username as string));  // Set username in the state
+    } else {
+        dispatch(logout());  // Logout if no username found
+    }
+})
+ .catch(error => {
+     console.error("Error fetching session:", error);
+     dispatch(logout());
+ });
+};
 
-
+useEffect(() => {
+ checkUserSession();
+}, [dispatch]); 
  
 
+
+
+/*
   useEffect(() => {
     // Fetch user session data from the backend
-    fetch('http://localhost:8282/api/auth/privateData', {
+    fetch('http://localhost:8282/user/home', {
       method: 'GET',
       credentials: 'include', // To send cookies/session info
     })
-      .then(response => response.text())
+      .then(response => {
+        console.log(response);
+       return response.json()})
       .then(data => {
-        if (data) {
+        if (data.username) {
           setIsAuthenticated(true);
-          setUsername(data);
-<<<<<<< Updated upstream
-=======
+          setUsername(data.username);
+          console.log(data.username);
         } else {
           setIsAuthenticated(false); // Update isAuthenticated if no user data is found
->>>>>>> Stashed changes
+          
         }
       })
       .catch(error => {
@@ -41,11 +79,11 @@ const Navbar = (): React.ReactElement => {
         setIsAuthenticated(false); // Update isAuthenticated if an error occurs
       });
   }, [isAuthenticated]); // Run the effect whenever isAuthenticated changes
-  
+  */
 
   function handleLogout(event: any) {
     event.preventDefault();
-    const url = 'http://localhost:8282/api/auth/logout';
+    const url = 'http://localhost:8282/logout';
 
     fetch(url, {
        method: "POST",
@@ -56,6 +94,8 @@ const Navbar = (): React.ReactElement => {
     })
     .then(response => {
        if (response.ok) {
+        dispatch(logout());
+        console.log('ok');
           // Clear any user-related data stored locally (e.g., localStorage)
           localStorage.removeItem('accessToken');
           sessionStorage.clear();  // Clear all session storage
@@ -156,7 +196,20 @@ const Navbar = (): React.ReactElement => {
       <span>File Taxes</span>
     </Link>,
 
-    !isAuthenticated && <Link to="/login" key="login" className="usa-nav__link">
+...(isAuthenticated ? [
+    <Link to="/my-account" key="my-account" className="usa-nav__link">
+      <span>Welcome, {username}</span>
+    </Link>,
+    <Button type="button" onClick={handleLogout} className="usa-nav__link" key="logout">
+      Log out
+    </Button>
+  ] : [
+    <Link to="/login" key="login" className="usa-nav__link">
+      <span>Sign In</span>
+    </Link>
+  ]),
+];
+    {/*!isAuthenticated && <Link to="/login" key="login" className="usa-nav__link">
       <span>Sign In</span>
     </Link>,
 
@@ -169,8 +222,8 @@ const Navbar = (): React.ReactElement => {
     </Link>
     </>
 
-  ].filter(Boolean);
-  //removes null values
+  ].filter(Boolean);*/}
+  
 
   /*
   const primaryPages = [

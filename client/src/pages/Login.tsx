@@ -1,6 +1,8 @@
 import React from 'react';
 import logoImg from '../assets/logoImg.png';
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import { login } from '../redux/slices/authSlice'; 
 import { Alert, Button, ButtonGroup, Fieldset, Footer, Form, GovBanner, Grid, GridContainer, Header, Identifier, IdentifierGov, IdentifierIdentity, IdentifierLink, IdentifierLinkItem, IdentifierLinks, IdentifierLogo, IdentifierLogos, IdentifierMasthead, Label, TextInput, Title } from '@trussworks/react-uswds';
 const Login = (): React.ReactElement => {
    const [showPassword, setShowPassword] = React.useState(false);
@@ -9,6 +11,8 @@ const Login = (): React.ReactElement => {
    const location = useLocation(); // Use the useLocation hook
    const [logoutMessage, setLogoutMessage] = React.useState('');
    const [logoutError, setLogoutError] = React.useState('');
+   const navigate = useNavigate();
+   const dispatch = useDispatch();
 
    function handleLogin(event: any) {
       event.preventDefault();
@@ -26,24 +30,21 @@ const Login = (): React.ReactElement => {
          },
          body: formData.toString(), // Convert form data to string
       })
-         .then((response) => {
-            // Handle the response here
-
-            if (response.ok) {
-               // Update authentication state if login is successful
-               setIsAuthenticated(true);
-               // Redirect or perform other actions as needed
-            } else {
-               setErrorMessage('Failed to log in. Please check your credentials and try again.');
-            
-            }
-            console.log("Raw response:", response);
-
-         })
+      .then(response => response.json())  // Assuming the server responds with JSON
+      .then(data => {
+          if (data.username) {
+              // If the login is successful and the username is provided
+              dispatch(login({ username: data.username }));
+              navigate('/login-home');  // Redirect on successful login
+          } else {
+              // If login failed but the server responded
+              setErrorMessage('Failed to log in. Please check your credentials and try again.');
+          }
+      })
          .catch((error) => console.error("Error:", error));
          setErrorMessage('An error occurred during login. Please try again later.');
    }
-
+   console.log("Authenticated:", isAuthenticated);
    function handlePrivateData(event: any) {
       event.preventDefault();
       window.location.href = '/private-data';
@@ -102,21 +103,15 @@ const Login = (): React.ReactElement => {
                                  {showPassword ? 'Hide password' : 'Show password'}
                               </button>
 
+                              <Button type="submit" >Submit</Button>
 
 
-
-                              <ButtonGroup type="default">
-
-                                 <Link to="/login-home" className="usa-button ">Sign In </Link>
-
-
-                              </ButtonGroup>
 
                               <Button type="button" onClick={handlePrivateData}>See Private Data</Button>
 
 
 
-                              {errorMessage && <p className="error-message">{errorMessage}</p>}
+                            
 
                               <p>
                                  <Link to="/create-account">forgot password? </Link>
