@@ -20,17 +20,9 @@ public class UserService implements UserDetailsService {
   @Autowired
   UserRepository userRepository;
 
-  /**
-   * search through the db for a user with username, or throw an exception if it can't find it
-   * 
-   * spring security will use this method to find users
-   */
-
   @Override
-  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    UserDetails user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username + " not found."));
-
-
+  public AppUser loadUserByUsername(String username) throws UsernameNotFoundException {
+    AppUser user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username + " not found."));
 
     return user;
   }
@@ -62,6 +54,10 @@ public class UserService implements UserDetailsService {
 
     // finally save to db
     userRepository.save(user);
+  }
+
+  public void deleteUser(AppUser user) {
+    userRepository.delete(user);
   }
 
   @PreAuthorize("hasAuthority('ROLE_ADMIN')")     // security advice - works like @Before 

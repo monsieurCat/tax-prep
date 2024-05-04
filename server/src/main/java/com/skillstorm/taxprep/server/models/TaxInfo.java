@@ -29,6 +29,9 @@ public class TaxInfo {
   @JoinColumn(name = "filing_status_id")
   private FilingStatus filingStatus;
 
+  @Column(name = "num_dependents")
+  private int numDependents;
+
   @Column(name = "mortgage_interest")
   private BigDecimal mortgageInterest;
 
@@ -51,6 +54,7 @@ public class TaxInfo {
     this.id = builder.taxInfo.id;
     this.user = builder.taxInfo.user;
     this.filingStatus = builder.taxInfo.filingStatus;
+    this.numDependents = builder.taxInfo.numDependents;
     this.mortgageInterest = builder.taxInfo.mortgageInterest;
     this.donations = builder.taxInfo.donations;
     this.propertyTax = builder.taxInfo.propertyTax;
@@ -77,6 +81,11 @@ public class TaxInfo {
 
     public TaxInfoBuilder filingStatus(FilingStatus filingStatus) {
       this.taxInfo.filingStatus = filingStatus;
+      return this;
+    }
+
+    public TaxInfoBuilder numDependents(int numDependents) {
+      this.taxInfo.numDependents = numDependents;
       return this;
     }
 
@@ -134,6 +143,14 @@ public class TaxInfo {
     this.filingStatus = filingStatus;
   }
 
+  public int getNumDependents() {
+    return numDependents;
+  }
+
+  public void setNumDependents(int numDependents) {
+    this.numDependents = numDependents;
+  }
+
   public BigDecimal getMortgageInterest() {
     return mortgageInterest;
   }
@@ -181,6 +198,7 @@ public class TaxInfo {
     result = prime * result + id;
     result = prime * result + ((user == null) ? 0 : user.hashCode());
     result = prime * result + ((filingStatus == null) ? 0 : filingStatus.hashCode());
+    result = prime * result + numDependents;
     result = prime * result + ((mortgageInterest == null) ? 0 : mortgageInterest.hashCode());
     result = prime * result + ((donations == null) ? 0 : donations.hashCode());
     result = prime * result + ((propertyTax == null) ? 0 : propertyTax.hashCode());
@@ -209,6 +227,8 @@ public class TaxInfo {
       if (other.filingStatus != null)
         return false;
     } else if (!filingStatus.equals(other.filingStatus))
+      return false;
+    if (numDependents != other.numDependents)
       return false;
     if (mortgageInterest == null) {
       if (other.mortgageInterest != null)
@@ -240,8 +260,8 @@ public class TaxInfo {
 
   @Override
   public String toString() {
-    return "TaxInfo [id=" + id + ", user=" + user + ", filingStatus=" + filingStatus + ", mortgageInterest="
-        + mortgageInterest + ", donations=" + donations + ", propertyTax=" + propertyTax + ", medical=" + medical
-        + ", studentLoanInterest=" + studentLoanInterest + "]";
+    return "TaxInfo [id=" + id + ", user=" + user + ", filingStatus=" + filingStatus + ", numDependents="
+        + numDependents + ", mortgageInterest=" + mortgageInterest + ", donations=" + donations + ", propertyTax="
+        + propertyTax + ", medical=" + medical + ", studentLoanInterest=" + studentLoanInterest + "]";
   }
 }

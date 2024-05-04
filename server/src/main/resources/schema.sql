@@ -55,7 +55,8 @@ CREATE TABLE user_address (
 CREATE TABLE tax_info (
   id SERIAL PRIMARY KEY,
   user_id INT NOT NULL,
-  filing_status_id INT NOT NULL,
+  filing_status_id INT,
+  num_dependents INT,
   mortgage_interest DECIMAL(20, 2) DEFAULT 0,
   donations DECIMAL(20, 2) DEFAULT 0,
   property_tax DECIMAL(20, 2) DEFAULT 0,

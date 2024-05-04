@@ -78,8 +78,7 @@ public class SecurityConfiguration {
         .requestMatchers("/api/auth/**").permitAll()
         .requestMatchers("/login").permitAll()
         .requestMatchers("/privateData").authenticated()
-        .requestMatchers("/user/**").authenticated()
-        //.anyRequest().permitAll();
+        .requestMatchers("/user/**").hasRole("USER")
         .anyRequest().authenticated();
     })
     .addFilterBefore(corsFilter(), SessionManagementFilter.class)
