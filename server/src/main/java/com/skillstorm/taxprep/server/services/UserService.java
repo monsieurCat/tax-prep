@@ -4,10 +4,8 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.skillstorm.taxprep.server.exceptions.UsernameAlreadyExistsException;
@@ -27,6 +25,16 @@ public class UserService implements UserDetailsService {
     return user;
   }
 
+  public int findUserIdByUsername(String username) {
+    Optional<Integer> userId = userRepository.findUserIdByUsername(username);
+
+    if (userId.isPresent()) {
+      return userId.get();
+    } else {
+      throw new UsernameNotFoundException(username + " not found.");
+    }
+  }
+
   public AppUser register(AppUser user) {
     Optional<AppUser> foundUser = userRepository.findByUsername(user.getUsername());
     if (foundUser.isPresent()) {
@@ -42,10 +50,8 @@ public class UserService implements UserDetailsService {
 
     // first we need to check if the username is taken
     Optional<AppUser> foundUser = userRepository.findByUsername(user.getUsername());
+    
     if(foundUser.isPresent()) {
-        
-        // [insert some logic to tell fronted that the username already exists]
-
         throw new RuntimeException("User with that username already exists.");
     }
 

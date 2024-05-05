@@ -79,6 +79,7 @@ public class SecurityConfiguration {
         .requestMatchers("/login").permitAll()
         .requestMatchers("/privateData").authenticated()
         .requestMatchers("/user/**").hasRole("USER")
+        .requestMatchers("/tax_info/**").hasRole("USER")
         .anyRequest().authenticated();
     })
     .addFilterBefore(corsFilter(), SessionManagementFilter.class)

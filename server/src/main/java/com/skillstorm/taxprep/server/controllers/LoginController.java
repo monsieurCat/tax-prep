@@ -22,9 +22,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.skillstorm.taxprep.server.dtos.AppUserDTO;
 import com.skillstorm.taxprep.server.exceptions.UsernameAlreadyExistsException;
+import com.skillstorm.taxprep.server.models.Address;
 import com.skillstorm.taxprep.server.models.AppUser;
+import com.skillstorm.taxprep.server.models.Income1099;
+import com.skillstorm.taxprep.server.models.IncomeW2;
+import com.skillstorm.taxprep.server.models.TaxInfo;
+import com.skillstorm.taxprep.server.services.AddressService;
+import com.skillstorm.taxprep.server.services.Income1099Service;
+import com.skillstorm.taxprep.server.services.IncomeW2Service;
+import com.skillstorm.taxprep.server.services.TaxInfoService;
 import com.skillstorm.taxprep.server.services.UserService;
+import com.skillstorm.taxprep.server.utilities.mappers.AppUserMapper;
 
 
 @RestController
@@ -36,6 +47,19 @@ public class LoginController {
   
   @Autowired
   private UserService userService;
+
+  @Autowired
+  private AddressService addressService;
+
+  @Autowired
+  private TaxInfoService taxInfoService;
+
+  @Autowired
+  private IncomeW2Service incomeW2Service;
+
+  @Autowired
+  private Income1099Service income1099Service;
+
   @Autowired
   private PasswordEncoder passwordEncoder;
 
@@ -81,7 +105,24 @@ public class LoginController {
     try {
       user.setPassword(passwordEncoder.encode(user.getPassword()));
       AppUser registeredUser = userService.register(user);
-      return new ResponseEntity<AppUser>(registeredUser, HttpStatus.OK);
+
+      // Initialize an empty address record for the new user
+      Address address = new Address.AddressBuilder().userId(registeredUser.getId()).build();
+      address = addressService.saveAddress(address);
+
+      // Initialize an empty tax info record for the new user
+      TaxInfo taxInfo = new TaxInfo.TaxInfoBuilder().user(registeredUser).build();
+      taxInfo = taxInfoService.saveTaxInfo(taxInfo);
+
+      // Initialize an empty W2 income record for the new user
+      IncomeW2 incomeW2 = new IncomeW2.Builder().taxInfoId(taxInfo.getId()).build();
+      incomeW2 = incomeW2Service.saveOrUpdateIncome(incomeW2);
+
+      // Initialize an empty 1099 income record the the new user
+      Income1099 income1099 = new Income1099.Builder().taxInfoId(taxInfo.getId()).build();
+      income1099 = income1099Service.saveOrUpdateIncome(income1099);
+
+      return new ResponseEntity<AppUserDTO>(AppUserMapper.mapToDTO(registeredUser), HttpStatus.OK);
     } catch (UsernameAlreadyExistsException e) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.singletonMap("message", e.getMessage()));
     }

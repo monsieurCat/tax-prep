@@ -3,6 +3,7 @@ package com.skillstorm.taxprep.server.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.skillstorm.taxprep.server.exceptions.NotFoundException;
 import com.skillstorm.taxprep.server.models.Income1099;
 import com.skillstorm.taxprep.server.repositories.Income1099Repository;
 
@@ -34,9 +35,9 @@ public class Income1099Service {
 
       if (incomes.isPresent()) {
         return incomes.get();
+      } else {
+        throw new NotFoundException("No 1099 incomes found.");
       }
-
-      return null;
     }
 
     public Income1099 saveOrUpdateIncome(Income1099 income) {

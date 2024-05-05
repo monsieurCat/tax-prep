@@ -44,19 +44,19 @@ CREATE TABLE users (
 CREATE TABLE user_address (
     id SERIAL PRIMARY KEY,
     user_id INT NOT NULL,
-    street_1 VARCHAR(100) NOT NULL,
+    street_1 VARCHAR(100),
     street_2 VARCHAR(50) DEFAULT '',
-    city VARCHAR(50) NOT NULL,
-    state VARCHAR(50) NOT NULL,
-    postal_code VARCHAR(20) NOT NULL,
+    city VARCHAR(50),
+    state VARCHAR(50),
+    postal_code VARCHAR(20),
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
 CREATE TABLE tax_info (
   id SERIAL PRIMARY KEY,
   user_id INT NOT NULL,
-  filing_status_id INT,
-  num_dependents INT,
+  filing_status_id INT DEFAULT 1,
+  num_dependents INT DEFAULT 0,
   mortgage_interest DECIMAL(20, 2) DEFAULT 0,
   donations DECIMAL(20, 2) DEFAULT 0,
   property_tax DECIMAL(20, 2) DEFAULT 0,
@@ -73,12 +73,12 @@ CREATE TABLE income_w2 (
   tax_info_id INT NOT NULL,
   income DECIMAL(20, 2) DEFAULT 0,
   withholdings DECIMAL(20, 2) DEFAULT 0,
-  employer_ein VARCHAR(25),
-  employer_street_1 VARCHAR(100),
-  employer_street_2 VARCHAR(50),
-  employer_city VARCHAR(50),
-  employer_state VARCHAR(25),
-  employer_zipcode VARCHAR(25),
+  employer_ein VARCHAR(25) DEFAULT '',
+  employer_street_1 VARCHAR(100) DEFAULT '',
+  employer_street_2 VARCHAR(50) DEFAULT '',
+  employer_city VARCHAR(50) DEFAULT '',
+  employer_state VARCHAR(25) DEFAULT '',
+  employer_zipcode VARCHAR(25) DEFAULT '',
   FOREIGN KEY (tax_info_id) REFERENCES tax_info(id)
 );
 
@@ -87,11 +87,11 @@ CREATE TABLE income_1099 (
   tax_info_id INT NOT NULL,
   income DECIMAL(20, 2) DEFAULT 0,
   withholdings DECIMAL(20, 2) DEFAULT 0,
-  employer_ein VARCHAR(25),
-  employer_street_1 VARCHAR(100),
-  employer_street_2 VARCHAR(50),
-  employer_city VARCHAR(50),
-  employer_state VARCHAR(25),
-  employer_zipcode VARCHAR(25),
+  employer_ein VARCHAR(25) DEFAULT '',
+  employer_street_1 VARCHAR(100) DEFAULT '',
+  employer_street_2 VARCHAR(50) DEFAULT '',
+  employer_city VARCHAR(50) DEFAULT '',
+  employer_state VARCHAR(25) DEFAULT '',
+  employer_zipcode VARCHAR(25) DEFAULT '',
   FOREIGN KEY (tax_info_id) REFERENCES tax_info(id)
 );

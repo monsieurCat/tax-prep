@@ -49,14 +49,3 @@ INSERT INTO tax_brackets (rate, min_income, max_income, filing_status_id) VALUES
 INSERT INTO tax_brackets (rate, min_income, max_income, filing_status_id) VALUES (0.32, 364201, 462500, 5);
 INSERT INTO tax_brackets (rate, min_income, max_income, filing_status_id) VALUES (0.35, 462501, 693750, 5);
 INSERT INTO tax_brackets (rate, min_income, max_income, filing_status_id) VALUES (0.37, 693751, 2147483647, 5);
-
-
-/*
-
-INSERT INTO warehouses (name, description, max_capacity) VALUES ('warehouse1', 'main warehouse', 200);
-INSERT INTO warehouses (name, description, max_capacity) VALUES ('warehouse2', 'secondary warehouse', 100);
-
-INSERT INTO products (name, price, category_id, size) VALUES ('TV', 1200, 1, 'Large');
-INSERT INTO products (name, price, category_id, size) VALUES ('Computer', 800, 1, 'Medium');
-INSERT INTO products (name, price, category_id, size) VALUES ('Sofa', 1200, 2, 'ExtraLarge');
-INSERT INTO products (name, price, category_id, size) VALUES ('The Hobbit', 8, 3, 'Small'); */

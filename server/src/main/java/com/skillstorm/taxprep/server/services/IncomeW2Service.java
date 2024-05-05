@@ -3,6 +3,7 @@ package com.skillstorm.taxprep.server.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.skillstorm.taxprep.server.exceptions.NotFoundException;
 import com.skillstorm.taxprep.server.models.IncomeW2;
 import com.skillstorm.taxprep.server.repositories.IncomeW2Repository;
 
@@ -34,9 +35,9 @@ public class IncomeW2Service {
 
       if (incomes.isPresent()) {
         return incomes.get();
+      } else {
+        throw new NotFoundException("No W2 incomes found.");
       }
-
-      return null;
     }
 
     public IncomeW2 saveOrUpdateIncome(IncomeW2 income) {

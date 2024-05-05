@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 
+import com.skillstorm.taxprep.server.exceptions.NotFoundException;
 import com.skillstorm.taxprep.server.models.Address;
 import com.skillstorm.taxprep.server.repositories.AddressRepository;
 
@@ -34,9 +36,9 @@ public class AddressService {
 
     if (address.isPresent()) {
       return address.get();
+    } else {
+      throw new NotFoundException("No address found");
     }
-
-    return null;
   }
 
   public Address saveAddress(Address address) {

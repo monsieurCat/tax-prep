@@ -47,6 +47,12 @@ public class TaxInfo {
   @Column(name = "student_loan_interest")
   private BigDecimal studentLoanInterest;
 
+  @Column(name = "other_deduction")
+  private BigDecimal otherDeduction;
+
+  @Column(name = "other_income")
+  private BigDecimal otherIncome;
+
   public TaxInfo() {
   }
 
@@ -60,6 +66,8 @@ public class TaxInfo {
     this.propertyTax = builder.taxInfo.propertyTax;
     this.medical = builder.taxInfo.medical;
     this.studentLoanInterest = builder.taxInfo.studentLoanInterest;
+    this.otherDeduction = builder.taxInfo.otherDeduction;
+    this.otherIncome = builder.taxInfo.otherIncome;
   }
 
   public static class TaxInfoBuilder {
@@ -111,6 +119,16 @@ public class TaxInfo {
 
     public TaxInfoBuilder studentLoanInterest(BigDecimal studentLoanInterest) {
       this.taxInfo.studentLoanInterest = studentLoanInterest;
+      return this;
+    }
+
+    public TaxInfoBuilder otherDeduction(BigDecimal otherDeduction) {
+      this.taxInfo.otherDeduction = otherDeduction;
+      return this;
+    }
+
+    public TaxInfoBuilder otherIncome(BigDecimal otherIncome) {
+      this.taxInfo.otherIncome = otherIncome;
       return this;
     }
 
@@ -191,6 +209,22 @@ public class TaxInfo {
     this.studentLoanInterest = studentLoanInterest;
   }
 
+  public BigDecimal getOtherDeduction() {
+    return otherDeduction;
+  }
+
+  public void setOtherDeduction(BigDecimal otherDeduction) {
+    this.otherDeduction = otherDeduction;
+  }
+
+  public BigDecimal getOtherIncome() {
+    return otherIncome;
+  }
+
+  public void setOtherIncome(BigDecimal otherIncome) {
+    this.otherIncome = otherIncome;
+  }
+
   @Override
   public int hashCode() {
     final int prime = 31;
@@ -204,6 +238,8 @@ public class TaxInfo {
     result = prime * result + ((propertyTax == null) ? 0 : propertyTax.hashCode());
     result = prime * result + ((medical == null) ? 0 : medical.hashCode());
     result = prime * result + ((studentLoanInterest == null) ? 0 : studentLoanInterest.hashCode());
+    result = prime * result + ((otherDeduction == null) ? 0 : otherDeduction.hashCode());
+    result = prime * result + ((otherIncome == null) ? 0 : otherIncome.hashCode());
     return result;
   }
 
@@ -255,6 +291,16 @@ public class TaxInfo {
         return false;
     } else if (!studentLoanInterest.equals(other.studentLoanInterest))
       return false;
+    if (otherDeduction == null) {
+      if (other.otherDeduction != null)
+        return false;
+    } else if (!otherDeduction.equals(other.otherDeduction))
+      return false;
+    if (otherIncome == null) {
+      if (other.otherIncome != null)
+        return false;
+    } else if (!otherIncome.equals(other.otherIncome))
+      return false;
     return true;
   }
 
@@ -262,6 +308,7 @@ public class TaxInfo {
   public String toString() {
     return "TaxInfo [id=" + id + ", user=" + user + ", filingStatus=" + filingStatus + ", numDependents="
         + numDependents + ", mortgageInterest=" + mortgageInterest + ", donations=" + donations + ", propertyTax="
-        + propertyTax + ", medical=" + medical + ", studentLoanInterest=" + studentLoanInterest + "]";
+        + propertyTax + ", medical=" + medical + ", studentLoanInterest=" + studentLoanInterest + ", otherDeduction="
+        + otherDeduction + ", otherIncome=" + otherIncome + "]";
   }
 }
