@@ -6,7 +6,7 @@ import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import CreateAccount from './pages/CreateAccount';
-import { PersonalForm } from "./pages/PersonalForm"
+import PersonalForm from "./pages/PersonalForm"
 import LoginFailure from './components/LoginFailure';
 import FilingStatus from './pages/FilingStatus';
 import W2 from './pages/W2';
@@ -16,7 +16,6 @@ import Review from './pages/Review';
 import Breakdown from './pages/Breakdown';
 import PrivateData from './pages/PrivateData';
 import LoginHome from './pages/LoginHome';
-import Logout from './components/Logout';
 import MyAccount from './components/MyAccount';
 
 
@@ -29,7 +28,6 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/logout" element={<Logout />} />
         <Route path="/create-account" element={<CreateAccount />} />
         <Route path="/personal-form" element={<PersonalForm />} />
         <Route path="/private-data" element={<PrivateData />} />

@@ -74,7 +74,7 @@ const LoginHome: React.FC = () => {
    
   
       <main id="main-content">
-      <div className="bg-accent-warm" style={{ padding: '6rem',  marginTop: '2rem'}}>
+      <div className="bg-accent-warm" style={{ padding: '4rem',  marginTop: '2rem'}}>
         <section id="test-section-id" className="usa-graphic-list usa-section">
           <GridContainer  >
             <Grid row>
@@ -82,10 +82,10 @@ const LoginHome: React.FC = () => {
          
          
            
-            <h1 className="font-sans text-white text-center margin-top-0 tablet:margin-bottom-1" style={{ fontSize: '6rem' }}>
+            <h1 className="font-sans text-white text-center margin-top-0 tablet:margin-bottom-1" style={{ fontSize: '5rem' }}>
                 Welcome back, {username}!
               </h1>
-              <h2 className="font-sans text-black text-center margin-top-0" style={{ fontSize: '4rem' , color: '#4B4B4B'}}>
+              <h2 className="font-sans text-black text-center margin-top-0" style={{ fontSize: '3.5rem' , color: '#4B4B4B'}}>
                 We're happy to see you.
               </h2>
              

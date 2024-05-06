@@ -1,10 +1,49 @@
-import { Label, TextInput, FormGroup, ErrorMessage, Textarea, Fieldset, Button, Checkbox, Grid, GridContainer, RequiredMarker, Select, DateRangePicker, DatePicker, ButtonGroup, ProcessListHeading, ProcessListItem, StepIndicator, StepIndicatorStep, TextInputMask } from "@trussworks/react-uswds";
-import { Form, Link } from "react-router-dom";
+import { Label, TextInput, FormGroup, ErrorMessage, Textarea, Fieldset, Form, Button, Checkbox, Grid, GridContainer, RequiredMarker, Select, DateRangePicker, DatePicker, ButtonGroup, ProcessListHeading, ProcessListItem, StepIndicator, StepIndicatorStep, TextInputMask } from "@trussworks/react-uswds";
+import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from 'react-redux';
+import { updatePersonalInfo } from '../redux/slices/taxSlice';
+import React from 'react';
+import { RootState } from '../redux/storeTypes';
 
-export const PersonalForm = (): React.ReactElement => (<div style={{
-  marginLeft: '2rem'
-}}>
+const PersonalForm = (): React.ReactElement => {
 
+
+const dispatch = useDispatch();
+    const personalInfo = useSelector((state: RootState) => state.taxInfo.personalInfo); // Accessing Redux state
+
+    const handleChange = (e: { target: { name: any; value: any; }; }) => {
+        const { name, value } = e.target;
+        // Update the Redux state
+        dispatch(updatePersonalInfo({ ...personalInfo, [name]: value }));
+    };
+
+    const handleForm = async (e: { preventDefault: () => void; }) => {
+        e.preventDefault();
+        const url = 'http://localhost:8282/tax_info'; 
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ personalInfo }) // Ensure this matches your backend's expected format
+            });
+            if (response.ok) {
+                const data = await response.json();
+                console.log('Submission successful', data);
+                // Additional actions based on success (e.g., redirect or notification)
+            } else {
+                throw new Error('Failed to submit form');
+            }
+        } catch (error) {
+            console.error('Error submitting form:', error);
+        }
+    };
+
+
+    return (<>
+
+<div style={{ marginLeft: '2rem' }}>
 
   <GridContainer className="usa-section">
 
@@ -39,19 +78,19 @@ export const PersonalForm = (): React.ReactElement => (<div style={{
       <Grid col={4}>
 
 
-
-        {/* <Form onSubmit={mockSubmit}>*/}
+      <Form onSubmit={handleForm}>
+   
         <Fieldset legend="Personal Info" legendStyle="large">
 
 
           <Label htmlFor="first-name">First name</Label>
-          <TextInput id="first-name" name="first-name" type="text" />
+          <TextInput id="first-name" name="first-name" type="text" onChange={handleChange}/>
           <Label htmlFor="middle-name" hint=" ">
             Middle initial
           </Label>
-          <TextInput id="middle-name" name="middle-name" type="text" />
+          <TextInput id="middle-name" name="middle-name" type="text" onChange={handleChange}/>
           <Label htmlFor="last-name">Last name</Label>
-          <TextInput id="last-name" name="last-name" type="text" />
+          <TextInput id="last-name" name="last-name" type="text" onChange={handleChange}/>
 
           <Label htmlFor="birthdate">Date of birth</Label>
           <DatePicker id="birthdate" name="birthdate" />
@@ -62,35 +101,36 @@ export const PersonalForm = (): React.ReactElement => (<div style={{
     <span id="hint-ssn" className="usa-hint">
       For example, 123 45 6789
     </span>
-    <TextInputMask id="input-type-ssn" name="input-type-ssn" type="text" aria-labelledby="first-name" aria-describedby="hint-ssn" mask="___ __ ____" pattern="^(?!(000|666|9))\d{3} (?!00)\d{2} (?!0000)\d{4}$" />
+    <TextInputMask id="input-type-ssn" name="input-type-ssn" type="text" aria-labelledby="first-name" aria-describedby="hint-ssn" mask="___ __ ____" pattern="^(?!(000|666|9))\d{3} (?!00)\d{2} (?!0000)\d{4}$" onChange={handleChange}/>
 
         </Fieldset>
+        </Form>
       </Grid>
 
       <Grid col={1}></Grid>
 
       <Grid col={4}>
-        {/* <Form onSubmit={mockSubmit}>*/}
+        <Form onSubmit={handleForm}>
         <Fieldset legend="" legendStyle="large">
           <p>
             Required fields are marked with an asterisk (<RequiredMarker />
             ).
           </p>
           <Label htmlFor="mailing-address-1">Street address</Label>
-          <TextInput id="mailing-address-1" name="mailing-address-1" type="text" />
+          <TextInput id="mailing-address-1" name="mailing-address-1" type="text" onChange={handleChange}/>
 
           <Label htmlFor="mailing-address-2">Street address line 2</Label>
-          <TextInput id="mailing-address-2" name="mailing-address-2" type="text" />
+          <TextInput id="mailing-address-2" name="mailing-address-2" type="text"onChange={handleChange} />
 
           <Label htmlFor="city" requiredMarker>
             City
           </Label>
-          <TextInput id="city" name="city" type="text" required />
+          <TextInput id="city" name="city" type="text" required onChange={handleChange}/>
 
           <Label htmlFor="state" requiredMarker>
             State, territory, or military post
           </Label>
-          <Select id="state" name="state" required>
+          <Select id="state" name="state" required >
             <option>- Select -</option>
             <option value="AL">Alabama</option>
             <option value="AK">Alaska</option>
@@ -157,10 +197,11 @@ export const PersonalForm = (): React.ReactElement => (<div style={{
     <span id="hint-zip" className="usa-hint">
       For example, 12345-6789
     </span>
-    <TextInputMask id="input-type-zip" name="input-type-zip" type="text" aria-labelledby="zip" aria-describedby="hint-zip" mask="_____-____" pattern="^[0-9]{5}(?:-[0-9]{4})?$" />
+    <TextInputMask id="input-type-zip" name="input-type-zip" type="text" aria-labelledby="zip" aria-describedby="hint-zip" mask="_____-____" pattern="^[0-9]{5}(?:-[0-9]{4})?$" onChange={handleChange}/>
 
 
         </Fieldset>
+        </Form>
 
         <ButtonGroup type="default">
 
@@ -231,7 +272,12 @@ export const PersonalForm = (): React.ReactElement => (<div style={{
     </div>
   </main>
 
-  {/*</Form>*/}
-</div>
 
-);
+</div>
+ </>
+    );
+
+                
+              };
+
+export default PersonalForm;

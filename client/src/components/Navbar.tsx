@@ -24,7 +24,7 @@ const Navbar = (): React.ReactElement => {
 
   
   const checkUserSession = () => {
-    fetch('http://localhost:8282/user/home', {
+    fetch('http://localhost:8282/user/username', {
         method: 'GET',
         credentials: 'include',
     })
