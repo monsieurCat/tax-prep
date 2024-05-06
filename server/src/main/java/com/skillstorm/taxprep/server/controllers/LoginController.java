@@ -8,9 +8,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
@@ -24,6 +27,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.skillstorm.taxprep.server.dtos.AppUserDTO;
+import com.skillstorm.taxprep.server.dtos.ChangePasswordDTO;
+import com.skillstorm.taxprep.server.exceptions.IncorrectPasswordException;
 import com.skillstorm.taxprep.server.exceptions.UsernameAlreadyExistsException;
 import com.skillstorm.taxprep.server.models.Address;
 import com.skillstorm.taxprep.server.models.AppUser;
@@ -39,11 +44,12 @@ import com.skillstorm.taxprep.server.utilities.mappers.AppUserMapper;
 
 
 @RestController
-
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/auth")
 public class LoginController {
 
+  /* @Autowired
+  AuthenticationManager authenticationManager; */
   
   @Autowired
   private UserService userService;
@@ -96,10 +102,7 @@ public class LoginController {
   public String register() {
     return "register";
   }
-  @GetMapping("/privateData")
-  public String privateData() {
-    return "private";
-  }
+
   @PostMapping("/register")
   public ResponseEntity<?> registerUser(@RequestBody AppUser user) {
     try {
@@ -124,6 +127,34 @@ public class LoginController {
 
       return new ResponseEntity<AppUserDTO>(AppUserMapper.mapToDTO(registeredUser), HttpStatus.OK);
     } catch (UsernameAlreadyExistsException e) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.singletonMap("message", e.getMessage()));
+    }
+  }
+
+  @PreAuthorize("hasRole('USER')")
+  @PostMapping("/change_password")
+  public ResponseEntity<?> changePassword(Principal principal, @RequestBody ChangePasswordDTO changePasswordRequest) {
+    try {
+      // Retrieve the username of the currently authenticated user
+      String username = principal.getName();
+
+      // Authenticate the user with their current password
+      /* UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+              username, changePasswordRequest.getCurrentPassword());
+      authenticationManager.authenticate(authToken); */
+
+      String currentPassword = changePasswordRequest.getCurrentPassword();
+      String encodedCurrentPassword = passwordEncoder.encode(currentPassword);
+
+      // If authentication succeeds, update the user's password
+      String newPassword = changePasswordRequest.getNewPassword();
+      String encodedNewPassword = passwordEncoder.encode(newPassword);
+      userService.updateUserPassword(username, encodedCurrentPassword, encodedNewPassword);
+
+      return ResponseEntity.status(HttpStatus.OK).body("Password changed successfully");
+    } catch (UsernameNotFoundException | BadCredentialsException | IncorrectPasswordException e) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.singletonMap("message", e.getMessage()));
+    } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.singletonMap("message", e.getMessage()));
     }
   }

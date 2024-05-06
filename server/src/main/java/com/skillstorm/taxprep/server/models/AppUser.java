@@ -38,6 +38,9 @@ public class AppUser implements UserDetails {
   private String email;
 
   @Column
+  private String ssn;
+
+  @Column
   private String username;
 
   @Column
@@ -90,13 +93,18 @@ public class AppUser implements UserDetails {
     }
 
     public AppUserBuilder password(String password) {
-        user.setPassword(password);
-        return this;
+      user.setPassword(password);
+      return this;
     }
 
     public AppUserBuilder email(String email) {
-        user.setEmail(email);
-        return this;
+      user.setEmail(email);
+      return this;
+    }
+
+    public AppUserBuilder ssn(String ssn) {
+      user.setSsn(ssn);
+      return this;
     }
 
     public AppUserBuilder birthday(LocalDate birthday) {
@@ -197,6 +205,7 @@ public class AppUser implements UserDetails {
     this.password = password;
   }
 
+
   public String getEmail() {
     return email;
   }
@@ -204,6 +213,16 @@ public class AppUser implements UserDetails {
 
   public void setEmail(String email) {
     this.email = email;
+  }
+
+
+  public String getSsn() {
+    return ssn;
+  }
+
+
+  public void setSsn(String ssn) {
+    this.ssn = ssn;
   }
 
 
@@ -236,6 +255,7 @@ public class AppUser implements UserDetails {
     result = prime * result + ((middleName == null) ? 0 : middleName.hashCode());
     result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
     result = prime * result + ((email == null) ? 0 : email.hashCode());
+    result = prime * result + ((ssn == null) ? 0 : ssn.hashCode());
     result = prime * result + ((username == null) ? 0 : username.hashCode());
     result = prime * result + ((password == null) ? 0 : password.hashCode());
     result = prime * result + ((birthday == null) ? 0 : birthday.hashCode());
@@ -274,6 +294,11 @@ public class AppUser implements UserDetails {
         return false;
     } else if (!email.equals(other.email))
       return false;
+    if (ssn == null) {
+      if (other.ssn != null)
+        return false;
+    } else if (!ssn.equals(other.ssn))
+      return false;
     if (username == null) {
       if (other.username != null)
         return false;
@@ -300,7 +325,7 @@ public class AppUser implements UserDetails {
   @Override
   public String toString() {
     return "AppUser [id=" + id + ", firstName=" + firstName + ", middleName=" + middleName + ", lastName=" + lastName
-        + ", email=" + email + ", username=" + username + ", password=" + password + ", birthday=" + birthday
+        + ", email=" + email + ", ssn=" + ssn + ", username=" + username + ", password=" + password + ", birthday=" + birthday
         + ", role=" + role + "]";
   }
 

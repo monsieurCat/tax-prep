@@ -35,6 +35,7 @@ CREATE TABLE users (
   middle_name VARCHAR(50),
   last_name VARCHAR(50),
   email VARCHAR(50) UNIQUE,
+  ssn VARCHAR (25),
   username VARCHAR(50) NOT NULL UNIQUE,
   password VARCHAR(60) NOT NULL,
   user_role VARCHAR(50) NOT NULL,

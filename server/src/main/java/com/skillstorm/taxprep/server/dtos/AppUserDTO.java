@@ -8,6 +8,7 @@ public class AppUserDTO {
   private String middleName;
   private String lastName;
   private String email;
+  private String ssn;
   private String username;
   private LocalDate birthday;
   private String role;
@@ -43,6 +44,14 @@ public class AppUserDTO {
 
   public void setEmail(String email) {
       this.email = email;
+  }
+
+  public String getSsn() {
+    return ssn;
+  }
+
+  public void setSsn(String ssn) {
+    this.ssn = ssn;
   }
 
   public String getUsername() {

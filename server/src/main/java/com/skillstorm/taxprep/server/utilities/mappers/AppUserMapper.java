@@ -15,6 +15,7 @@ public class AppUserMapper {
     dto.setMiddleName(user.getMiddleName());
     dto.setLastName(user.getLastName());
     dto.setEmail(user.getEmail());
+    dto.setSsn(user.getSsn());
     dto.setUsername(user.getUsername());
     dto.setBirthday(user.getBirthday());
     dto.setRole(user.getRole());
@@ -29,6 +30,7 @@ public class AppUserMapper {
       .middleName(dto.getMiddleName())
       .lastName(dto.getLastName())
       .email(dto.getEmail())
+      .ssn(dto.getSsn())
       .username(dto.getUsername())
       .password(password)
       .birthday(dto.getBirthday())
@@ -41,6 +43,7 @@ public class AppUserMapper {
     user.setMiddleName(dto.getMiddleName());
     user.setLastName(dto.getLastName());
     user.setEmail(dto.getEmail());
+    user.setSsn(dto.getSsn());
     user.setUsername(dto.getUsername());
     user.setBirthday(dto.getBirthday());
     user.setRole(dto.getRole());

@@ -77,8 +77,8 @@ public class SecurityConfiguration {
       authorizeHttpRequests
         .requestMatchers("/api/auth/**").permitAll()
         .requestMatchers("/login").permitAll()
-        .requestMatchers("/privateData").authenticated()
         .requestMatchers("/user/**").hasRole("USER")
+        .requestMatchers("/address/**").hasRole("USER")
         .requestMatchers("/tax_info/**").hasRole("USER")
         .anyRequest().authenticated();
     })
