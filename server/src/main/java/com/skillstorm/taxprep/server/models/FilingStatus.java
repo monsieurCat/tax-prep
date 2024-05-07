@@ -19,6 +19,8 @@ public class FilingStatus {
   @Column
   private String status;
 
+  public FilingStatus() { }
+
   public FilingStatus(int id, String status) {
     this.id = id;
     this.status = status;

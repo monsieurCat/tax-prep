@@ -128,6 +128,8 @@ public class LoginController {
       return new ResponseEntity<AppUserDTO>(AppUserMapper.mapToDTO(registeredUser), HttpStatus.OK);
     } catch (UsernameAlreadyExistsException e) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.singletonMap("message", e.getMessage()));
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.singletonMap("message", e.getMessage()));
     }
   }
 

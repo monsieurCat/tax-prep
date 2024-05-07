@@ -125,12 +125,12 @@ public class TaxInfoController {
     }
   }
 
-  @PostMapping()
+  /* @PostMapping()
   public ResponseEntity<?> createTaxInfo(Principal principal, @RequestBody TaxInfo taxInfo) {
     TaxInfo createdTaxInfo = taxInfoService.saveTaxInfo(taxInfo);
 
     return new ResponseEntity<TaxInfo>(createdTaxInfo, HttpStatus.OK);
-  }
+  } */
 
   @PostMapping("/full")
   public ResponseEntity<?> createFullTaxInfo(Principal principal, @RequestBody TaxInfoDTO taxInfoDTO) {
@@ -211,16 +211,15 @@ public class TaxInfoController {
     
   }
 
-  @PutMapping()
+  /* @PutMapping()
   public ResponseEntity<?> updateTaxInfo(@RequestBody TaxInfo taxInfo) {
     TaxInfo updatedTaxInfo = taxInfoService.saveTaxInfo(taxInfo);
 
     return new ResponseEntity<TaxInfo>(updatedTaxInfo, HttpStatus.OK);
-  }
+  } */
 
   @DeleteMapping()
   public void deleteTaxInfo(@RequestBody TaxInfo taxInfo) {
     taxInfoService.deleteTaxInfo(taxInfo);
   }
-
 }

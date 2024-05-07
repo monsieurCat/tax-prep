@@ -59,7 +59,7 @@ public class AddressController {
 
       addressService.saveAddress(address);
 
-      return new ResponseEntity<Address>(address, HttpStatus.OK);
+      return new ResponseEntity<AddressDTO>(AddressMapper.mapToDTO(address), HttpStatus.OK);
     } catch (NotFoundException | UsernameNotFoundException e) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.singletonMap("message", e.getMessage()));
     }
