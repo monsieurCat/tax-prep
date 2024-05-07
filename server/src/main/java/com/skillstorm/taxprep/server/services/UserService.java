@@ -65,10 +65,12 @@ public class UserService implements UserDetailsService {
   public AppUserDTO updateUser(String currentUsername, AppUserDTO user) {
     
     // Check if new username is already taken
-    Optional<AppUser> existingUser = userRepository.findByUsername(user.getUsername());
+    if (currentUsername != user.getUsername()) {
+      Optional<AppUser> existingUser = userRepository.findByUsername(user.getUsername());
 
-    if (existingUser.isPresent()) {
-      throw new UsernameAlreadyExistsException(user.getUsername());
+      if (existingUser.isPresent()) {
+        throw new UsernameAlreadyExistsException(user.getUsername());
+      }
     }
 
     // Get current user to update

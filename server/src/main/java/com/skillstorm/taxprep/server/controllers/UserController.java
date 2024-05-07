@@ -91,6 +91,8 @@ public class UserController {
       }
     } catch (UsernameAlreadyExistsException | UsernameNotFoundException | NotFoundException e) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.singletonMap("message", e.getMessage()));
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.singletonMap("message", e.getMessage()));
     }
   }
 
