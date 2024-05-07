@@ -14,7 +14,6 @@ import Income1099 from './pages/Income1099';
 import Deductions from './pages/Deductions';
 import Review from './pages/Review';
 import Breakdown from './pages/Breakdown';
-import PrivateData from './pages/PrivateData';
 import LoginHome from './pages/LoginHome';
 import MyAccount from './components/MyAccount';
 
@@ -30,7 +29,6 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/create-account" element={<CreateAccount />} />
         <Route path="/personal-form" element={<PersonalForm />} />
-        <Route path="/private-data" element={<PrivateData />} />
         <Route path="/login-failure" element={<LoginFailure />} />
         <Route path="/filing-status" element={<FilingStatus />} />
         <Route path="/w2" element={<W2 />} />

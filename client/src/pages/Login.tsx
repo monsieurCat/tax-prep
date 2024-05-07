@@ -44,11 +44,7 @@ const Login = (): React.ReactElement => {
          .catch((error) => console.error("Error:", error));
          setErrorMessage('An error occurred during login. Please try again later.');
    }
-   console.log("Authenticated:", isAuthenticated);
-   function handlePrivateData(event: any) {
-      event.preventDefault();
-      window.location.href = '/private-data';
-   }
+   
 
 
 
@@ -105,13 +101,6 @@ const Login = (): React.ReactElement => {
 
                               <Button type="submit" >Sign in</Button>
 
-
-
-                            {/*  <Button type="button" onClick={handlePrivateData}>See Private Data</Button>*/}
-
-
-
-                            
 
                               <p>
                                  <Link to="/create-account">Forgot password? </Link>

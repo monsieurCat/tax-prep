@@ -93,7 +93,7 @@ public class SecurityConfiguration {
       //.loginPage("/login")
       //.loginProcessingUrl("/login")
       //.failureUrl("/login?error")
-      //.defaultSuccessUrl("/")
+      .defaultSuccessUrl("/user/info")
       .permitAll())
     //.oauth2Login(withDefaults())
     .logout(logout -> logout

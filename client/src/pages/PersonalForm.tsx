@@ -1,15 +1,30 @@
 import { Label, TextInput, FormGroup, ErrorMessage, Textarea, Fieldset, Form, Button, Checkbox, Grid, GridContainer, RequiredMarker, Select, DateRangePicker, DatePicker, ButtonGroup, ProcessListHeading, ProcessListItem, StepIndicator, StepIndicatorStep, TextInputMask } from "@trussworks/react-uswds";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
-import { updatePersonalInfo } from '../redux/slices/taxSlice';
-import React from 'react';
+import { PersonalInfo, updatePersonalInfo, fetchTaxInfo, updateTaxAddress, submitTaxInfo} from '../redux/slices/taxSlice';
+import React, { useEffect } from 'react';
 import { RootState } from '../redux/storeTypes';
 
 const PersonalForm = (): React.ReactElement => {
 
 
 const dispatch = useDispatch();
-    const personalInfo = useSelector((state: RootState) => state.taxInfo.personalInfo); // Accessing Redux state
+const { personalInfo, address, loading, error } = useSelector((state: RootState) => state.taxInfo);
+
+/*
+useEffect(() => {
+  // Consider dispatching fetchTaxInfo() if necessary here to load initial form data
+  dispatch(fetchTaxInfo());
+}, [dispatch]);
+
+const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  dispatch(updateTaxAddress({ addressData: address }));
+  // You may want to navigate on successful update
+  navigate('/next-page-route');
+};
+
+*/
 
     const handleChange = (e: { target: { name: any; value: any; }; }) => {
         const { name, value } = e.target;
@@ -17,28 +32,10 @@ const dispatch = useDispatch();
         dispatch(updatePersonalInfo({ ...personalInfo, [name]: value }));
     };
 
-    const handleForm = async (e: { preventDefault: () => void; }) => {
-        e.preventDefault();
-        const url = 'http://localhost:8282/tax_info'; 
-        try {
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ personalInfo }) // Ensure this matches your backend's expected format
-            });
-            if (response.ok) {
-                const data = await response.json();
-                console.log('Submission successful', data);
-                // Additional actions based on success (e.g., redirect or notification)
-            } else {
-                throw new Error('Failed to submit form');
-            }
-        } catch (error) {
-            console.error('Error submitting form:', error);
-        }
-    };
+    const handleForm = (event: React.FormEvent) => {
+      event.preventDefault(); // Prevent the default form submission behavior
+      dispatch(updatePersonalInfo(personalInfo));
+  };
 
 
     return (<>

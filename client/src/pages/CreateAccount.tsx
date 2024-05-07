@@ -1,19 +1,33 @@
-import { GovBanner, Header, Title, GridContainer, Grid, Fieldset, Label, TextInput, Checkbox, Button, MediaBlockBody, Footer, Identifier, IdentifierMasthead, IdentifierLogos, IdentifierLogo, IdentifierIdentity, IdentifierLinks, IdentifierLinkItem, IdentifierLink, IdentifierGov } from "@trussworks/react-uswds";
-import React from "react";
-import { Form, Link } from "react-router-dom";
+import { GovBanner, Header, Title, GridContainer, Grid, Fieldset, Form, Label, TextInput, Checkbox, Button, MediaBlockBody, Footer, Identifier, IdentifierMasthead, IdentifierLogos, IdentifierLogo, IdentifierIdentity, IdentifierLinks, IdentifierLinkItem, IdentifierLink, IdentifierGov } from "@trussworks/react-uswds";
+import React, { useState } from 'react';
+import { Link } from "react-router-dom";
+import { TypedUseSelectorHook, useDispatch as reduxUseDispatch} from 'react-redux';
+import { registerUser } from '../redux/slices/authSlice';
+import {  AppDispatch } from "../redux/store";
+import { RootState } from '../redux/storeTypes';
 
 
 
 
 const CreateAccount=(): React.ReactElement => {
+  const [email, setEmail] = useState('');
     const [showPassword, setShowPassword] = React.useState(false);
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const useDispatch = () => reduxUseDispatch<AppDispatch>();
+  const dispatch = useDispatch();
 
-    const mockSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        // Handle form submission logic here
-        
-       
-    };
+
+    
+  const handleRegistration = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (password !== confirmPassword) {
+      alert('Passwords do not match!');
+      return;
+    }
+    dispatch(registerUser({ email, password}));
+   
+  };
 
    
 
@@ -48,7 +62,7 @@ const CreateAccount=(): React.ReactElement => {
   
                   <div className="bg-white padding-y-3 padding-x-5 border border-base-lighter">
                     <h1 className="margin-bottom-0">Create account</h1>
-                  { /* <Form onSubmit={mockSubmit}>*/}
+                   <Form onSubmit={handleRegistration}>
                       <Fieldset legend="Get started with an account.">
                         <p>
                           <abbr title="required" className="usa-hint usa-hint--required">
@@ -89,7 +103,7 @@ const CreateAccount=(): React.ReactElement => {
   
                         <Button type="submit">Create account</Button>
                       </Fieldset>
-                    {/*</Form>*/}
+                    </Form>
                   </div>
   
                   <p className="text-center">
