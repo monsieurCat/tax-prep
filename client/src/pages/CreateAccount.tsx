@@ -1,8 +1,7 @@
 import { GovBanner, Header, Title, GridContainer, Grid, Fieldset, Form, Label, TextInput, Checkbox, Button, MediaBlockBody, Footer, Identifier, IdentifierMasthead, IdentifierLogos, IdentifierLogo, IdentifierIdentity, IdentifierLinks, IdentifierLinkItem, IdentifierLink, IdentifierGov } from "@trussworks/react-uswds";
 import React, { useState } from 'react';
-import { Link } from "react-router-dom";
+import { Link,  useNavigate } from "react-router-dom";
 import { TypedUseSelectorHook, useDispatch as reduxUseDispatch} from 'react-redux';
-import { registerUser } from '../redux/slices/authSlice';
 import {  AppDispatch } from "../redux/store";
 import { RootState } from '../redux/storeTypes';
 
@@ -11,13 +10,54 @@ import { RootState } from '../redux/storeTypes';
 
 const CreateAccount=(): React.ReactElement => {
   const [email, setEmail] = useState('');
+  const [firstName, setFirst] = useState('');
+  const [middleName, setMiddle] = useState('');
+  const [lastName, setlast] = useState('');
+  const [username, setUsername] = useState('');
+  const [ssn, setSsn] = useState('');
+  const [birthday, setBday] = useState('');
+  const [role, setRole] = useState('');
     const [showPassword, setShowPassword] = React.useState(false);
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const useDispatch = () => reduxUseDispatch<AppDispatch>();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
 
 
+  function handleRegistration(event: { preventDefault: () => void; }) {
+    event.preventDefault();
+    const userData = {
+      username,
+      password
+  };
+    fetch("http://localhost:8282/api/auth/register", {
+        method: "POST",
+        credentials: 'include',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(userData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            console.log('Registration successful');
+            navigate('/login'); // Redirect or handle post-registration flow
+        } else {
+            setErrorMessage(data.message || 'Registration failed. Please try again.');
+        }
+    })
+    .catch(error => {
+        console.error("Registration error:", error);
+        setErrorMessage('An error occurred during registration.');
+    });
+}
+
+
+
+/*
     
   const handleRegistration = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -25,11 +65,25 @@ const CreateAccount=(): React.ReactElement => {
       alert('Passwords do not match!');
       return;
     }
-    dispatch(registerUser({ email, password}));
+    const userData = {
+      email, firstName, middleName, lastName, username, ssn, birthday, role, password
+    };
+    console.log('Dispatching registration with data:', { firstName, middleName, lastName, email, username, ssn, birthday, role });
+    dispatch(registerUser({ userData}))
+    .unwrap()
+    .then(() => {
+      console.log('Registration successful, navigating to login-home'); // successful registration
+      navigate('/login-home');
+    })
+    .catch((error) => {
+      console.error('Registration failed:', error); // registration fails
+      alert('Registration failed: ' + error.message);
+    });
    
-  };
+  };*/
 
-   
+    // Event handlers to update state
+ // const handleInputChange = (setter: (arg0: any) => any) => (e: { target: { value: any; }; }) => setter(e.target.value);
 
       const checkboxLabel = (
         <>
@@ -77,7 +131,8 @@ const CreateAccount=(): React.ReactElement => {
                             *
                           </abbr>
                         </Label>
-                        <TextInput id="email" name="email" type="email" autoCapitalize="off" autoCorrect="off" required={true} />
+                        <TextInput id="email" name="email" type="email" autoCapitalize="off" autoCorrect="off" required={true}  value={username}
+    onChange={(e) => setUsername(e.target.value)}/>
   
                         <Label htmlFor="password-create-account">
                           Create password{' '}
@@ -85,7 +140,8 @@ const CreateAccount=(): React.ReactElement => {
                             *
                           </abbr>
                         </Label>
-                        <TextInput id="password-create-account" name="password" type={showPassword ? 'text' : 'password'} autoCapitalize="off" autoCorrect="off" required={true} />
+                        <TextInput id="password-create-account" name="password" type={showPassword ? 'text' : 'password'} autoCapitalize="off" autoCorrect="off" required={true} value={password}
+    onChange={(e) => setPassword(e.target.value)} />
   
                         <button title="Show password" type="button" className="usa-show-password" aria-controls="password-create-account password-create-account-confirm" onClick={(): void => setShowPassword(showPassword => !showPassword)}>
                           {showPassword ? 'Hide password' : 'Show password'}
@@ -97,7 +153,8 @@ const CreateAccount=(): React.ReactElement => {
                             *
                           </abbr>
                         </Label>
-                        <TextInput id="password-create-account-confirm" name="password-confirm" type={showPassword ? 'text' : 'password'} autoCapitalize="off" autoCorrect="off" required={true} />
+                        <TextInput id="password-create-account-confirm" name="password-confirm" type={showPassword ? 'text' : 'password'} autoCapitalize="off" autoCorrect="off" required={true} value={confirmPassword}
+    onChange={(e) => setConfirmPassword(e.target.value)} />
   
                         <Checkbox id="terms-and-conditions" name="terms-and-conditions" className="margin-y-3" required={true} label={checkboxLabel} />
   

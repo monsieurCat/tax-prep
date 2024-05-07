@@ -2,42 +2,50 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 
-
+/*
 // async thunk for registering a new user
 export const registerUser = createAsyncThunk(
   'auth/registerUser',
-  async (userData: { email: string; password: string }, { rejectWithValue }) => {
+  async (userData, { rejectWithValue }) => {
+    /*
+  async (userData: { firstName: string; middleName: string; lastName: string; email: string; username: string; ssn: string; birthday: string; role: string }, { rejectWithValue }) => {
       try {
           const response = await fetch('http://localhost:8282/api/auth/register', {
               method: 'POST',
+              credentials: 'include', 
               headers: {
                   'Content-Type': 'application/json',
               },
+              body: JSON.stringify(userData)
+              /*
               body: JSON.stringify({
-                username: userData.email,
-                password: userData.email
-
                 /*
                 firstName: userData.firstName,
                 middleName: userData.middleName,
                 lastName: userData.lastName,
                 email: userData.email,
-                username: userData.email, // Assuming you use email as the username
+                username: userData.username, 
                 ssn: userData.ssn,
-                birthday: userData.birthday, // Ensure date is in the correct format (ISO 8601 string)
-                role: userData.role*/
+                birthday: userData.birthday,
+                role: userData.role 
               })
           });
           if (!response.ok) {
               throw new Error('Failed to register');
+              
           }
           const data = await response.json();
-          return data; 
-      } catch (error) {
-        return rejectWithValue((error as any).toString());
+      if (!response.ok) {
+          throw new Error('Failed to register');
       }
+      console.log('Registration successful, received data:', data); // Log successful response
+      return data;
+    } catch (error) {
+      console.error('Error during registration:', error); // Log errors if request fails
+      return rejectWithValue((error as any).toString());
+    }
   }
-);
+);*/
 
 export interface AuthState {
   isAuthenticated: boolean;
@@ -66,13 +74,14 @@ const authSlice = createSlice({
       state.username = action.payload;
     },
   },
-
+/*
   extraReducers: (builder) => {
     builder.addCase(registerUser.fulfilled, (state, action) => {
         state.isAuthenticated = true;  // Optionally set the user as authenticated upon registration
         state.username = action.payload.username;  // Set username from response if available
+        state.username = action.payload;
     });
-},
+},*/
 });
 
 export const { login, logout, setUsername } = authSlice.actions;
