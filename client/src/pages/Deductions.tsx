@@ -1,10 +1,54 @@
 import { Label, TextInput, FormGroup, ErrorMessage, Textarea, Fieldset, Button, Checkbox, Grid, GridContainer, RequiredMarker, Select, DateRangePicker, DatePicker, ButtonGroup, ProcessListHeading, ProcessListItem, StepIndicator, StepIndicatorStep, Radio, TextInputMask } from "@trussworks/react-uswds";
-import { Form, Link } from "react-router-dom";
+import { Form, Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { submitFullTaxInfo, updateDeductions } from '../redux/slices/taxSlice';
+import { RootState } from "../redux/storeTypes";
+import { AppDispatch } from "../redux/store";
 
-export const Deductions = (): React.ReactElement => (<div style={{
-    marginLeft: '2rem'
-  }}>
+export const Deductions = (): React.ReactElement => {
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+  const currentTaxInfo = useSelector((state: RootState) => state.taxInfo);
 
+
+  const [deductions, setDeductions] = useState(currentTaxInfo.deductions || {
+    mortgageInterest: 0,
+    donations: 0,
+    propertyTax: 0,
+    medical: 0,
+    studentLoanInterest: 0,
+    otherDeduction: 0,
+    otherIncome: 0
+});
+
+useEffect(() => {
+  if (currentTaxInfo.deductions) {
+      setDeductions(currentTaxInfo.deductions);
+  }
+}, [currentTaxInfo.deductions]);
+ 
+  
+
+
+const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const { name, value } = e.target;
+  setDeductions(prev => ({ ...prev, [name]: parseFloat(value) || 0 }));
+};
+
+
+
+  // When form is submitted, update deductions in Redux
+  const handleSubmit = () => {
+    dispatch(updateDeductions(deductions));
+    navigate('/review');
+  };
+
+
+
+ return (
+
+<div style={{ marginLeft: '2rem' }}>
     
   <GridContainer className="usa-section">
 
@@ -47,27 +91,44 @@ export const Deductions = (): React.ReactElement => (<div style={{
 
 
 
+
+
+
 {/* <Form onSubmit={mockSubmit}>*/}
 <Fieldset legend="Itemized Deductions" legendStyle="large">
 
 
-<Label htmlFor="w2">Mortgage Interests</Label>
-<TextInput id="w2" name="w2" type="text" />
 
-  <Label htmlFor="first-name">Donations</Label>
-  <TextInput id="first-name" name="first-name" type="text" />
-  <Label htmlFor="middle-name" hint=" ">
-    Property Tax
-  </Label>
-  <TextInput id="middle-name" name="middle-name" type="text" />
-  <Label htmlFor="last-name">Student Loan Interest</Label>
-  <TextInput id="last-name" name="last-name" type="text" />
 
-  <Label htmlFor="last-name">Medical</Label>
-  <TextInput id="last-name" name="last-name" type="text" />
+<Label htmlFor="mortgageInterest">Mortgage Interest</Label>
+              <TextInput id="mortgageInterest" name="mortgageInterest" type="number"
+                value={deductions.mortgageInterest.toString()} onChange={handleChange} />
+              
+              <Label htmlFor="donations">Donations</Label>
+              <TextInput id="donations" name="donations" type="number"
+                value={deductions.donations.toString()} onChange={handleChange} />
+              
+              <Label htmlFor="propertyTax">Property Tax</Label>
+              <TextInput id="propertyTax" name="propertyTax" type="number"
+                value={deductions.propertyTax.toString()} onChange={handleChange} />
 
-  <Label htmlFor="last-name">Other</Label>
-  <TextInput id="last-name" name="last-name" type="text" />
+              <Label htmlFor="medical">Medical Expenses</Label>
+              <TextInput id="medical" name="medical" type="number"
+                value={deductions.medical.toString()} onChange={handleChange} />
+
+              <Label htmlFor="studentLoanInterest">Student Loan Interest</Label>
+              <TextInput id="studentLoanInterest" name="studentLoanInterest" type="number"
+                value={deductions.studentLoanInterest.toString()} onChange={handleChange} />
+
+              <Label htmlFor="otherDeduction">Other Deductions</Label>
+              <TextInput id="otherDeduction" name="otherDeduction" type="number"
+                value={deductions.otherDeduction.toString()} onChange={handleChange} />
+
+              <ButtonGroup type="default" className="margin-top-4">
+                <Link to="/income1099" className="usa-button usa-button--outline">Back</Link>
+                
+              </ButtonGroup>
+              <Button type="button" onClick={handleSubmit}>Continue</Button>
 
   
 </Fieldset>
@@ -82,24 +143,7 @@ export const Deductions = (): React.ReactElement => (<div style={{
 
 
 
-
- 
-
-
-
-
-
-
-
-      {/* <Form onSubmit={mockSubmit}>*/}
-
-
-      <ButtonGroup type="default">
-
-        <Link to="/income1099" className="usa-button usa-button--outline">Back </Link>
-        <Link to="/review" className="usa-button">Continue </Link>
-
-      </ButtonGroup>
+      
       </Grid>
     </Grid>
   </GridContainer>
@@ -113,4 +157,5 @@ export const Deductions = (): React.ReactElement => (<div style={{
 </div>
 
 );
+};
 export default Deductions;

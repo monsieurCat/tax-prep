@@ -1,10 +1,26 @@
-import { Label, TextInput, FormGroup, ErrorMessage, Textarea, Fieldset, Button, Checkbox, Grid, GridContainer, RequiredMarker, Select, DateRangePicker, DatePicker, ButtonGroup, ProcessListHeading, ProcessListItem, StepIndicator, StepIndicatorStep, Radio, TextInputMask, Accordion, Table } from "@trussworks/react-uswds";
-import { Form, Link } from "react-router-dom";
+import { Label, TextInput, Form, FormGroup, ErrorMessage, Textarea, Alert, Fieldset, Button, Checkbox, Grid, GridContainer, RequiredMarker, Select, DateRangePicker, DatePicker, ButtonGroup, ProcessListHeading, ProcessListItem, StepIndicator, StepIndicatorStep, Radio, TextInputMask, Accordion, Table } from "@trussworks/react-uswds";
+import { Link, useNavigate } from "react-router-dom";
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { submitFullTaxInfo } from '../redux/slices/taxSlice';
+import { AppDispatch } from "../redux/store";
+import { RootState } from "../redux/storeTypes";
 
-export const Review = (): React.ReactElement => (<div style={{
-    marginLeft: '2rem'
-  }}>
+export const Review = (): React.ReactElement => {
 
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+  const taxInfo = useSelector((state: RootState) => state.taxInfo);
+ 
+
+  const handleSubmit = () => {
+    dispatch(submitFullTaxInfo(taxInfo));
+    navigate('/breakdown');
+  };
+
+return (
+
+<div style={{ marginLeft: '2rem' }}>
     
   <GridContainer className="usa-section">
 
@@ -50,8 +66,91 @@ export const Review = (): React.ReactElement => (<div style={{
 
 {/* <Form onSubmit={mockSubmit}>*/}
 <Fieldset legend="Confirm your information" legendStyle="large">
+<h1>Review Your Information</h1>
+
+<Alert type="info" headingLevel={"h1"}>Please review your information carefully before submitting.</Alert>
 
 
+
+
+<Grid row gap>
+        <Grid col={12}>
+          <h2>Personal Information</h2>
+          <ButtonGroup type="default" >
+                <Link to="/personal-form" className="usa-button usa-button--outline">Edit</Link>
+                
+              </ButtonGroup>
+          <p><strong>First Name:</strong> {taxInfo.personalInfo.firstName}</p>
+          <p><strong>Last Name:</strong> {taxInfo.personalInfo.lastName}</p>
+          <p><strong>SSN:</strong> {taxInfo.personalInfo.ssn}</p>
+        </Grid>
+
+        <Grid col={12}>
+          <h2>W2 Income</h2>
+          <ButtonGroup type="default" >
+                <Link to="/w2" className="usa-button usa-button--outline">Edit</Link>
+                
+              </ButtonGroup>
+          {taxInfo.w2Income.map((w2, index) => (
+            <div key={index}>
+              <h3>W2 Form {index + 1}</h3>
+              <p>Income: {w2.income}</p>
+              <p>Withholdings: {w2.withholdings}</p>
+              <p>Employer EIN: {w2.employerEin}</p>
+            </div>
+          ))}
+        </Grid>
+
+        <Grid col={12}>
+          <h2>1099 Income</h2>
+          <ButtonGroup type="default" >
+                <Link to="/income1099" className="usa-button usa-button--outline">Edit</Link>
+                
+              </ButtonGroup>
+          {taxInfo.income1099.map((income, index) => (
+            <div key={index}>
+              <h3>1099 Form {index + 1}</h3>
+              <p>Income: {income.income}</p>
+              <p>Withholdings: {income.withholdings}</p>
+            </div>
+          ))}
+        </Grid>
+
+        <Grid col={12}>
+          <h2>Deductions</h2> 
+          <ButtonGroup type="default" >
+                <Link to="/deductions" className="usa-button usa-button--outline">Edit</Link>
+                
+              </ButtonGroup>
+          <p>Mortgage Interest: {taxInfo.deductions.mortgageInterest}</p>
+          <p>Donations: {taxInfo.deductions.donations}</p>
+          <p>Property Tax: {taxInfo.deductions.propertyTax}</p>
+          <p>Medical Expenses: {taxInfo.deductions.medical}</p>
+          <p>Student Loan Interest: {taxInfo.deductions.studentLoanInterest}</p>
+          <p>Other Deductions: {taxInfo.deductions.otherDeduction}</p>
+          <p>Other Income: {taxInfo.deductions.otherIncome}</p>
+        </Grid>
+
+        <Grid col={12}>
+          <Button type="button" onClick={handleSubmit}>Submit All Information</Button>
+          <ButtonGroup type="default" className="margin-top-4">
+                <Link to="/deductions" className="usa-button usa-button--outline">Back</Link>
+                
+              </ButtonGroup>
+        </Grid>
+        
+      </Grid>
+      </Fieldset>
+      </Grid>
+      
+      </Grid>
+      
+    </GridContainer>
+  
+
+
+
+{/*
 <Accordion  bordered={false}  items={
                                 [
                                     {
@@ -127,25 +226,6 @@ export const Review = (): React.ReactElement => (<div style={{
 <Grid col={4}></Grid>
 
 
-{/* <Form onSubmit={mockSubmit}>*/}
-
-
-
-
-
-
-
- 
-
-
-
-
-
-
-
-      {/* <Form onSubmit={mockSubmit}>*/}
-
-
       <ButtonGroup type="default">
 
         <Link to="/deductions" className="usa-button usa-button--outline">Back </Link>
@@ -156,7 +236,7 @@ export const Review = (): React.ReactElement => (<div style={{
     </Grid>
   </GridContainer>
 
-
+                          */}
 
 
 
@@ -165,4 +245,5 @@ export const Review = (): React.ReactElement => (<div style={{
 </div>
 
 );
+};
 export default Review;

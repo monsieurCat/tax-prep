@@ -20,14 +20,42 @@ export interface Address {
 }
 
 export interface W2Income {
-  employerName: string;
   income: number;
-  federalTaxWithheld: number;
+  withholdings: number;
+  employerEin: string;
+  employerStreet1: string;
+  employerStreet2: string;
+  employerCity: string;
+  employerState: string;
+  employerZipcode: string;
+}
+
+export interface UpdateW2IncomePayload {
+  forms: Array<Partial<W2Income>>;
 }
 
 export interface Income1099 {
-  companyName: string;
-  amount: number;
+  income: number;
+  withholdings: number;
+  employerEin: string;
+  employerStreet1: string;
+  employerStreet2: string;
+  employerCity: string;
+  employerState: string;
+  employerZipcode: string;
+}
+export interface UpdateIncome1099Payload {
+  forms: Array<Partial<Income1099>>;
+}
+
+export interface Deductions {
+  mortgageInterest: number;
+  donations: number;
+  propertyTax: number;
+  medical: number;
+  studentLoanInterest: number;
+  otherDeduction: number;
+  otherIncome: number;
 }
 
 export interface TaxInfoState {
@@ -36,6 +64,7 @@ export interface TaxInfoState {
     filingStatus:string;
     w2Income: W2Income[];
     income1099: Income1099[];
+    deductions: Deductions; 
     loading: boolean; 
     error: string | null | unknown;  
 }
@@ -48,9 +77,21 @@ const initialState: TaxInfoState = {
     filingStatus: '',
     w2Income: [],
     income1099: [],
+    deductions: { 
+      mortgageInterest: 0,
+      donations: 0,
+      propertyTax: 0,
+      medical: 0,
+      studentLoanInterest: 0,
+      otherDeduction: 0,
+      otherIncome: 0
+    },
     loading: false,
     error: null,
   };
+
+
+  //THUNKS!!
 
 //thunk to create tax info full
   export const submitFullTaxInfo = createAsyncThunk(
@@ -178,26 +219,37 @@ const taxInfoSlice = createSlice({
     setTaxInfo(state, action) {
       return { ...state, ...action.payload };
   },
-    
+  updateDeductions: (state, action: PayloadAction<Partial<Deductions>>) => {
+    state.deductions = { ...state.deductions, ...action.payload };
+  },
+
     // Handling multiple W-2 and 1099 forms
     addW2Income: (state, action: PayloadAction<W2Income>) => {
       state.w2Income.push(action.payload);
     },
-    updateW2Income: (state, action: PayloadAction<{ index: number, data: Partial<W2Income> }>) => {
-      const { index, data } = action.payload;
-      if (state.w2Income[index]) {
-        state.w2Income[index] = { ...state.w2Income[index], ...data };
-      }
-    },
+     // Update an existing W2 form in the state
+     updateW2Income: (state, action: PayloadAction<UpdateW2IncomePayload>) => {
+      // Assumes forms array is completely replacing the existing w2Income
+      state.w2Income = action.payload.forms.map((form, index) => ({
+          ...state.w2Income[index],
+          ...form
+      }));
+  },
+
     addIncome1099: (state, action: PayloadAction<Income1099>) => {
       state.income1099.push(action.payload);
     },
-    updateIncome1099: (state, action: PayloadAction<{ index: number, data: Partial<Income1099> }>) => {
-      const { index, data } = action.payload;
-      if (state.income1099[index]) {
-        state.income1099[index] = { ...state.income1099[index], ...data };
-      }
+    deleteIncome1099: (state, action: PayloadAction<number>) => {
+      state.income1099.splice(action.payload, 1);
     },
+    updateIncome1099: (state, action: PayloadAction<UpdateIncome1099Payload>) => {
+      // Assumes forms array is completely replacing the existing w2Income
+      state.income1099 = action.payload.forms.map((form, index) => ({
+          ...state.income1099[index],
+          ...form
+      }));
+  },
+   
   },
   extraReducers: (builder) => {
     builder
@@ -309,7 +361,9 @@ export const {
   addW2Income,
   updateW2Income,
   addIncome1099,
+  deleteIncome1099,
   updateIncome1099,
+  updateDeductions,
   setTaxInfo
 } = taxInfoSlice.actions;
 
