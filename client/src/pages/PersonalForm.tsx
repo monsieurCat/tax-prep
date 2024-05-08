@@ -1,14 +1,16 @@
 import { Label, TextInput, FormGroup, ErrorMessage, Textarea, Fieldset, Form, Button, Checkbox, Grid, GridContainer, RequiredMarker, Select, DateRangePicker, DatePicker, ButtonGroup, ProcessListHeading, ProcessListItem, StepIndicator, StepIndicatorStep, TextInputMask } from "@trussworks/react-uswds";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
-import { PersonalInfo, updatePersonalInfo, fetchTaxInfo, updateTaxAddress, submitTaxInfo} from '../redux/slices/taxSlice';
+import { PersonalInfo, updatePersonalInfo, fetchTaxInfo, updateTaxAddress, updateUserInformation, updateAddress} from '../redux/slices/taxSlice';
 import React, { useEffect } from 'react';
 import { RootState } from '../redux/storeTypes';
+import { AppDispatch } from '../redux/store';
 
 const PersonalForm = (): React.ReactElement => {
 
 
-const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch(); 
+const navigate = useNavigate(); 
 const { personalInfo, address, loading, error } = useSelector((state: RootState) => state.taxInfo);
 
 /*
@@ -26,16 +28,44 @@ const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 
 */
 
+const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const { name, value } = e.target;
+  if (name.startsWith("address-")) {
+    // This removes the 'address-' prefix and uses the rest as the key for the address state
+    dispatch(updateAddress({ [name.replace("address-", "")]: value }));
+  } else {
+    // Handles personal info fields without any prefix
+    dispatch(updatePersonalInfo({ ...personalInfo, [name]: value }));
+  }
+};
+/*
     const handleChange = (e: { target: { name: any; value: any; }; }) => {
         const { name, value } = e.target;
         // Update the Redux state
         dispatch(updatePersonalInfo({ ...personalInfo, [name]: value }));
     };
+*/
 
+/*
     const handleForm = (event: React.FormEvent) => {
       event.preventDefault(); // Prevent the default form submission behavior
       dispatch(updatePersonalInfo(personalInfo));
   };
+  */
+
+
+  const handleForm = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+        await dispatch(updateUserInformation(personalInfo));
+        await dispatch(updateTaxAddress({ addressData: address }));
+        navigate('/filing-status'); 
+    } catch (error) {
+        console.error('Update failed:', error);
+    }
+};
+
+
 
 
     return (<>
@@ -81,16 +111,16 @@ const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 
 
           <Label htmlFor="first-name">First name</Label>
-          <TextInput id="first-name" name="first-name" type="text" onChange={handleChange}/>
+          <TextInput id="first-name" name="firstName" type="text" onChange={handleChange} value={personalInfo.firstName} />
           <Label htmlFor="middle-name" hint=" ">
             Middle initial
           </Label>
-          <TextInput id="middle-name" name="middle-name" type="text" onChange={handleChange}/>
+          <TextInput id="middle-name" name="middleName" type="text" onChange={handleChange} value={personalInfo.middleName}/>
           <Label htmlFor="last-name">Last name</Label>
-          <TextInput id="last-name" name="last-name" type="text" onChange={handleChange}/>
+          <TextInput id="last-name" name="lastName" type="text" onChange={handleChange} value={personalInfo.lastName} />
 
           <Label htmlFor="birthdate">Date of birth</Label>
-          <DatePicker id="birthdate" name="birthdate" />
+          <DatePicker id="birthdate" name="birthdate"  value={personalInfo.birthdate} onChange={(e: any) => dispatch(updatePersonalInfo({ ...personalInfo, birthdate: e.target.value }))} />
 
           <Label id="first-name" htmlFor="first-name">
       Social Security Number
@@ -98,7 +128,7 @@ const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     <span id="hint-ssn" className="usa-hint">
       For example, 123 45 6789
     </span>
-    <TextInputMask id="input-type-ssn" name="input-type-ssn" type="text" aria-labelledby="first-name" aria-describedby="hint-ssn" mask="___ __ ____" pattern="^(?!(000|666|9))\d{3} (?!00)\d{2} (?!0000)\d{4}$" onChange={handleChange}/>
+    <TextInputMask id="input-type-ssn" name="ssn" type="text" aria-labelledby="first-name" aria-describedby="hint-ssn" mask="___ __ ____" pattern="^(?!(000|666|9))\d{3} (?!00)\d{2} (?!0000)\d{4}$" onChange={handleChange}  value={personalInfo.ssn}/>
 
         </Fieldset>
         </Form>
@@ -114,20 +144,20 @@ const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
             ).
           </p>
           <Label htmlFor="mailing-address-1">Street address</Label>
-          <TextInput id="mailing-address-1" name="mailing-address-1" type="text" onChange={handleChange}/>
+          <TextInput id="mailing-address-1" name="address-street1" type="text" onChange={handleChange} value={address.street1} />
 
           <Label htmlFor="mailing-address-2">Street address line 2</Label>
-          <TextInput id="mailing-address-2" name="mailing-address-2" type="text"onChange={handleChange} />
+          <TextInput id="mailing-address-2" name="address-street2" type="text"onChange={handleChange} value={address.street2}/>
 
           <Label htmlFor="city" requiredMarker>
             City
           </Label>
-          <TextInput id="city" name="city" type="text" required onChange={handleChange}/>
+          <TextInput id="city" name="address-city" type="text" required onChange={handleChange} value={address.city}/>
 
           <Label htmlFor="state" requiredMarker>
             State, territory, or military post
           </Label>
-          <Select id="state" name="state" required >
+          <Select id="state" name="address-state" required onChange={handleChange} value={address.state}>
             <option>- Select -</option>
             <option value="AL">Alabama</option>
             <option value="AK">Alaska</option>
@@ -194,18 +224,19 @@ const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     <span id="hint-zip" className="usa-hint">
       For example, 12345-6789
     </span>
-    <TextInputMask id="input-type-zip" name="input-type-zip" type="text" aria-labelledby="zip" aria-describedby="hint-zip" mask="_____-____" pattern="^[0-9]{5}(?:-[0-9]{4})?$" onChange={handleChange}/>
+    <TextInputMask id="input-type-zip" name="address-zip" type="text" aria-labelledby="zip" aria-describedby="hint-zip" mask="_____-____" pattern="^[0-9]{5}(?:-[0-9]{4})?$" onChange={handleChange} value={address.zip}/>
 
 
         </Fieldset>
-        </Form>
+        
 
         <ButtonGroup type="default">
 
           <Link to="/" className="usa-button usa-button--outline">Back </Link>
-          <Link to="/filing-status" className="usa-button">Continue </Link>
 
         </ButtonGroup>
+        <Button type="submit" >Continue</Button>
+        </Form>
       </Grid>
     </Grid>
   </GridContainer>
@@ -227,7 +258,7 @@ const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 
             <div className="bg-white padding-y-8 padding-x-5 border border-base-lighter">
               <h1 className="margin-bottom-0">Create account</h1>
-              { /* <Form onSubmit={mockSubmit}>*/}
+             
               <Fieldset legend="Mailing address" legendStyle="large">
                 <p>
                   Required fields are marked with an asterisk (<RequiredMarker />
@@ -260,14 +291,14 @@ const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                 <Label htmlFor="urbanization">Urbanization (Puerto Rico only)</Label>
                 <TextInput id="urbanization" name="urbanization" type="text" />
               </Fieldset>
-              {/*</Form>*/}
+            
             </div>
           </Grid>
 
         </Grid>
       </GridContainer>
     </div>
-  </main>
+                </main>
 
 
 </div>

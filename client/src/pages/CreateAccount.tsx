@@ -29,8 +29,10 @@ const CreateAccount=(): React.ReactElement => {
   function handleRegistration(event: { preventDefault: () => void; }) {
     event.preventDefault();
     const userData = {
+      
       username,
       password
+      
   };
     fetch("http://localhost:8282/api/auth/register", {
         method: "POST",

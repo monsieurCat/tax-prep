@@ -50,12 +50,14 @@ export const registerUser = createAsyncThunk(
 export interface AuthState {
   isAuthenticated: boolean;
   username: string | null;
+   
 }
 
 
 const initialState: AuthState = {
   isAuthenticated: false,
   username: null,
+   
 };
 
 const authSlice = createSlice({
@@ -65,10 +67,12 @@ const authSlice = createSlice({
     login: (state, action: PayloadAction<{ username: string }>) => {
       state.isAuthenticated = true;
       state.username = action.payload.username;
+      
     },
     logout: (state) => {
       state.isAuthenticated = false;
       state.username = null;
+     
     },
     setUsername: (state, action: PayloadAction<string>) => {
       state.username = action.payload;

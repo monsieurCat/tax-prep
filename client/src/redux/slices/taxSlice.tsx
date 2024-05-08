@@ -33,6 +33,7 @@ export interface Income1099 {
 export interface TaxInfoState {
     personalInfo: PersonalInfo;
     address: Address;
+    filingStatus:string;
     w2Income: W2Income[];
     income1099: Income1099[];
     loading: boolean; 
@@ -44,23 +45,33 @@ export interface TaxInfoState {
 const initialState: TaxInfoState = {
     personalInfo: { firstName: '', middleName: '', lastName: '', birthdate: '', ssn: '' },
     address: { street1: '', street2: '', city: '', state: '', zip: '' },
+    filingStatus: '',
     w2Income: [],
     income1099: [],
     loading: false,
     error: null,
   };
 
-//thunk to create tax info
-  export const submitTaxInfo = createAsyncThunk(
-    'taxInfo/submitTaxInfo',
-    async (personalInfo: PersonalInfo, { rejectWithValue }) => {
+//thunk to create tax info full
+  export const submitFullTaxInfo = createAsyncThunk(
+    'taxInfo/submitFullTaxInfo',
+    async (taxInfo: TaxInfoState, { rejectWithValue }) => {
         try {
-            const response = await api.postTaxInfo(personalInfo);
+            const response = await api.postTaxInfo(taxInfo);
             return response.data;
         } catch (error) {
           return rejectWithValue((error as any).toString());
         }
     }
+);
+
+// Asynchronous thunk for updating tax info locally 
+export const updateLocalTaxInfo = createAsyncThunk(
+  'taxInfo/updateLocalTaxInfo',
+  async (data, { getState, dispatch }) => {
+      dispatch(setTaxInfo(data)); // Update local state
+      
+  }
 );
 
   // thunk for fetching tax info
@@ -114,6 +125,43 @@ export const updateTaxAddress = createAsyncThunk(
   }
 );
 
+// async thunk for updating user information
+export const updateUserInformation = createAsyncThunk(
+  'taxInfo/updateUserInformation',
+  async (userData: any, { rejectWithValue }) => {
+      try {
+          const response = await api.updateUser(userData);
+          return response;
+      } catch (error) {
+          return rejectWithValue((error as any).toString());
+      }
+  }
+);
+
+export const fetchFilingStatus = createAsyncThunk(
+  'taxInfo/fetchFilingStatus',
+  async (_, { rejectWithValue }) => {
+      try {
+          return await api.fetchFilingStatusApi();
+      } catch (error) {
+        return rejectWithValue((error as any).toString());
+      }
+      }
+  
+);
+
+export const updateFilingStatus = createAsyncThunk(
+  'taxInfo/updateFilingStatus',
+  async ({ filingStatus }: { filingStatus: string; }, { rejectWithValue }) => {
+      try {
+          return await api.updateFilingStatusApi(filingStatus);
+      } catch (error) {
+        return rejectWithValue((error as any).toString());
+      }
+    }
+  
+);
+
 
 
 const taxInfoSlice = createSlice({
@@ -127,6 +175,9 @@ const taxInfoSlice = createSlice({
     updateAddress: (state, action: PayloadAction<Partial<Address>>) => {
       state.address = { ...state.address, ...action.payload };
     },
+    setTaxInfo(state, action) {
+      return { ...state, ...action.payload };
+  },
     
     // Handling multiple W-2 and 1099 forms
     addW2Income: (state, action: PayloadAction<W2Income>) => {
@@ -173,6 +224,66 @@ const taxInfoSlice = createSlice({
         state.error = action.payload;
         state.loading = false;
       })
+
+       // Handle updating user information
+       .addCase(updateUserInformation.pending, (state) => {
+        state.loading = true;
+    })
+    .addCase(updateUserInformation.fulfilled, (state, action) => {
+        state.personalInfo = action.payload; // Assuming the payload contains the updated user info
+        state.loading = false;
+    })
+    .addCase(updateUserInformation.rejected, (state, action) => {
+        state.error = action.error.message;
+        state.loading = false;
+    })
+
+
+
+
+    //handle filing status changes
+    .addCase(fetchFilingStatus.pending, (state) => {
+      state.loading = true;
+  })
+  .addCase(fetchFilingStatus.fulfilled, (state, action) => {
+      state.filingStatus = action.payload; // Assuming the payload contains the filing status
+      state.loading = false;
+  })
+  .addCase(fetchFilingStatus.rejected, (state, action) => {
+      state.error = action.error.message;
+      state.loading = false;
+  })
+  .addCase(updateFilingStatus.pending, (state) => {
+      state.loading = true;
+  })
+  .addCase(updateFilingStatus.fulfilled, (state, action) => {
+      state.filingStatus = action.payload; // Assuming the payload contains the updated filing status
+      state.loading = false;
+  })
+  .addCase(updateFilingStatus.rejected, (state, action) => {
+      state.error = action.error.message;
+      state.loading = false;
+  })
+
+
+//this is for the taxinfoController  tax_info/full
+  .addCase(submitFullTaxInfo.pending, (state) => {
+    state.loading = true;
+  })
+  .addCase(submitFullTaxInfo.fulfilled, (state, action) => {
+    // Assuming the backend returns the full updated tax info
+    state.personalInfo = action.payload.personalInfo;
+    state.address = action.payload.address;
+    state.filingStatus = action.payload.filingStatus;
+    state.w2Income = action.payload.w2Income;
+    state.income1099 = action.payload.income1099;
+    state.loading = false;
+  })
+  .addCase(submitFullTaxInfo.rejected, (state, action) => {
+    state.error = action.error.message;
+    state.loading = false;
+  })
+
       /*
       .addCase(updateTaxInfo.pending, (state: { loading: boolean; }) => {
         state.loading = true;
@@ -198,7 +309,8 @@ export const {
   addW2Income,
   updateW2Income,
   addIncome1099,
-  updateIncome1099
+  updateIncome1099,
+  setTaxInfo
 } = taxInfoSlice.actions;
 
 export default taxInfoSlice.reducer;
