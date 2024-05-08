@@ -38,6 +38,14 @@ public class FilingStatus {
     return status;
   }
 
+  public void setId(int id) {
+    this.id = id;
+  }
+
+  public void setStatus(String status) {
+    this.status = status;
+  }
+
   @Override
   public int hashCode() {
     final int prime = 31;

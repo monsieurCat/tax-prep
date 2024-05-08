@@ -36,6 +36,8 @@ public class StandardizedDeduction {
     this.deductionAmount = deductionAmount;
   }
 
+  public StandardizedDeduction() { }
+
   public int getId() {
     return id;
   }

@@ -1,0 +1,60 @@
+package com.skillstorm.taxprep.server.repositories;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.Optional;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+
+import com.skillstorm.taxprep.server.models.FilingStatus;
+import com.skillstorm.taxprep.server.models.StandardizedDeduction;
+
+@DataJpaTest
+public class StandardizedDeductionRepositoryTest {
+
+    @Autowired
+    private StandardizedDeductionRepository standardizedDeductionRepository;
+
+    @Autowired
+    private FilingStatusRepository filingStatusRepository;
+
+    @Test
+    public void testSave_WithValidFilingStatus_ShouldSaveSuccessfully() {
+      // Given
+      FilingStatus filingStatus = new FilingStatus();
+      filingStatus.setStatus("Single");
+      FilingStatus savedFilingStatus = filingStatusRepository.save(filingStatus);
+
+      StandardizedDeduction standardizedDeduction = new StandardizedDeduction();
+      standardizedDeduction.setFilingStatus(savedFilingStatus);
+      standardizedDeduction.setDeductionAmount(1000); // Set the deduction amount
+
+      // When
+      StandardizedDeduction savedStandardizedDeduction = standardizedDeductionRepository.save(standardizedDeduction);
+
+      // Then
+      assertNotNull(savedStandardizedDeduction);
+      assertNotNull(savedStandardizedDeduction.getId());
+      assertEquals(1000, savedStandardizedDeduction.getDeductionAmount());
+
+      // Additional assertions if needed
+    }
+
+    @Test
+    public void testFindByFilingStatus_Id_WithNonExistingData_ShouldReturnEmptyOptional() {
+        // Given
+        int nonExistingFilingStatusId = 999; // Assuming this ID does not exist in the database
+
+        // When
+        Optional<StandardizedDeduction> result = standardizedDeductionRepository.findByFilingStatus_Id(nonExistingFilingStatusId);
+
+        // Then
+        assertFalse(result.isPresent());
+    }
+
+}

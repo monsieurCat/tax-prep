@@ -33,6 +33,8 @@ public class TaxBracket {
   @Column(name = "max_income")
   private int maxIncome;
 
+  public TaxBracket() { }
+
   public TaxBracket(int id, FilingStatus filingStatus, BigDecimal rate, int minIncome, int maxIncome) {
     this.id = id;
     this.filingStatus = filingStatus;
@@ -52,7 +54,7 @@ public class TaxBracket {
     return id;
   }
 
-  public FilingStatus getFiling_status() {
+  public FilingStatus getFilingStatus() {
     return filingStatus;
   }
 
@@ -66,6 +68,26 @@ public class TaxBracket {
 
   public int getMaxIncome() {
     return maxIncome;
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
+
+  public void setFilingStatus(FilingStatus filingStatus) {
+    this.filingStatus = filingStatus;
+  }
+
+  public void setRate(BigDecimal rate) {
+    this.rate = rate;
+  }
+
+  public void setMinIncome(int minIncome) {
+    this.minIncome = minIncome;
+  }
+
+  public void setMaxIncome(int maxIncome) {
+    this.maxIncome = maxIncome;
   }
 
   @Override
