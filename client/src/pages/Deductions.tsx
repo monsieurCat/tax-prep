@@ -126,7 +126,7 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 
               <ButtonGroup type="default" className="margin-top-4">
                 <Link to="/income1099" className="usa-button usa-button--outline">Back</Link>
-                
+                <Link to="/review" className="usa-button usa-button--outline">Go to Review</Link>
               </ButtonGroup>
               <Button type="button" onClick={handleSubmit}>Continue</Button>
 

@@ -18,7 +18,7 @@ const W2Income = (): React.ReactElement => {
       if (currentTaxInfo.w2Income) {
         setW2Forms(currentTaxInfo.w2Income);
       }
-    }, [currentTaxInfo.income1099]);
+    }, [currentTaxInfo.w2Income]);
     
   
 
@@ -239,6 +239,8 @@ const W2Income = (): React.ReactElement => {
 
                 <Link to="/filing-status" className="usa-button usa-button--outline">Back </Link>
                 <Button type="button" onClick={handleContinue}>Continue</Button>
+
+                <Link to="/review" className="usa-button usa-button--outline">Go to Review</Link>
 
               </ButtonGroup>
             </Grid>

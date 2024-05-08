@@ -207,7 +207,7 @@ return (
 
                 <Link to="/filing-status" className="usa-button usa-button--outline">Back </Link>
                 <Button type="button" onClick={handleContinue}>Continue</Button>
-
+                <Link to="/review" className="usa-button usa-button--outline">Go to Review</Link>
               </ButtonGroup>
             </Grid>
           </Grid>

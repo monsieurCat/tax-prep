@@ -3,7 +3,6 @@ import { useNavigate, Link } from "react-router-dom";
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateFilingStatus, fetchFilingStatus, submitFullTaxInfo, fetchTaxInfo, updateLocalTaxInfo } from '../redux/slices/taxSlice';
-import { updateFilingStatusApi } from '../api/taxApi';
 import { AppDispatch } from '../redux/store';
 import { RootState } from "../redux/storeTypes";
 
@@ -14,41 +13,55 @@ const FilingStatus = (): React.ReactElement => {
   const error = useSelector((state: RootState) => state.taxInfo.error);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
+
   const taxInfo = useSelector((state: RootState) => state.taxInfo); // Access the whole tax state
-  const { filingStatus } = taxInfo;
-  const [localFilingStatus, setLocalFilingStatus] = useState(filingStatus);
+  
+  const [localFilingStatus, setLocalFilingStatus] = useState(taxInfo.filingStatus || {
+    status: "Single",
+    numDependents: 0,
+  });
+
 
 
   /*
   useEffect(() => {
     dispatch(fetchFilingStatus());
-}, [dispatch]);*/
+}, [dispatch]);
 
 useEffect(() => {
   if (!taxInfo.filingStatus) {
     dispatch(fetchTaxInfo());
   }
-}, [dispatch, taxInfo.filingStatus]);
+}, [dispatch, taxInfo.filingStatus]);*/
 
 
-  const handleStatusChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    //setFilingStatus(event.target.value);
-    setLocalFilingStatus(event.target.value);  // update local state to reflect user's choice
+useEffect(() => {
+  if (taxInfo.filingStatus) {
+    setLocalFilingStatus(taxInfo.filingStatus);
+  }
+}, [taxInfo.filingStatus]);
+
+
+
+
+const handleStatusChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const { name, value } = event.target;
+
+  setLocalFilingStatus(prev => {
+    return {
+      ...prev,
+      [name]: name === "numDependents" ? parseInt(value) || 0 : value,
+    };
+  });
+};
+
+
+  const handleSubmit = () => {
+    
+    dispatch(updateFilingStatus(localFilingStatus));
+    navigate('/w2');
   };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    try {
-      
-      //await dispatch(updateFilingStatus({filingStatus})); 
-      // Submit the updated filing status to the store before navigating
-    //await dispatch(submitFullTaxInfo({ ...taxInfo, filingStatus: localFilingStatus }));
-    dispatch(updateLocalTaxInfo());
-      navigate('/w2'); 
-    } catch (error) {
-      console.error('Failed to update filing status:', error);
-    }
-  };
 
 
   return (
@@ -97,17 +110,21 @@ useEffect(() => {
                 <Radio id="surviving-spouse" name="filing-status" label="Qualifying Surviving Spouse" value="Qualifying Surviving Spouse" onChange={handleStatusChange} checked={filingStatus === 'Qualifying Surviving Spouse'} />
 */}
  {['Single', 'Married filing jointly', 'Married filing separately', 'Head of Household', 'Qualifying Surviving Spouse'].map(status => (
-                  <Radio key={status} id={status.replace(/\s+/g, '-').toLowerCase()} name="filing-status" label={status} value={status} onChange={handleStatusChange} checked={filingStatus === status} />
+                  <Radio key={status} id={status.replace(/\s+/g, '-').toLowerCase()} name="status" label={status} value={status} onChange={handleStatusChange} checked={localFilingStatus.status === status} />
                 ))}
               </Fieldset>
 
-
+              <Label htmlFor="dependents">Dependents</Label>
+              <TextInput id="dependents" name="numDependents" type="number"
+                value={localFilingStatus.numDependents.toString()} onChange={handleStatusChange} /> {/*make sure that name="numDependents" this should match the state object exactly. look at taxslice and the filingStatus interface to check.*/ }
 
 
               <ButtonGroup type="default">
 
                 <Link to="/personal-form" className="usa-button usa-button--outline">Back </Link>
-                <Button type="submit" className="usa-button">Continue </Button>
+                <Button type="submit" className="usa-button">Continue</Button>
+              
+                <Link to="/review" className="usa-button usa-button--outline">Go to Review</Link>
 
               </ButtonGroup>
             </Form>

@@ -86,6 +86,16 @@ return (
         </Grid>
 
         <Grid col={12}>
+          <h2>Filing Status</h2>
+          <ButtonGroup type="default" >
+                <Link to="/filing-status" className="usa-button usa-button--outline">Edit</Link>
+                
+              </ButtonGroup>
+              <p>Filing Status: {taxInfo.filingStatus.status}</p>
+              <p>Number of Dependents: {taxInfo.filingStatus.numDependents}</p>
+          </Grid>
+
+        <Grid col={12}>
           <h2>W2 Income</h2>
           <ButtonGroup type="default" >
                 <Link to="/w2" className="usa-button usa-button--outline">Edit</Link>

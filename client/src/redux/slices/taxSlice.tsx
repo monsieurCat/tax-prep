@@ -19,6 +19,12 @@ export interface Address {
   zip: string;
 }
 
+export interface FilingStatus {
+  status: string;
+  numDependents: number;
+}
+
+
 export interface W2Income {
   income: number;
   withholdings: number;
@@ -61,7 +67,7 @@ export interface Deductions {
 export interface TaxInfoState {
     personalInfo: PersonalInfo;
     address: Address;
-    filingStatus:string;
+    filingStatus:FilingStatus;
     w2Income: W2Income[];
     income1099: Income1099[];
     deductions: Deductions; 
@@ -74,7 +80,7 @@ export interface TaxInfoState {
 const initialState: TaxInfoState = {
     personalInfo: { firstName: '', middleName: '', lastName: '', birthdate: '', ssn: '' },
     address: { street1: '', street2: '', city: '', state: '', zip: '' },
-    filingStatus: '',
+    filingStatus: {status: '', numDependents: 0},
     w2Income: [],
     income1099: [],
     deductions: { 
@@ -190,7 +196,7 @@ export const fetchFilingStatus = createAsyncThunk(
       }
   
 );
-
+/*
 export const updateFilingStatus = createAsyncThunk(
   'taxInfo/updateFilingStatus',
   async ({ filingStatus }: { filingStatus: string; }, { rejectWithValue }) => {
@@ -202,7 +208,7 @@ export const updateFilingStatus = createAsyncThunk(
     }
   
 );
-
+*/
 
 
 const taxInfoSlice = createSlice({
@@ -218,6 +224,10 @@ const taxInfoSlice = createSlice({
     },
     setTaxInfo(state, action) {
       return { ...state, ...action.payload };
+  },
+  updateFilingStatus: (state, action: PayloadAction<FilingStatus>) => {
+    state.filingStatus =  { ...state.filingStatus, ...action.payload };
+    
   },
   updateDeductions: (state, action: PayloadAction<Partial<Deductions>>) => {
     state.deductions = { ...state.deductions, ...action.payload };
@@ -305,17 +315,6 @@ const taxInfoSlice = createSlice({
       state.error = action.error.message;
       state.loading = false;
   })
-  .addCase(updateFilingStatus.pending, (state) => {
-      state.loading = true;
-  })
-  .addCase(updateFilingStatus.fulfilled, (state, action) => {
-      state.filingStatus = action.payload; // Assuming the payload contains the updated filing status
-      state.loading = false;
-  })
-  .addCase(updateFilingStatus.rejected, (state, action) => {
-      state.error = action.error.message;
-      state.loading = false;
-  })
 
 
 //this is for the taxinfoController  tax_info/full
@@ -358,6 +357,7 @@ const taxInfoSlice = createSlice({
 export const {
   updatePersonalInfo,
   updateAddress,
+  updateFilingStatus,
   addW2Income,
   updateW2Income,
   addIncome1099,
