@@ -121,6 +121,23 @@ public class TaxInfoController {
     return new ResponseEntity<FilingStatus>(filingStatus, HttpStatus.OK);
   }
 
+  @PutMapping("/filing_status")
+  public ResponseEntity<?> updateFilingStatus(Principal principal, @RequestBody FilingStatusDTO filingStatusDTO) {
+    try {
+      int userId = userService.findUserIdByUsername(principal.getName());
+      TaxInfo taxInfo = taxInfoService.findTaxInfoByUserId(userId);
+      FilingStatus newFilingStatus = filingStatusService.getByStatus(filingStatusDTO.getStatus());
+      taxInfo.setFilingStatus(newFilingStatus);
+      taxInfoService.saveTaxInfo(taxInfo);
+
+      return new ResponseEntity<FilingStatus>(newFilingStatus, HttpStatus.OK);
+    } catch (NotFoundException e) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.singletonMap("message", e.getMessage()));
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.singletonMap("message", e.getMessage()));
+    }
+  }
+
   @GetMapping("/income_w2")
   public ResponseEntity<?> findW2Income(Principal principal) {
     try {
