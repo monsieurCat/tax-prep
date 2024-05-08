@@ -11,5 +11,5 @@ import com.skillstorm.taxprep.server.models.StandardizedDeduction;
 @Repository
 public interface StandardizedDeductionRepository extends JpaRepository<StandardizedDeduction, Integer> {
   
-  public Optional<List<StandardizedDeduction>> findByFilingStatus_Id(int filingStatusId);
+  public Optional<StandardizedDeduction> findByFilingStatus_Id(int filingStatusId);
 }

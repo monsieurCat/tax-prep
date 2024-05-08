@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.skillstorm.taxprep.server.dtos.TaxInfoDTO;
+import com.skillstorm.taxprep.server.dtos.TaxResultsDTO;
 import com.skillstorm.taxprep.server.exceptions.NotFoundException;
 import com.skillstorm.taxprep.server.models.AppUser;
 import com.skillstorm.taxprep.server.models.FilingStatus;
@@ -32,6 +33,7 @@ import com.skillstorm.taxprep.server.services.Income1099Service;
 import com.skillstorm.taxprep.server.services.IncomeW2Service;
 import com.skillstorm.taxprep.server.services.TaxInfoService;
 import com.skillstorm.taxprep.server.services.UserService;
+import com.skillstorm.taxprep.server.utilities.TaxCalculator;
 
 @RestController
 @RequestMapping("/tax_info")
@@ -88,6 +90,24 @@ public class TaxInfoController {
     } catch (UsernameNotFoundException | NotFoundException e) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.singletonMap("message", e.getMessage()));
     }
+  }
+
+  @GetMapping("/calculate")
+  public ResponseEntity<?> calculateTax(Principal principal) {
+    try {
+      int userId = userService.findUserIdByUsername(principal.getName());
+      TaxInfo taxInfo = taxInfoService.findTaxInfoByUserId(userId);
+      List<IncomeW2> incomesW2 = incomeW2Service.getIncomeByTaxInfoId(taxInfo.getId());
+      List<Income1099> incomes1099 = income1099Service.getIncomeByTaxInfoId(taxInfo.getId());
+
+      TaxCalculator taxCalculator = new TaxCalculator();
+      TaxResultsDTO results = taxCalculator.calculate(taxInfo, incomesW2, incomes1099);
+
+      return new ResponseEntity<TaxResultsDTO>(results, HttpStatus.OK);
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.singletonMap("message", e.getMessage()));
+    }
+    
   }
 
   @GetMapping("/filing_status")
@@ -208,7 +228,6 @@ public class TaxInfoController {
     } catch (NotFoundException e) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.singletonMap("message", e.getMessage()));
     }
-    
   }
 
   /* @PutMapping()

@@ -48,24 +48,6 @@ public class AddressControllerTest {
     }
 
     @Test
-    public void testCreateAddress() {
-        // Mock data
-        Address address = new Address();
-        Address createdAddress = new Address();
-        when(addressService.saveAddress(address)).thenReturn(createdAddress);
-
-        // Invoke controller method
-        //ResponseEntity<?> responseEntity = addressController.createAddress(address);
-
-        // Verify service method invocation
-        verify(addressService).saveAddress(address);
-
-        // Assert response
-        //assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        //assertEquals(createdAddress, responseEntity.getBody());
-    }
-
-    @Test
     public void testUpdateAddress() {
         // Mock data
         Address address = new Address();

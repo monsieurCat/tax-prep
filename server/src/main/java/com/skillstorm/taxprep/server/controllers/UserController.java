@@ -64,13 +64,13 @@ public class UserController {
         
         // Get user's username
         String currentUsername = principal.getName();
-        //String newUsername = user.getUsername();
+        String newUsername = user.getUsername();
 
         // First update the user's info
         AppUserDTO updatedUser = userService.updateUser(currentUsername, user);
         
         // If the user is trying to change their username, update Spring Security's authentication
-        /* if (currentUsername != newUsername) {
+        if (currentUsername != newUsername) {
           Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
           if (authentication != null && authentication.isAuthenticated()) {
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
@@ -83,7 +83,7 @@ public class UserController {
                 SecurityContextHolder.getContext().setAuthentication(updatedAuthentication);
             }
           }
-        } */
+        }
 
         return ResponseEntity.ok().body(updatedUser);
       } else {

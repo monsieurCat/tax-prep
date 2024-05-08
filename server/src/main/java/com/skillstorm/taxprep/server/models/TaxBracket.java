@@ -60,11 +60,11 @@ public class TaxBracket {
     return rate;
   }
 
-  public int getMin_income() {
+  public int getMinIncome() {
     return minIncome;
   }
 
-  public int getMax_income() {
+  public int getMaxIncome() {
     return maxIncome;
   }
 
