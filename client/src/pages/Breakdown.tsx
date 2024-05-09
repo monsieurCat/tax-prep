@@ -1,11 +1,34 @@
 import { Label, TextInput, FormGroup, ErrorMessage, Textarea, Fieldset, Button, Checkbox, Grid, GridContainer, RequiredMarker, Select, DateRangePicker, DatePicker, ButtonGroup, ProcessListHeading, ProcessListItem, StepIndicator, StepIndicatorStep, Radio, TextInputMask, MediaBlockBody, Table, Accordion } from "@trussworks/react-uswds";
 import { Form, Link } from "react-router-dom";
 import '../App.css';
+import { useEffect, useState } from "react";
+import { fetchTaxResults } from "../api/taxApi";
 
-export const Breakdown = (): React.ReactElement => (<div style={{
-    marginLeft: '2rem'
-}}>
+export const Breakdown = (): React.ReactElement => {
+    const [taxResults, setTaxResults] = useState(null);
 
+
+    useEffect(() => {
+        const loadTaxResults = async () => {
+          try {
+            const results = await fetchTaxResults();
+            setTaxResults(results);
+          } catch (error) {
+            console.error('Failed to load tax results', error);
+          }
+        };
+    
+        loadTaxResults();
+      }, []);
+
+      if (taxResults) {
+        console.log(taxResults.finalTaxAmount);  // Only check for truthiness if taxResults is expected to always have finalTaxAmount when not null
+      }
+
+
+return (
+
+<div style={{ marginLeft: '2rem' }}>
 
     <GridContainer className="usa-section">
 
@@ -51,7 +74,8 @@ export const Breakdown = (): React.ReactElement => (<div style={{
 
                 {/* <Form onSubmit={mockSubmit}>*/}
 
-
+                
+}
 
                 <main id="main-content">
 
@@ -60,8 +84,10 @@ export const Breakdown = (): React.ReactElement => (<div style={{
                         <GridContainer className="">
 
                             <h1 className="usa-hero__heading">
-                                <span className="usa-hero__heading--alt ">Your estimated tax refund (or Your estimated tax owed)</span>
-                                $8800
+                            <span className="usa-hero__heading--alt ">
+    Your estimated tax {taxResults.finalTaxAmount >= 0 ? 'refund' : 'owed'}
+  </span>
+  ${Math.abs(taxResults.finalTaxAmount)}
                             </h1>
                             <Accordion  bordered={false}  items={
                                 [
@@ -194,4 +220,5 @@ export const Breakdown = (): React.ReactElement => (<div style={{
 </div>
 
 );
+};
 export default Breakdown;

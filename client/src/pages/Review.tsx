@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fetchTaxInfo, submitFullTaxInfo } from '../redux/slices/taxSlice';
 import { AppDispatch } from "../redux/store";
 import { RootState } from "../redux/storeTypes";
+import { fetchAddress, fetchUserInfo } from "../redux/slices/userSlice";
 
 export const Review = (): React.ReactElement => {
 
@@ -15,7 +16,11 @@ export const Review = (): React.ReactElement => {
   
   useEffect(() => {
     dispatch(fetchTaxInfo());
+    dispatch(fetchUserInfo());
+    dispatch(fetchAddress());
   }, [dispatch]);
+
+  
 
   const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();

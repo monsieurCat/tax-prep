@@ -21,12 +21,15 @@ const FilingStatus = (): React.ReactElement => {
     dispatch(fetchTaxInfo());
 }, [dispatch]);
   
-  const [localFilingStatus, setLocalFilingStatus] = useState(taxInfo.filingStatus || {
-    status: "Single",
-    numDependents: 0,
-  });
+const [localFilingStatus, setLocalFilingStatus] = useState({
+  status: taxInfo.filingStatus ? taxInfo.filingStatus.status : 'Single',
+  numDependents: taxInfo.numDependents || 0,
+});
 
-  const [localStatus, setLocalStatus] = useState(taxInfo.filingStatus.status || "Single");
+const [localStatus, setLocalStatus] = useState(taxInfo.filingStatus ? taxInfo.filingStatus.status : 'Single');
+
+
+ // const [localStatus, setLocalStatus] = useState(taxInfo.filingStatus.status || "Single");
 const [localNumDependents, setLocalNumDependents] = useState(taxInfo.numDependents || 0);
 
 
@@ -67,7 +70,7 @@ const handleSubmit = async (e: React.FormEvent) => {
     
   await dispatch(updateFilingStatus({ status: localStatus }));
   await dispatch(updateNumDependents(localNumDependents));
-  await dispatch(submitFullTaxInfo(taxInfo));
+ // await dispatch(submitFullTaxInfo(taxInfo));
     navigate('/w2');
   };
 

@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { RootState } from '../redux/storeTypes';
 import { AppDispatch } from '../redux/store';
 import { fetchUserInfo, updateUserInformation, updateAddress, fetchAddress } from '../redux/slices/userSlice';
+import { fetchTaxInfo } from "../redux/slices/taxSlice";
 
 
 
@@ -18,6 +19,10 @@ const [personalFormData, setPersonalFormData] = useState(personalInfo);
 const [addressFormData, setAddressFormData] = useState(address);
 
 
+useEffect(() => {
+  // Fetch tax information when the component mounts
+  dispatch(fetchTaxInfo());
+}, [dispatch]);
 
 useEffect(() => {
   if (!personalInfo.firstName) { // Check if personalInfo is initially empty and fetch

@@ -12,13 +12,27 @@ const W2Income = (): React.ReactElement => {
   const navigate = useNavigate();
   const currentTaxInfo = useSelector((state: RootState) => state.taxInfo);
 
-  useEffect(() => {
-    // Fetch tax information when the component mounts
-    dispatch(fetchTaxInfo());
-}, [dispatch]);
+
+
+
+
 
   const [w2Forms, setW2Forms] = useState(currentTaxInfo.incomeW2 || [{
     id: 0, income: 0, withholdings: 0, employerEin: '', employerStreet1: '', employerStreet2: '', employerCity: '', employerState: '', employerZipcode: ''}]);
+
+
+    useEffect(() => {
+      // Fetch tax information when the component mounts
+      dispatch(fetchTaxInfo());
+  }, [dispatch]);
+  
+  useEffect(() => {
+    // Check if currentTaxInfo is defined and has incomeW2 property before setting w2Forms
+    if (currentTaxInfo && currentTaxInfo.incomeW2) {
+      setW2Forms(currentTaxInfo.incomeW2);
+    }
+  }, [currentTaxInfo]);
+  
 
     useEffect(() => {
       console.log("W2 Forms Updated:", w2Forms);
@@ -61,6 +75,7 @@ const W2Income = (): React.ReactElement => {
     console.log("Submitting W2 Forms:", w2Forms);
     await dispatch(updateW2Income({ forms: w2Forms }));
     await dispatch(submitFullTaxInfo(currentTaxInfo));
+    console.log('Submit response:',  await dispatch(submitFullTaxInfo(currentTaxInfo)));
     navigate('/income1099'); // Navigate to the next form
   };
   /*

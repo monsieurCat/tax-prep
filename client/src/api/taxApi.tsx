@@ -103,6 +103,25 @@ export const updateUser = async (userData: any) => {
     return await response.json();
 };
 
+//TAX CALCULATOR!!!!! 
+export const fetchTaxResults = async () => {
+    const response = await fetch(`${API_URL}/tax_info/calculate`, {
+        method: 'GET',
+        credentials: 'include', // cookies are sent with the request
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        }
+    });
+    if (!response.ok) {
+        throw new Error('Failed to fetch tax results');
+    }
+    return await response.json();
+};
+
+
+
+
 //filing status api call
 export const updateFilingStatusApi = async (filingStatus: string) => {
     const response = await fetch(`${API_URL}/tax_info/filing_status`, {

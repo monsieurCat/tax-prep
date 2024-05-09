@@ -254,7 +254,7 @@ const taxInfoSlice = createSlice({
       return { ...state, ...action.payload };
   },
   updateFilingStatus: (state, action: PayloadAction<FilingStatus>) => {
-    state.filingStatus =  { ...state.filingStatus, ...action.payload };
+    state.filingStatus = action.payload; 
     
   },
   updateNumDependents: (state, action: PayloadAction<number>) => {
@@ -381,9 +381,32 @@ const taxInfoSlice = createSlice({
     state.personalInfo = action.payload.personalInfo;
     state.address = action.payload.address;
     */
-    state.filingStatus = action.payload.filingStatus;
-    state.incomeW2 = action.payload.incomeW2;
-    state.income1099 = action.payload;
+    
+
+      if (action.payload) {
+
+        console.log("Payload:", action.payload);
+    console.log("Filing Status in Payload:", action.payload.filingStatus);
+    console.log("Income W2 in Payload:", action.payload.incomeW2);
+    console.log("Income 1099 in Payload:", action.payload.income1099);
+          // Update all fields based on the payload
+          state.filingStatus = action.payload.filingStatus; // Updates filing status
+          state.numDependents = action.payload.numDependents; // Updates the number of dependents
+          state.donations = action.payload.donations; // Updates donations
+          state.mortgageInterest = action.payload.mortgageInterest; // Updates mortgage interest
+          state.propertyTax = action.payload.propertyTax; // Updates property tax
+          state.medical = action.payload.medical; // Updates medical expenses
+          state.studentLoanInterest = action.payload.studentLoanInterest; // Updates student loan interest
+          state.otherDeduction = action.payload.otherDeduction; // Updates other deductions
+          state.otherIncome = action.payload.otherIncome; // Updates other income
+          state.incomeW2 = action.payload.incomeW2; // Updates W2 income
+          state.income1099 = action.payload.income1099; // Updates 1099 income
+          state.loading = false; // Updates loading status
+          state.error = null; // Resets any errors
+      } else {
+          // Optionally handle cases where the payload might be missing or invalid
+          state.error = 'Failed to receive full tax information';
+      }
     state.loading = false;
   })
   .addCase(submitFullTaxInfo.rejected, (state, action) => {

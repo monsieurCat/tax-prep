@@ -2,18 +2,24 @@ import { Label, TextInput, FormGroup, Form, ErrorMessage, Textarea, Fieldset, Bu
 import { Link, useNavigate } from "react-router-dom";
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addIncome1099, deleteIncome1099, updateIncome1099 } from '../redux/slices/taxSlice';
+import { addIncome1099, deleteIncome1099, fetchTaxInfo, submitFullTaxInfo, updateIncome1099 } from '../redux/slices/taxSlice';
 import { RootState } from "../redux/storeTypes";
+import { AppDispatch } from "../redux/store";
 
 export const Income1099 = (): React.ReactElement => {
-
-  const dispatch = useDispatch();
+  
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const currentTaxInfo = useSelector((state: RootState) => state.taxInfo);
   
 
   const [forms, setForms] = useState(currentTaxInfo.income1099 || [{
    id: 0, income: 0, withholdings: 0, employerEin: '', employerStreet1: '', employerStreet2: '', employerCity: '', employerState: '', employerZipcode: ''}]);
+
+   useEffect(() => {
+    // Fetch tax information when the component mounts
+    dispatch(fetchTaxInfo());
+}, [dispatch]);
 
     useEffect(() => {
       if (currentTaxInfo.income1099) {
@@ -47,6 +53,7 @@ export const Income1099 = (): React.ReactElement => {
   const handleContinue = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     dispatch(updateIncome1099({ forms: forms }));
+    dispatch(submitFullTaxInfo(currentTaxInfo));
     navigate('/deductions'); // Navigate to the next form
   };
 
