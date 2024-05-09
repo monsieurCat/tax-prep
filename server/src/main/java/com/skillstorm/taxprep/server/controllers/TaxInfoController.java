@@ -198,49 +198,55 @@ public class TaxInfoController {
       taxInfoService.saveTaxInfo(taxInfo);
 
       // Create a set of W2 IDs from the incoming W2 list for efficient lookup
-      Set<Integer> incomingW2Ids = taxInfoDTO.getIncomeW2().stream()
+      if (taxInfoDTO.getIncomeW2() != null) {
+        Set<Integer> incomingW2Ids = taxInfoDTO.getIncomeW2().stream()
                                                         .map(IncomeW2::getId)
                                                         .collect(Collectors.toSet());
       
-      // Identify W2 records to delete
-      List<IncomeW2> incomeW2ToDelete = existingIncomesW2.stream()
-                                                        .filter(record -> !incomingW2Ids.contains(record.getId()))
-                                                        .collect(Collectors.toList());
+        // Identify W2 records to delete
+        List<IncomeW2> incomeW2ToDelete = existingIncomesW2.stream()
+                                                          .filter(record -> !incomingW2Ids.contains(record.getId()))
+                                                          .collect(Collectors.toList());
 
-      // Delete identified W2 records
-      for (IncomeW2 record : incomeW2ToDelete) {
-        incomeW2Service.deleteIncomeById(record.getId());
+        // Delete identified W2 records
+        for (IncomeW2 record : incomeW2ToDelete) {
+          incomeW2Service.deleteIncomeById(record.getId());
+        }
+
+        // Now save the incoming W2 records
+        // Incoming records that have ids indicate existing records, so those records will be updated
+        // Incoming records that don't have ids indicate new records, so new records will be created in the table
+        List<IncomeW2> savedIncomeW2 = taxInfoService.saveW2Income(taxInfoDTO.getIncomeW2());
+        taxInfoDTO.setIncomeW2(savedIncomeW2);
       }
-
-      // Now save the incoming W2 records
-      // Incoming records that have ids indicate existing records, so those records will be updated
-      // Incoming records that don't have ids indicate new records, so new records will be created in the table
-      List<IncomeW2> savedIncomeW2 = taxInfoService.saveW2Income(taxInfoDTO.getIncomeW2());
+      
 
       // Create a set of 1099 IDs from the incoming 1099 list for efficient lookup
-      Set<Integer> incoming1099Ids = taxInfoDTO.getIncome1099().stream()
+      if (taxInfoDTO.getIncome1099() != null) {
+        Set<Integer> incoming1099Ids = taxInfoDTO.getIncome1099().stream()
                                                         .map(Income1099::getId)
                                                         .collect(Collectors.toSet());
       
-      // Identify 1099 records to delete
-      List<Income1099> income1099ToDelete = existingIncomes1099.stream()
-                                                        .filter(record -> !incoming1099Ids.contains(record.getId()))
-                                                        .collect(Collectors.toList());
+        // Identify 1099 records to delete
+        List<Income1099> income1099ToDelete = existingIncomes1099.stream()
+                                                          .filter(record -> !incoming1099Ids.contains(record.getId()))
+                                                          .collect(Collectors.toList());
 
-      // Delete identified 1099 records
-      for (Income1099 record : income1099ToDelete) {
-        income1099Service.deleteIncomeById(record.getId());
+        // Delete identified 1099 records
+        for (Income1099 record : income1099ToDelete) {
+          income1099Service.deleteIncomeById(record.getId());
+        }
+
+        // Now save the incoming 1099 records
+        // Incoming records that have ids indicate existing records, so those records will be updated
+        // Incoming records that don't have ids indicate new records, so new records will be created in the table
+        List<Income1099> savedIncome1099 = taxInfoService.save1099Income(taxInfoDTO.getIncome1099());
+        taxInfoDTO.setIncome1099(savedIncome1099);
       }
-
-      // Now save the incoming 1099 records
-      // Incoming records that have ids indicate existing records, so those records will be updated
-      // Incoming records that don't have ids indicate new records, so new records will be created in the table
-      List<Income1099> savedIncome1099 = taxInfoService.save1099Income(taxInfoDTO.getIncome1099());
+      
 
       // Update the TaxInfoDTO with all of the newly saved/updated records
       taxInfoDTO.setFilingStatus(filingStatus);
-      taxInfoDTO.setIncomeW2(savedIncomeW2);
-      taxInfoDTO.setIncome1099(savedIncome1099);
 
       return new ResponseEntity<TaxInfoDTO>(taxInfoDTO, HttpStatus.OK);
 
