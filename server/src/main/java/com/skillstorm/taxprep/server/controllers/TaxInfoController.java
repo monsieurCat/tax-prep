@@ -40,6 +40,9 @@ import com.skillstorm.taxprep.server.utilities.TaxCalculator;
 @RestController
 @RequestMapping("/tax_info")
 public class TaxInfoController {
+
+  @Autowired
+  TaxCalculator taxCalculator;
   
   @Autowired
   TaxInfoService taxInfoService;
@@ -96,17 +99,19 @@ public class TaxInfoController {
 
   @GetMapping("/calculate")
   public ResponseEntity<?> calculateTax(Principal principal) {
+    
     try {
       int userId = userService.findUserIdByUsername(principal.getName());
       TaxInfo taxInfo = taxInfoService.findTaxInfoByUserId(userId);
       List<IncomeW2> incomesW2 = incomeW2Service.getIncomeByTaxInfoId(taxInfo.getId());
       List<Income1099> incomes1099 = income1099Service.getIncomeByTaxInfoId(taxInfo.getId());
 
-      TaxCalculator taxCalculator = new TaxCalculator();
+      //TaxCalculator taxCalculator = new TaxCalculator();
       TaxResultsDTO results = taxCalculator.calculate(taxInfo, incomesW2, incomes1099);
 
       return new ResponseEntity<TaxResultsDTO>(results, HttpStatus.OK);
     } catch (Exception e) {
+      System.out.println("Error from calculator: " + e.getMessage());
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.singletonMap("message", e.getMessage()));
     }
     

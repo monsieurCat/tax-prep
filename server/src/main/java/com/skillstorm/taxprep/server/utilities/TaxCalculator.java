@@ -3,6 +3,7 @@ package com.skillstorm.taxprep.server.utilities;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.skillstorm.taxprep.server.dtos.TaxResultsDTO;
 import com.skillstorm.taxprep.server.models.FilingStatus;
@@ -13,14 +14,14 @@ import com.skillstorm.taxprep.server.models.TaxInfo;
 import com.skillstorm.taxprep.server.services.FilingStatusService;
 import com.skillstorm.taxprep.server.services.StandardizedDeductionService;
 import com.skillstorm.taxprep.server.services.TaxBracketService;
-
+@Component
 public class TaxCalculator {
 
   @Autowired
   FilingStatusService filingStatusService;
   
   @Autowired
-  TaxBracketService taxBracketService;
+  private TaxBracketService taxBracketService;
 
   @Autowired
   StandardizedDeductionService standardizedDeductionService;
