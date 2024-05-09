@@ -2,23 +2,31 @@ import { Label, TextInput, Form, FormGroup, ErrorMessage, Textarea, Fieldset, Bu
 import { Link, useNavigate } from "react-router-dom";
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { submitFullTaxInfo, updateW2Income } from '../redux/slices/taxSlice';
+import { fetchTaxInfo, submitFullTaxInfo, updateW2Income } from '../redux/slices/taxSlice';
 import { RootState } from "../redux/storeTypes";
+import { AppDispatch } from "../redux/store";
 
 const W2Income = (): React.ReactElement => {
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const currentTaxInfo = useSelector((state: RootState) => state.taxInfo);
 
-  const [w2Forms, setW2Forms] = useState(currentTaxInfo.w2Income || [{
-    income: 0, withholdings: 0, employerEin: '', employerStreet1: '', employerStreet2: '', employerCity: '', employerState: '', employerZipcode: ''}]);
+  useEffect(() => {
+    // Fetch tax information when the component mounts
+    dispatch(fetchTaxInfo());
+}, [dispatch]);
+
+  const [w2Forms, setW2Forms] = useState(currentTaxInfo.incomeW2 || [{
+    id: 0, income: 0, withholdings: 0, employerEin: '', employerStreet1: '', employerStreet2: '', employerCity: '', employerState: '', employerZipcode: ''}]);
 
     useEffect(() => {
-      if (currentTaxInfo.w2Income) {
-        setW2Forms(currentTaxInfo.w2Income);
+      console.log("W2 Forms Updated:", w2Forms);
+      if (currentTaxInfo.incomeW2) {
+        console.log("Initial load of W2 income:", currentTaxInfo.incomeW2);
+        setW2Forms(currentTaxInfo.incomeW2);
       }
-    }, [currentTaxInfo.w2Income]);
+    }, [currentTaxInfo.incomeW2]);
     
   
 
@@ -29,11 +37,13 @@ const W2Income = (): React.ReactElement => {
       ...newForms[index],
       [field]: (field === 'income' || field === 'withholdings') ? parseFloat(value) : value
     };
+    console.log(`W2 Form ${index} Change:`, newForms[index]);
     setW2Forms(newForms);
   };
 
   const handleAddForm = () => {
     setW2Forms([...w2Forms, {
+      id:0,
       income: 0,
       withholdings: 0,
       employerEin: '',
@@ -48,7 +58,9 @@ const W2Income = (): React.ReactElement => {
   // Updates Redux state and navigates to the next form
   const handleContinue = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
-    dispatch(updateW2Income({ forms: w2Forms }));
+    console.log("Submitting W2 Forms:", w2Forms);
+    await dispatch(updateW2Income({ forms: w2Forms }));
+    await dispatch(submitFullTaxInfo(currentTaxInfo));
     navigate('/income1099'); // Navigate to the next form
   };
   /*

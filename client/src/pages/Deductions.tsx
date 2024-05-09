@@ -2,7 +2,7 @@ import { Label, TextInput, FormGroup, ErrorMessage, Textarea, Fieldset, Button, 
 import { Form, Link, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { submitFullTaxInfo, updateDeductions } from '../redux/slices/taxSlice';
+import { submitFullTaxInfo, updateDonations, updateMedical, updateMortgageInterest, updateOtherDeduction, updateOtherIncome, updatePropertyTax, updateStudentLoanInterest } from '../redux/slices/taxSlice';
 import { RootState } from "../redux/storeTypes";
 import { AppDispatch } from "../redux/store";
 
@@ -12,36 +12,54 @@ export const Deductions = (): React.ReactElement => {
   const currentTaxInfo = useSelector((state: RootState) => state.taxInfo);
 
 
-  const [deductions, setDeductions] = useState(currentTaxInfo.deductions || {
-    mortgageInterest: 0,
-    donations: 0,
-    propertyTax: 0,
-    medical: 0,
-    studentLoanInterest: 0,
-    otherDeduction: 0,
-    otherIncome: 0
-});
+   // State for each deduction type
+   const [mortgageInterest, setMortgageInterest] = useState<number>(currentTaxInfo.mortgageInterest);
+   const [donations, setDonations] = useState<number>(currentTaxInfo.donations);
+   const [propertyTax, setPropertyTax] = useState<number>(currentTaxInfo.propertyTax);
+   const [medical, setMedical] = useState<number>(currentTaxInfo.medical);
+   const [studentLoanInterest, setStudentLoanInterest] = useState<number>(currentTaxInfo.studentLoanInterest);
+   const [otherDeduction, setOtherDeduction] = useState<number>(currentTaxInfo.otherDeduction);
+  
+ 
 
 useEffect(() => {
-  if (currentTaxInfo.deductions) {
-      setDeductions(currentTaxInfo.deductions);
-  }
-}, [currentTaxInfo.deductions]);
+  
+    setMortgageInterest(currentTaxInfo.mortgageInterest);
+    setDonations(currentTaxInfo.donations);
+    setPropertyTax(currentTaxInfo.propertyTax);
+    setMedical(currentTaxInfo.medical);
+    setStudentLoanInterest(currentTaxInfo.studentLoanInterest);
+    setOtherDeduction(currentTaxInfo.otherDeduction);
+   
+  
+}, [currentTaxInfo.mortgageInterest,
+  currentTaxInfo.donations,
+  currentTaxInfo.propertyTax,
+  currentTaxInfo.medical,
+  currentTaxInfo.studentLoanInterest,
+  currentTaxInfo.otherDeduction,
+ ]);
  
   
 
 
-const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  const { name, value } = e.target;
-  setDeductions(prev => ({ ...prev, [name]: parseFloat(value) || 0 }));
+const handleChange = (setter: React.Dispatch<React.SetStateAction<number>>) => (e: React.ChangeEvent<HTMLInputElement>) => {
+  setter(parseFloat(e.target.value) || 0);
 };
-
 
 
   // When form is submitted, update deductions in Redux
   const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
-    dispatch(updateDeductions(deductions));
+    
+    dispatch(updateMortgageInterest(mortgageInterest));
+    dispatch(updateDonations(donations));
+    dispatch(updatePropertyTax(propertyTax));
+    dispatch(updateMedical(medical));
+    dispatch(updateStudentLoanInterest(studentLoanInterest));
+    dispatch(updateOtherDeduction(otherDeduction));
+   
+    
     navigate('/review');
   };
 
@@ -103,27 +121,27 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 
 <Label htmlFor="mortgageInterest">Mortgage Interest</Label>
               <TextInput id="mortgageInterest" name="mortgageInterest" type="number"
-                value={deductions.mortgageInterest.toString()} onChange={handleChange} />
+                value={mortgageInterest.toString()} onChange={handleChange(setMortgageInterest)} />
               
               <Label htmlFor="donations">Donations</Label>
               <TextInput id="donations" name="donations" type="number"
-                value={deductions.donations.toString()} onChange={handleChange} />
+                value={donations.toString()} onChange={handleChange(setDonations)} />
               
               <Label htmlFor="propertyTax">Property Tax</Label>
               <TextInput id="propertyTax" name="propertyTax" type="number"
-                value={deductions.propertyTax.toString()} onChange={handleChange} />
+                value={propertyTax.toString()} onChange={handleChange(setPropertyTax)} />
 
               <Label htmlFor="medical">Medical Expenses</Label>
               <TextInput id="medical" name="medical" type="number"
-                value={deductions.medical.toString()} onChange={handleChange} />
+                value={medical.toString()} onChange={handleChange(setMedical)} />
 
               <Label htmlFor="studentLoanInterest">Student Loan Interest</Label>
               <TextInput id="studentLoanInterest" name="studentLoanInterest" type="number"
-                value={deductions.studentLoanInterest.toString()} onChange={handleChange} />
+                value={studentLoanInterest.toString()} onChange={handleChange(setStudentLoanInterest)} />
 
               <Label htmlFor="otherDeduction">Other Deductions</Label>
               <TextInput id="otherDeduction" name="otherDeduction" type="number"
-                value={deductions.otherDeduction.toString()} onChange={handleChange} />
+                value={otherDeduction.toString()} onChange={handleChange(setOtherDeduction)} />
 
               <ButtonGroup type="default" className="margin-top-4">
                 <Link to="/income1099" className="usa-button usa-button--outline">Back</Link>

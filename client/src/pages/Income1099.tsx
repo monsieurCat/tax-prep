@@ -13,7 +13,7 @@ export const Income1099 = (): React.ReactElement => {
   
 
   const [forms, setForms] = useState(currentTaxInfo.income1099 || [{
-    income: 0, withholdings: 0, employerEin: '', employerStreet1: '', employerStreet2: '', employerCity: '', employerState: '', employerZipcode: ''}]);
+   id: 0, income: 0, withholdings: 0, employerEin: '', employerStreet1: '', employerStreet2: '', employerCity: '', employerState: '', employerZipcode: ''}]);
 
     useEffect(() => {
       if (currentTaxInfo.income1099) {
@@ -33,7 +33,7 @@ export const Income1099 = (): React.ReactElement => {
   };
 
   const handleAddForm = () => {
-    setForms([...forms, { income: 0, withholdings: 0, employerEin: '', employerStreet1: '', employerStreet2: '', employerCity: '',  employerState: '', employerZipcode: '' }]);
+    setForms([...forms, { id:0, income: 0, withholdings: 0, employerEin: '', employerStreet1: '', employerStreet2: '', employerCity: '',  employerState: '', employerZipcode: '' }]);
   };
 
   const handleDeleteForm = (index: number) => {

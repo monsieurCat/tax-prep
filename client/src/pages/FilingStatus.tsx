@@ -2,7 +2,7 @@ import { Label, TextInput, FormGroup, ErrorMessage, Textarea, Form, Fieldset, Bu
 import { useNavigate, Link } from "react-router-dom";
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateFilingStatus, fetchFilingStatus, submitFullTaxInfo, fetchTaxInfo, updateLocalTaxInfo } from '../redux/slices/taxSlice';
+import { updateFilingStatus, fetchFilingStatus, submitFullTaxInfo, fetchTaxInfo, updateLocalTaxInfo, updateNumDependents } from '../redux/slices/taxSlice';
 import { AppDispatch } from '../redux/store';
 import { RootState } from "../redux/storeTypes";
 
@@ -15,11 +15,19 @@ const FilingStatus = (): React.ReactElement => {
   const navigate = useNavigate();
 
   const taxInfo = useSelector((state: RootState) => state.taxInfo); // Access the whole tax state
+
+  useEffect(() => {
+    // Fetch tax information when the component mounts
+    dispatch(fetchTaxInfo());
+}, [dispatch]);
   
   const [localFilingStatus, setLocalFilingStatus] = useState(taxInfo.filingStatus || {
     status: "Single",
     numDependents: 0,
   });
+
+  const [localStatus, setLocalStatus] = useState(taxInfo.filingStatus.status || "Single");
+const [localNumDependents, setLocalNumDependents] = useState(taxInfo.numDependents || 0);
 
 
 
@@ -34,32 +42,32 @@ useEffect(() => {
   }
 }, [dispatch, taxInfo.filingStatus]);*/
 
-
 useEffect(() => {
   if (taxInfo.filingStatus) {
-    setLocalFilingStatus(taxInfo.filingStatus);
+    setLocalStatus(taxInfo.filingStatus.status);
+    setLocalNumDependents(taxInfo.numDependents);
   }
-}, [taxInfo.filingStatus]);
+}, [taxInfo.filingStatus, taxInfo.numDependents]);
+
 
 
 
 
 const handleStatusChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  const { name, value } = event.target;
+  setLocalStatus(event.target.value);
+};
 
-  setLocalFilingStatus(prev => {
-    return {
-      ...prev,
-      [name]: name === "numDependents" ? parseInt(value) || 0 : value,
-    };
-  });
+const handleDependentsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  setLocalNumDependents(parseInt(event.target.value) || 0);
 };
 
 
-const handleSubmit = async (e: { preventDefault: () => void; }) => {
+const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
     
-    dispatch(updateFilingStatus(localFilingStatus));
+  await dispatch(updateFilingStatus({ status: localStatus }));
+  await dispatch(updateNumDependents(localNumDependents));
+  await dispatch(submitFullTaxInfo(taxInfo));
     navigate('/w2');
   };
 
@@ -111,13 +119,13 @@ const handleSubmit = async (e: { preventDefault: () => void; }) => {
                 <Radio id="surviving-spouse" name="filing-status" label="Qualifying Surviving Spouse" value="Qualifying Surviving Spouse" onChange={handleStatusChange} checked={filingStatus === 'Qualifying Surviving Spouse'} />
 */}
  {['Single', 'Married filing jointly', 'Married filing separately', 'Head of Household', 'Qualifying Surviving Spouse'].map(status => (
-                  <Radio key={status} id={status.replace(/\s+/g, '-').toLowerCase()} name="status" label={status} value={status} onChange={handleStatusChange} checked={localFilingStatus.status === status} />
+                  <Radio key={status} id={status.replace(/\s+/g, '-').toLowerCase()} name="status" label={status} value={status} onChange={handleStatusChange} checked={localStatus === status} />
                 ))}
               </Fieldset>
 
               <Label htmlFor="dependents">Dependents</Label>
               <TextInput id="dependents" name="numDependents" type="number"
-                value={localFilingStatus.numDependents.toString()} onChange={handleStatusChange} /> {/*make sure that name="numDependents" this should match the state object exactly. look at taxslice and the filingStatus interface to check.*/ }
+                value={localNumDependents.toString()} onChange={handleDependentsChange } /> {/*make sure that name="numDependents" this should match the state object exactly. look at taxslice and the filingStatus interface to check.*/ }
 
 
               <ButtonGroup type="default">

@@ -1,8 +1,8 @@
 import { Label, TextInput, Form, FormGroup, ErrorMessage, Textarea, Alert, Fieldset, Button, Checkbox, Grid, GridContainer, RequiredMarker, Select, DateRangePicker, DatePicker, ButtonGroup, ProcessListHeading, ProcessListItem, StepIndicator, StepIndicatorStep, Radio, TextInputMask, Accordion, Table } from "@trussworks/react-uswds";
 import { Link, useNavigate } from "react-router-dom";
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { submitFullTaxInfo } from '../redux/slices/taxSlice';
+import { fetchTaxInfo, submitFullTaxInfo } from '../redux/slices/taxSlice';
 import { AppDispatch } from "../redux/store";
 import { RootState } from "../redux/storeTypes";
 
@@ -11,7 +11,11 @@ export const Review = (): React.ReactElement => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const taxInfo = useSelector((state: RootState) => state.taxInfo);
- 
+  const { personalInfo, address } = useSelector((state: RootState) => state.user);
+  
+  useEffect(() => {
+    dispatch(fetchTaxInfo());
+  }, [dispatch]);
 
   const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
@@ -81,9 +85,22 @@ return (
                 <Link to="/personal-form" className="usa-button usa-button--outline">Edit</Link>
                 
               </ButtonGroup>
-          <p><strong>First Name:</strong> {taxInfo.personalInfo.firstName}</p>
-          <p><strong>Last Name:</strong> {taxInfo.personalInfo.lastName}</p>
-          <p><strong>SSN:</strong> {taxInfo.personalInfo.ssn}</p>
+              <p><strong>First Name:</strong> {personalInfo.firstName}</p>
+          <p><strong>Last Name:</strong> {personalInfo.lastName}</p>
+          <p><strong>SSN:</strong> {personalInfo.ssn}</p>
+          <p><strong>Email:</strong> {personalInfo.email}</p>
+          
+          <p><strong>Birthday:</strong> {personalInfo.birthday}</p>
+       
+          <p><strong>Street 1:</strong> {address.street1}</p>
+          <p><strong>Street 2:</strong> {address.street2}</p>
+          <p><strong>City:</strong> {address.city}</p>
+          <p><strong>State</strong> {address.state}</p>
+          <p><strong>Zip Code</strong> {address.postalCode}</p>
+
+
+
+
         </Grid>
 
         <Grid col={12}>
@@ -92,8 +109,8 @@ return (
                 <Link to="/filing-status" className="usa-button usa-button--outline">Edit</Link>
                 
               </ButtonGroup>
-              <p>Filing Status: {taxInfo.filingStatus.status}</p>
-              <p>Number of Dependents: {taxInfo.filingStatus.numDependents}</p>
+              <p><strong>Status:</strong> {taxInfo.filingStatus.status}</p>
+                  <p><strong>Dependents:</strong> {taxInfo.numDependents}</p>
           </Grid>
 
         <Grid col={12}>
@@ -102,12 +119,13 @@ return (
                 <Link to="/w2" className="usa-button usa-button--outline">Edit</Link>
                 
               </ButtonGroup>
-          {taxInfo.w2Income.map((w2, index) => (
-            <div key={index}>
-              <h3>W2 Form {index + 1}</h3>
-              <p>Income: {w2.income}</p>
-              <p>Withholdings: {w2.withholdings}</p>
-              <p>Employer EIN: {w2.employerEin}</p>
+              {taxInfo.incomeW2.map((w2, index) => (
+                    <div key={index}>
+                      <h3>W2 Form {index + 1}</h3>
+                      <p>Income: {w2.income}</p>
+                      <p>Withholdings: {w2.withholdings}</p>
+                      <p>Employer EIN: {w2.employerEin}</p>
+                      <p>Employer Address: {`${w2.employerStreet1}, ${w2.employerStreet2 ? w2.employerStreet2 + ', ' : ''}${w2.employerCity}, ${w2.employerState} ${w2.employerZipcode}`}</p>
             </div>
           ))}
         </Grid>
@@ -123,6 +141,8 @@ return (
               <h3>1099 Form {index + 1}</h3>
               <p>Income: {income.income}</p>
               <p>Withholdings: {income.withholdings}</p>
+              <p>Employer EIN: {income.employerEin}</p>
+              <p>Employer Address: {`${income.employerStreet1}, ${income.employerStreet2 ? income.employerStreet2 + ', ' : ''}${income.employerCity}, ${income.employerState} ${income.employerZipcode}`}</p>
             </div>
           ))}
         </Grid>
@@ -133,13 +153,13 @@ return (
                 <Link to="/deductions" className="usa-button usa-button--outline">Edit</Link>
                 
               </ButtonGroup>
-          <p>Mortgage Interest: {taxInfo.deductions.mortgageInterest}</p>
-          <p>Donations: {taxInfo.deductions.donations}</p>
-          <p>Property Tax: {taxInfo.deductions.propertyTax}</p>
-          <p>Medical Expenses: {taxInfo.deductions.medical}</p>
-          <p>Student Loan Interest: {taxInfo.deductions.studentLoanInterest}</p>
-          <p>Other Deductions: {taxInfo.deductions.otherDeduction}</p>
-          <p>Other Income: {taxInfo.deductions.otherIncome}</p>
+              <p>Mortgage Interest: {taxInfo.mortgageInterest}</p>
+                  <p>Donations: {taxInfo.donations}</p>
+                  <p>Property Tax: {taxInfo.propertyTax}</p>
+                  <p>Medical Expenses: {taxInfo.medical}</p>
+                  <p>Student Loan Interest: {taxInfo.studentLoanInterest}</p>
+                  <p>Other Deductions: {taxInfo.otherDeduction}</p>
+                  <p>Other Income: {taxInfo.otherIncome}</p>
         </Grid>
 
         <Grid col={12}>

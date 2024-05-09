@@ -22,13 +22,15 @@ export interface Address {
   postalCode: string;
 }
 
+
 export interface FilingStatus {
   status: string;
-  numDependents: number;
+ 
 }
 
 
 export interface W2Income {
+  id: number;
   income: number;
   withholdings: number;
   employerEin: string;
@@ -44,6 +46,7 @@ export interface UpdateW2IncomePayload {
 }
 
 export interface Income1099 {
+  id: number;
   income: number;
   withholdings: number;
   employerEin: string;
@@ -57,6 +60,7 @@ export interface UpdateIncome1099Payload {
   forms: Array<Partial<Income1099>>;
 }
 
+/*
 export interface Deductions {
   mortgageInterest: number;
   donations: number;
@@ -66,14 +70,21 @@ export interface Deductions {
   otherDeduction: number;
   otherIncome: number;
 }
+*/
 
 export interface TaxInfoState {
-    personalInfo: PersonalInfo;
-    address: Address;
+    
     filingStatus:FilingStatus;
-    w2Income: W2Income[];
+    numDependents: number;
+    incomeW2: W2Income[];
     income1099: Income1099[];
-    deductions: Deductions; 
+    mortgageInterest: number;
+    donations: number;
+    propertyTax: number;
+    medical: number;
+    studentLoanInterest: number;
+   otherDeduction: number;
+   otherIncome: number;
     loading: boolean; 
     error: string | null | unknown;  
 }
@@ -81,20 +92,20 @@ export interface TaxInfoState {
 
 // Define the initial state based on the interfaces.
 const initialState: TaxInfoState = {
-    personalInfo: { firstName: '', middleName: '', lastName: '', email: '', ssn: '', username: '', birthday: '', role: ''},
-    address: { street1: '', street2: '', city: '', state: '', postalCode: '' },
-    filingStatus: {status: '', numDependents: 0},
-    w2Income: [],
+    
+    filingStatus: {status: '',},
+    numDependents: 0,
+    incomeW2: [],
     income1099: [],
-    deductions: { 
+   
       mortgageInterest: 0,
       donations: 0,
       propertyTax: 0,
       medical: 0,
       studentLoanInterest: 0,
       otherDeduction: 0,
-      otherIncome: 0
-    },
+      otherIncome: 0,
+    
     loading: false,
     error: null,
   };
@@ -231,12 +242,14 @@ const taxInfoSlice = createSlice({
   initialState,
   reducers: {
     // Updates for single attributes
+    /*
     updatePersonalInfo: (state, action: PayloadAction<Partial<PersonalInfo>>) => {
       state.personalInfo = { ...state.personalInfo, ...action.payload };
     },
     updateAddress: (state, action: PayloadAction<Partial<Address>>) => {
       state.address = { ...state.address, ...action.payload };
     },
+    */
     setTaxInfo(state, action) {
       return { ...state, ...action.payload };
   },
@@ -244,19 +257,46 @@ const taxInfoSlice = createSlice({
     state.filingStatus =  { ...state.filingStatus, ...action.payload };
     
   },
+  updateNumDependents: (state, action: PayloadAction<number>) => {
+    state.numDependents =  action.payload;
+    
+  },
+  updateMortgageInterest: (state, action: PayloadAction<number>) => {
+      state.mortgageInterest = action.payload;
+    },
+    updateDonations: (state, action: PayloadAction<number>) => {
+      state.donations = action.payload;
+    },
+    updatePropertyTax: (state, action: PayloadAction<number>) => {
+      state.propertyTax = action.payload;
+    },
+    updateMedical: (state, action: PayloadAction<number>) => {
+      state.medical = action.payload;
+    },
+    updateStudentLoanInterest: (state, action: PayloadAction<number>) => {
+      state.studentLoanInterest = action.payload;
+    },
+    updateOtherDeduction: (state, action: PayloadAction<number>) => {
+      state.otherDeduction = action.payload;
+    },
+    updateOtherIncome: (state, action: PayloadAction<number>) => {
+      state.otherIncome = action.payload;
+    },
+  /*
   updateDeductions: (state, action: PayloadAction<Partial<Deductions>>) => {
     state.deductions = { ...state.deductions, ...action.payload };
-  },
+  },*/
+
 
     // Handling multiple W-2 and 1099 forms
     addW2Income: (state, action: PayloadAction<W2Income>) => {
-      state.w2Income.push(action.payload);
+      state.incomeW2.push(action.payload);
     },
      // Update an existing W2 form in the state
      updateW2Income: (state, action: PayloadAction<UpdateW2IncomePayload>) => {
       // Assumes forms array is completely replacing the existing w2Income
-      state.w2Income = action.payload.forms.map((form, index) => ({
-          ...state.w2Income[index],
+      state.incomeW2 = action.payload.forms.map((form, index) => ({
+          ...state.incomeW2[index],
           ...form
       }));
   },
@@ -281,11 +321,7 @@ const taxInfoSlice = createSlice({
       .addCase(fetchTaxInfo.pending, (state) => {
         state.loading = true;
       })
-      .addCase(fetchTaxInfo.fulfilled, (state, action) => {
-        state.personalInfo = action.payload.personalInfo;
-        state.address = action.payload.address;
-        state.loading = false;
-      })
+     
       .addCase(fetchTaxInfo.rejected, (state, action) => {
         state.error = action.error.message;
         state.loading = false;
@@ -293,10 +329,7 @@ const taxInfoSlice = createSlice({
       .addCase(updateTaxAddress.pending, (state) => {
         state.loading = true;
       })
-      .addCase(updateTaxAddress.fulfilled, (state, action) => {
-        state.address = action.payload; // Assuming the payload contains the updated address
-        state.loading = false;
-      })
+     
       .addCase(updateTaxAddress.rejected, (state, action) => {
         state.error = action.payload;
         state.loading = false;
@@ -306,10 +339,7 @@ const taxInfoSlice = createSlice({
        .addCase(updateUserInformation.pending, (state) => {
         state.loading = true;
     })
-    .addCase(updateUserInformation.fulfilled, (state, action) => {
-        state.personalInfo = action.payload; // Assuming the payload contains the updated user info
-        state.loading = false;
-    })
+   
     .addCase(updateUserInformation.rejected, (state, action) => {
         state.error = action.error.message;
         state.loading = false;
@@ -320,10 +350,7 @@ const taxInfoSlice = createSlice({
       state.loading = true;
       state.error = null;
   })
-  .addCase(fetchUserInfo.fulfilled, (state, action) => {
-      state.personalInfo = action.payload;
-      state.loading = false;
-  })
+ 
   .addCase(fetchUserInfo.rejected, (state, action) => {
       state.error = action.payload as string;
       state.loading = false;
@@ -350,11 +377,13 @@ const taxInfoSlice = createSlice({
   })
   .addCase(submitFullTaxInfo.fulfilled, (state, action) => {
     // Assuming the backend returns the full updated tax info
+    /*
     state.personalInfo = action.payload.personalInfo;
     state.address = action.payload.address;
+    */
     state.filingStatus = action.payload.filingStatus;
-    state.w2Income = action.payload.w2Income;
-    state.income1099 = action.payload.income1099;
+    state.incomeW2 = action.payload.incomeW2;
+    state.income1099 = action.payload;
     state.loading = false;
   })
   .addCase(submitFullTaxInfo.rejected, (state, action) => {
@@ -382,15 +411,24 @@ const taxInfoSlice = createSlice({
 });
 
 export const {
+  /*
   updatePersonalInfo,
   updateAddress,
+  */
   updateFilingStatus,
   addW2Income,
   updateW2Income,
   addIncome1099,
   deleteIncome1099,
   updateIncome1099,
-  updateDeductions,
+  updateMortgageInterest,
+  updateDonations,
+  updatePropertyTax,
+  updateMedical,
+  updateStudentLoanInterest,
+  updateNumDependents,
+  updateOtherDeduction,
+  updateOtherIncome,
   setTaxInfo
 } = taxInfoSlice.actions;
 

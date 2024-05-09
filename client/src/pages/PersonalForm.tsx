@@ -1,58 +1,48 @@
 import { Label, TextInput, FormGroup, ErrorMessage, Textarea, Fieldset, Form, Button, Checkbox, Grid, GridContainer, RequiredMarker, Select, DateRangePicker, DatePicker, ButtonGroup, ProcessListHeading, ProcessListItem, StepIndicator, StepIndicatorStep, TextInputMask } from "@trussworks/react-uswds";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
-import { PersonalInfo, updatePersonalInfo, fetchTaxInfo, updateTaxAddress, updateUserInformation, updateAddress, fetchUserInfo} from '../redux/slices/taxSlice';
 import React, { useEffect, useState } from 'react';
 import { RootState } from '../redux/storeTypes';
 import { AppDispatch } from '../redux/store';
+import { fetchUserInfo, updateUserInformation, updateAddress, fetchAddress } from '../redux/slices/userSlice';
+
+
 
 const PersonalForm = (): React.ReactElement => {
 
 
   const dispatch = useDispatch<AppDispatch>();
 const navigate = useNavigate(); 
-const { personalInfo, address, loading, error } = useSelector((state: RootState) => state.taxInfo);
+const { personalInfo, address} = useSelector((state: RootState) => state.user);
+const [personalFormData, setPersonalFormData] = useState(personalInfo);
+const [addressFormData, setAddressFormData] = useState(address);
 
-
-
-const [formPersonalInfo, setFormPersonalInfo] = useState({
-  ...{
-      firstName: '',
-      middleName: '',
-      lastName: '',
-      email: '',
-      ssn: '',
-      username: '',
-      birthday: '',
-      role: ''
-  },
-  ...personalInfo
-});
-
-
-
-const [formAddress, setFormAddress] = useState({
-  ...{
-      street1: '',
-      street2: '',
-      city: '',
-      state: '',
-      postalCode: ''
-  },
-  ...address
-});
-
-
-
-console.log('Initial personalInfo state:', formPersonalInfo);
-console.log('Initial address state:', formAddress);
 
 
 useEffect(() => {
-  dispatch(fetchUserInfo());
+  if (!personalInfo.firstName) { // Check if personalInfo is initially empty and fetch
+    dispatch(fetchUserInfo());
+  }
+  if (!address.street1) { // Check if address is initially empty and fetch
+    dispatch(fetchAddress());
+  }
 }, [dispatch]);
 
+useEffect(() => {
+  setPersonalFormData(personalInfo); // Update local state when Redux state updates
+  setAddressFormData(address);
+}, [personalInfo, address]);
 
+
+
+
+
+
+
+
+
+
+/*
 useEffect(() => {
 
   console.log('Updated personalInfo from Redux:', personalInfo);
@@ -74,7 +64,7 @@ useEffect(() => {
   }
 }, [personalInfo, address]);
 
-
+*/
 
 
 
@@ -106,7 +96,7 @@ const formatDate = (date: string | number | Date) => {
 const handleDateChange = (newDate?: string) => {
   if (newDate) {
     const formattedDate = formatDate(newDate); // Assume formatDate can handle the date string correctly
-    setFormPersonalInfo(prev => ({
+    setPersonalFormData((prev: any) => ({
         ...prev,
         birthday: formattedDate
     }));
@@ -128,16 +118,14 @@ console.log(`Handling change for ${name}:`, value);
   // Update local form state for address fields
   if (name.startsWith("address-")) {
       const key = name.replace("address-", "");
-      setFormAddress(prev => ({ ...prev, [key]: value }));
+      setAddressFormData((prev: any) => ({ ...prev, [key]: value }));
   } else {
       // Update local form state for personal info fields
-      setFormPersonalInfo(prev => ({ ...prev, [name]: value }));
+      setPersonalFormData((prev: any) => ({ ...prev, [name]: value }));
   }
 };
 
 
-if (loading) return <div>Loading...</div>;
-if (error) return <div>Error: ..console.log(error.message)</div>;
 /*
     const handleChange = (e: { target: { name: any; value: any; }; }) => {
         const { name, value } = e.target;
@@ -152,17 +140,21 @@ if (error) return <div>Error: ..console.log(error.message)</div>;
       dispatch(updatePersonalInfo(personalInfo));
   };
   */
+  
 
 
   const handleForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('Formatted Date:', formPersonalInfo.birthday); 
-    console.log('Submitting personal info:', formPersonalInfo);
-    console.log('Submitting address:', formAddress);
+     
+    console.log('Submitting personal info:', personalFormData);
+  
     try {
+/*
+      dispatch(updateUserInformation(personalFormData));
+dispatch(updateAddress({ street1: addressFormData.street1, street2: addressFormData.street2, city: addressFormData.city, state: addressFormData.state, postalCode: addressFormData.postalCode}));*/
+dispatch(updateUserInformation(personalFormData)),
+dispatch(updateAddress(addressFormData))
 
-         dispatch(updateUserInformation(formPersonalInfo));
-        dispatch(updateTaxAddress({ addressData: formAddress }));
         navigate('/filing-status'); 
     } catch (error) {
         console.error('Update failed:', error);
@@ -215,13 +207,16 @@ if (error) return <div>Error: ..console.log(error.message)</div>;
 
 
           <Label htmlFor="first-name">First name</Label>
-          <TextInput id="first-name" name="firstName" type="text" onChange={handleChange} value={formPersonalInfo.firstName} />
+          <TextInput id="first-name" name="firstName" type="text" onChange={handleChange} value={personalFormData.firstName} />
           <Label htmlFor="middle-name" hint=" ">
             Middle initial
           </Label>
-          <TextInput id="middle-name" name="middleName" type="text" onChange={handleChange} value={formPersonalInfo.middleName}/>
+          <TextInput id="middle-name" name="middleName" type="text" onChange={handleChange} value={personalFormData.middleName}/>
           <Label htmlFor="last-name">Last name</Label>
-          <TextInput id="last-name" name="lastName" type="text" onChange={handleChange} value={formPersonalInfo.lastName} />
+          <TextInput id="last-name" name="lastName" type="text" onChange={handleChange} value={personalFormData.lastName} />
+
+          <Label htmlFor="email">Email</Label>
+          <TextInput id="email" name="email" type="text" onChange={handleChange} value={personalFormData.email} />
 
           <Label htmlFor="birthdate">Date of birth</Label>
          {/* <DatePicker id="birthdate" name="birthday"  value={personalInfo.birthday} onChange={(e: any) => dispatch(updatePersonalInfo({ ...personalInfo, birthday: e.target.value }))} />*/}
@@ -229,7 +224,7 @@ if (error) return <div>Error: ..console.log(error.message)</div>;
     id="birthdate"
     name="birthday"
     type="date"
-    value={formPersonalInfo.birthday || ''}
+    value={personalFormData.birthday || ''}
     onChange={handleDateChange}
 />
 
@@ -240,7 +235,7 @@ if (error) return <div>Error: ..console.log(error.message)</div>;
     <span id="hint-ssn" className="usa-hint">
       For example, 123 45 6789
     </span>
-    <TextInputMask id="input-type-ssn" name="ssn" type="text" aria-labelledby="first-name" aria-describedby="hint-ssn" mask="___ __ ____" pattern="^(?!(000|666|9))\d{3} (?!00)\d{2} (?!0000)\d{4}$" onChange={handleChange}  value={formPersonalInfo.ssn}/>
+    <TextInputMask id="input-type-ssn" name="ssn" type="text" aria-labelledby="first-name" aria-describedby="hint-ssn" mask="___ __ ____" pattern="^(?!(000|666|9))\d{3} (?!00)\d{2} (?!0000)\d{4}$" onChange={handleChange}  value={personalFormData.ssn}/>
 
         </Fieldset>
         </Form>
@@ -256,20 +251,20 @@ if (error) return <div>Error: ..console.log(error.message)</div>;
             ).
           </p>
           <Label htmlFor="mailing-address-1">Street address</Label>
-          <TextInput id="mailing-address-1" name="address-street1" type="text" onChange={handleChange} value={formAddress.street1} />
+          <TextInput id="mailing-address-1" name="address-street1" type="text" onChange={handleChange} value={addressFormData.street1} />
 
           <Label htmlFor="mailing-address-2">Street address line 2</Label>
-          <TextInput id="mailing-address-2" name="address-street2" type="text"onChange={handleChange} value={formAddress.street2}/>
+          <TextInput id="mailing-address-2" name="address-street2" type="text"onChange={handleChange} value={addressFormData.street2}/>
 
           <Label htmlFor="city" requiredMarker>
             City
           </Label>
-          <TextInput id="city" name="address-city" type="text" required onChange={handleChange} value={formAddress.city}/>
+          <TextInput id="city" name="address-city" type="text" required onChange={handleChange} value={addressFormData.city}/>
 
           <Label htmlFor="state" requiredMarker>
             State, territory, or military post
           </Label>
-          <Select id="state" name="address-state" required onChange={handleChange} value={formAddress.state}>
+          <Select id="state" name="address-state" required onChange={handleChange} value={addressFormData.state}>
             <option>- Select -</option>
             <option value="AL">Alabama</option>
             <option value="AK">Alaska</option>
@@ -336,7 +331,7 @@ if (error) return <div>Error: ..console.log(error.message)</div>;
     <span id="hint-zip" className="usa-hint">
       For example, 12345-6789
     </span>
-    <TextInputMask id="input-type-zip" name="address-postalCode" type="text" aria-labelledby="zip" aria-describedby="hint-zip" mask="_____-____" pattern="^[0-9]{5}(?:-[0-9]{4})?$" onChange={handleChange} value={formAddress.postalCode}/>
+    <TextInputMask id="input-type-zip" name="address-postalCode" type="text" aria-labelledby="zip" aria-describedby="hint-zip" mask="_____-____" pattern="^[0-9]{5}(?:-[0-9]{4})?$" onChange={handleChange} value={addressFormData.postalCode}/>
 
 
         </Fieldset>
