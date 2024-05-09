@@ -216,8 +216,12 @@ public class TaxInfoController {
         // Now save the incoming W2 records
         // Incoming records that have ids indicate existing records, so those records will be updated
         // Incoming records that don't have ids indicate new records, so new records will be created in the table
-        List<IncomeW2> savedIncomeW2 = taxInfoService.saveW2Income(taxInfoDTO.getIncomeW2());
+        List<IncomeW2> savedIncomeW2 = taxInfoService.saveW2Income(taxInfoDTO.getIncomeW2(), taxInfo.getId());
         taxInfoDTO.setIncomeW2(savedIncomeW2);
+      } else {
+        for (IncomeW2 record : existingIncomesW2) {
+          incomeW2Service.deleteIncomeById(record.getId());
+        }
       }
       
 
@@ -240,8 +244,12 @@ public class TaxInfoController {
         // Now save the incoming 1099 records
         // Incoming records that have ids indicate existing records, so those records will be updated
         // Incoming records that don't have ids indicate new records, so new records will be created in the table
-        List<Income1099> savedIncome1099 = taxInfoService.save1099Income(taxInfoDTO.getIncome1099());
+        List<Income1099> savedIncome1099 = taxInfoService.save1099Income(taxInfoDTO.getIncome1099(), taxInfo.getId());
         taxInfoDTO.setIncome1099(savedIncome1099);
+      } else {
+        for (Income1099 record : existingIncomes1099) {
+          incomeW2Service.deleteIncomeById(record.getId());
+        }
       }
       
 
