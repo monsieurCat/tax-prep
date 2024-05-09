@@ -12,24 +12,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.HttpClientErrorException.NotFound;
 
 import com.skillstorm.taxprep.server.dtos.FilingStatusDTO;
 import com.skillstorm.taxprep.server.dtos.TaxInfoDTO;
 import com.skillstorm.taxprep.server.dtos.TaxResultsDTO;
 import com.skillstorm.taxprep.server.exceptions.NotFoundException;
-import com.skillstorm.taxprep.server.models.AppUser;
 import com.skillstorm.taxprep.server.models.FilingStatus;
 import com.skillstorm.taxprep.server.models.Income1099;
 import com.skillstorm.taxprep.server.models.IncomeW2;
 import com.skillstorm.taxprep.server.models.TaxInfo;
-import com.skillstorm.taxprep.server.repositories.IncomeW2Repository;
 import com.skillstorm.taxprep.server.services.FilingStatusService;
 import com.skillstorm.taxprep.server.services.Income1099Service;
 import com.skillstorm.taxprep.server.services.IncomeW2Service;
@@ -40,9 +36,6 @@ import com.skillstorm.taxprep.server.utilities.TaxCalculator;
 @RestController
 @RequestMapping("/tax_info")
 public class TaxInfoController {
-
-  @Autowired
-  TaxCalculator taxCalculator;
   
   @Autowired
   TaxInfoService taxInfoService;
@@ -58,6 +51,9 @@ public class TaxInfoController {
 
   @Autowired
   FilingStatusService filingStatusService;
+
+  @Autowired
+  TaxCalculator taxCalculator;
 
   @GetMapping()
   public ResponseEntity<?> findTaxInfo(Principal principal) {
@@ -106,7 +102,6 @@ public class TaxInfoController {
       List<IncomeW2> incomesW2 = incomeW2Service.getIncomeByTaxInfoId(taxInfo.getId());
       List<Income1099> incomes1099 = income1099Service.getIncomeByTaxInfoId(taxInfo.getId());
 
-      //TaxCalculator taxCalculator = new TaxCalculator();
       TaxResultsDTO results = taxCalculator.calculate(taxInfo, incomesW2, incomes1099);
 
       return new ResponseEntity<TaxResultsDTO>(results, HttpStatus.OK);
@@ -114,7 +109,6 @@ public class TaxInfoController {
       System.out.println("Error from calculator: " + e.getMessage());
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.singletonMap("message", e.getMessage()));
     }
-    
   }
 
   @GetMapping("/filing_status")
@@ -168,13 +162,6 @@ public class TaxInfoController {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.singletonMap("message", e.getMessage()));
     }
   }
-
-  /* @PostMapping()
-  public ResponseEntity<?> createTaxInfo(Principal principal, @RequestBody TaxInfo taxInfo) {
-    TaxInfo createdTaxInfo = taxInfoService.saveTaxInfo(taxInfo);
-
-    return new ResponseEntity<TaxInfo>(createdTaxInfo, HttpStatus.OK);
-  } */
 
   @PostMapping("/full")
   public ResponseEntity<?> createFullTaxInfo(Principal principal, @RequestBody TaxInfoDTO taxInfoDTO) {
@@ -267,13 +254,6 @@ public class TaxInfoController {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.singletonMap("message", e.getMessage()));
     }
   }
-
-  /* @PutMapping()
-  public ResponseEntity<?> updateTaxInfo(@RequestBody TaxInfo taxInfo) {
-    TaxInfo updatedTaxInfo = taxInfoService.saveTaxInfo(taxInfo);
-
-    return new ResponseEntity<TaxInfo>(updatedTaxInfo, HttpStatus.OK);
-  } */
 
   @DeleteMapping()
   public void deleteTaxInfo(@RequestBody TaxInfo taxInfo) {
