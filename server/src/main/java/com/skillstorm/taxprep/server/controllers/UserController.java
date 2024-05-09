@@ -12,6 +12,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -58,7 +60,7 @@ public class UserController {
   }
 
   @PutMapping("/update")
-  public ResponseEntity<?> updateUser(Principal principal, @RequestBody AppUserDTO user) {
+  public ResponseEntity<?> updateUser(Principal principal, @Validated @RequestBody AppUserDTO user) {
     System.out.println("Received update request with data: " + user); // Log the received data
     try {
       if (principal != null) {

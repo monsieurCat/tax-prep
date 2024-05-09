@@ -15,6 +15,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "users")
@@ -41,9 +42,11 @@ public class AppUser implements UserDetails {
   private String ssn;
 
   @Column
+  @NotBlank
   private String username;
 
   @Column
+  @NotBlank
   private String password;
 
   @Column
