@@ -100,7 +100,9 @@ public class TaxInfoService {
 
   public List<IncomeW2> saveW2Income(List<IncomeW2> incomesW2, int taxInfoId) {
     for (int i = 0; i < incomesW2.size(); i++) {
-      IncomeW2 savedIncome = incomeW2Repository.save(incomesW2.get(i));
+      IncomeW2 curIncome = incomesW2.get(i);
+      curIncome.setTaxInfoId(taxInfoId);
+      IncomeW2 savedIncome = incomeW2Repository.save(curIncome);
       incomesW2.set(i, savedIncome);
     }
     return incomesW2;
@@ -108,7 +110,9 @@ public class TaxInfoService {
 
   public List<Income1099> save1099Income(List<Income1099> incomes1099, int taxInfoId) {
     for (int i = 0; i < incomes1099.size(); i++) {
-      Income1099 savedIncome = income1099Repository.save(incomes1099.get(i));
+      Income1099 curIncome = incomes1099.get(i);
+      curIncome.setTaxInfoId(taxInfoId);
+      Income1099 savedIncome = income1099Repository.save(curIncome);
       incomes1099.set(i, savedIncome);
     }
     return incomes1099;
