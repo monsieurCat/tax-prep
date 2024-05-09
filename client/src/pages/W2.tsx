@@ -46,8 +46,8 @@ const W2Income = (): React.ReactElement => {
   };
 
   // Updates Redux state and navigates to the next form
-  const handleContinue = () => {
-
+  const handleContinue = async (e: { preventDefault: () => void; }) => {
+    e.preventDefault();
     dispatch(updateW2Income({ forms: w2Forms }));
     navigate('/income1099'); // Navigate to the next form
   };

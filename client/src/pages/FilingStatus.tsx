@@ -56,7 +56,8 @@ const handleStatusChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 };
 
 
-  const handleSubmit = () => {
+const handleSubmit = async (e: { preventDefault: () => void; }) => {
+  e.preventDefault();
     
     dispatch(updateFilingStatus(localFilingStatus));
     navigate('/w2');

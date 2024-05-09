@@ -44,8 +44,8 @@ export const Income1099 = (): React.ReactElement => {
     dispatch(deleteIncome1099(index));
   };
 
-  const handleContinue = () => {
-
+  const handleContinue = async (e: { preventDefault: () => void; }) => {
+    e.preventDefault();
     dispatch(updateIncome1099({ forms: forms }));
     navigate('/deductions'); // Navigate to the next form
   };

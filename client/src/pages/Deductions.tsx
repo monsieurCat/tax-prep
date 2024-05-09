@@ -39,7 +39,8 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 
 
   // When form is submitted, update deductions in Redux
-  const handleSubmit = () => {
+  const handleSubmit = async (e: { preventDefault: () => void; }) => {
+    e.preventDefault();
     dispatch(updateDeductions(deductions));
     navigate('/review');
   };

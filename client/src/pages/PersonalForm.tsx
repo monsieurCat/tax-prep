@@ -1,34 +1,85 @@
 import { Label, TextInput, FormGroup, ErrorMessage, Textarea, Fieldset, Form, Button, Checkbox, Grid, GridContainer, RequiredMarker, Select, DateRangePicker, DatePicker, ButtonGroup, ProcessListHeading, ProcessListItem, StepIndicator, StepIndicatorStep, TextInputMask } from "@trussworks/react-uswds";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
-import { PersonalInfo, updatePersonalInfo, fetchTaxInfo, updateTaxAddress, updateUserInformation, updateAddress} from '../redux/slices/taxSlice';
-import React, { useEffect } from 'react';
+import { PersonalInfo, updatePersonalInfo, fetchTaxInfo, updateTaxAddress, updateUserInformation, updateAddress, fetchUserInfo} from '../redux/slices/taxSlice';
+import React, { useEffect, useState } from 'react';
 import { RootState } from '../redux/storeTypes';
 import { AppDispatch } from '../redux/store';
 
 const PersonalForm = (): React.ReactElement => {
 
 
-  const dispatch: AppDispatch = useDispatch(); 
+  const dispatch = useDispatch<AppDispatch>();
 const navigate = useNavigate(); 
 const { personalInfo, address, loading, error } = useSelector((state: RootState) => state.taxInfo);
 
-/*
+
+
+const [formPersonalInfo, setFormPersonalInfo] = useState({
+  ...{
+      firstName: '',
+      middleName: '',
+      lastName: '',
+      email: '',
+      ssn: '',
+      username: '',
+      birthday: '',
+      role: ''
+  },
+  ...personalInfo
+});
+
+
+
+const [formAddress, setFormAddress] = useState({
+  ...{
+      street1: '',
+      street2: '',
+      city: '',
+      state: '',
+      postalCode: ''
+  },
+  ...address
+});
+
+
+
+console.log('Initial personalInfo state:', formPersonalInfo);
+console.log('Initial address state:', formAddress);
+
+
 useEffect(() => {
-  // Consider dispatching fetchTaxInfo() if necessary here to load initial form data
-  dispatch(fetchTaxInfo());
+  dispatch(fetchUserInfo());
 }, [dispatch]);
 
-const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
-  dispatch(updateTaxAddress({ addressData: address }));
-  // You may want to navigate on successful update
-  navigate('/next-page-route');
-};
 
-*/
+useEffect(() => {
 
-const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  console.log('Updated personalInfo from Redux:', personalInfo);
+  console.log('Updated address from Redux:', address);
+  if (personalInfo) {
+    setFormPersonalInfo({
+      firstName: personalInfo.firstName || '',
+      middleName: personalInfo.middleName || '',
+      lastName: personalInfo.lastName || '',
+      email: personalInfo.email || '',
+      ssn: personalInfo.ssn || '',
+      username: personalInfo.username || '',
+      birthday: personalInfo.birthday || '',
+      role: personalInfo.role || '',
+    });
+  }
+  if (address) {
+      setFormAddress(address);
+  }
+}, [personalInfo, address]);
+
+
+
+
+
+/*  this is the most recent one out of the other!!! 
+const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
   const { name, value } = e.target;
   if (name.startsWith("address-")) {
     // This removes the 'address-' prefix and uses the rest as the key for the address state
@@ -38,6 +89,55 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
     dispatch(updatePersonalInfo({ ...personalInfo, [name]: value }));
   }
 };
+*/
+
+const formatDate = (date: string | number | Date) => {
+  if (!date) return '';
+  const d = new Date(date);
+  let month = `${d.getMonth() + 1}`;
+  let day = `${d.getDate()}`;
+  const year = d.getFullYear();
+  if (month.length < 2) month = '0' + month;
+  if (day.length < 2) day = '0' + day;
+  return [year, month, day].join('-');
+};
+
+
+const handleDateChange = (newDate?: string) => {
+  if (newDate) {
+    const formattedDate = formatDate(newDate); // Assume formatDate can handle the date string correctly
+    setFormPersonalInfo(prev => ({
+        ...prev,
+        birthday: formattedDate
+    }));
+  }
+};
+
+const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement> | Date) => {
+  let name, value;
+
+   // Check if the event is a date (from DatePicker)
+   if (e instanceof Date) {
+    name = 'birthday'; // the field name this DatePicker controls
+    value = formatDate(e);   // Format date as needed
+} else {
+    name = e.target.name;
+    value = e.target.value;
+}
+console.log(`Handling change for ${name}:`, value);
+  // Update local form state for address fields
+  if (name.startsWith("address-")) {
+      const key = name.replace("address-", "");
+      setFormAddress(prev => ({ ...prev, [key]: value }));
+  } else {
+      // Update local form state for personal info fields
+      setFormPersonalInfo(prev => ({ ...prev, [name]: value }));
+  }
+};
+
+
+if (loading) return <div>Loading...</div>;
+if (error) return <div>Error: ..console.log(error.message)</div>;
 /*
     const handleChange = (e: { target: { name: any; value: any; }; }) => {
         const { name, value } = e.target;
@@ -56,9 +156,13 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
 
   const handleForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log('Formatted Date:', formPersonalInfo.birthday); 
+    console.log('Submitting personal info:', formPersonalInfo);
+    console.log('Submitting address:', formAddress);
     try {
-        await dispatch(updateUserInformation(personalInfo));
-        await dispatch(updateTaxAddress({ addressData: address }));
+
+         dispatch(updateUserInformation(formPersonalInfo));
+        dispatch(updateTaxAddress({ addressData: formAddress }));
         navigate('/filing-status'); 
     } catch (error) {
         console.error('Update failed:', error);
@@ -111,16 +215,24 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
 
 
           <Label htmlFor="first-name">First name</Label>
-          <TextInput id="first-name" name="firstName" type="text" onChange={handleChange} value={personalInfo.firstName} />
+          <TextInput id="first-name" name="firstName" type="text" onChange={handleChange} value={formPersonalInfo.firstName} />
           <Label htmlFor="middle-name" hint=" ">
             Middle initial
           </Label>
-          <TextInput id="middle-name" name="middleName" type="text" onChange={handleChange} value={personalInfo.middleName}/>
+          <TextInput id="middle-name" name="middleName" type="text" onChange={handleChange} value={formPersonalInfo.middleName}/>
           <Label htmlFor="last-name">Last name</Label>
-          <TextInput id="last-name" name="lastName" type="text" onChange={handleChange} value={personalInfo.lastName} />
+          <TextInput id="last-name" name="lastName" type="text" onChange={handleChange} value={formPersonalInfo.lastName} />
 
           <Label htmlFor="birthdate">Date of birth</Label>
-          <DatePicker id="birthdate" name="birthdate"  value={personalInfo.birthdate} onChange={(e: any) => dispatch(updatePersonalInfo({ ...personalInfo, birthdate: e.target.value }))} />
+         {/* <DatePicker id="birthdate" name="birthday"  value={personalInfo.birthday} onChange={(e: any) => dispatch(updatePersonalInfo({ ...personalInfo, birthday: e.target.value }))} />*/}
+         <DatePicker
+    id="birthdate"
+    name="birthday"
+    type="date"
+    value={formPersonalInfo.birthday || ''}
+    onChange={handleDateChange}
+/>
+
 
           <Label id="first-name" htmlFor="first-name">
       Social Security Number
@@ -128,7 +240,7 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
     <span id="hint-ssn" className="usa-hint">
       For example, 123 45 6789
     </span>
-    <TextInputMask id="input-type-ssn" name="ssn" type="text" aria-labelledby="first-name" aria-describedby="hint-ssn" mask="___ __ ____" pattern="^(?!(000|666|9))\d{3} (?!00)\d{2} (?!0000)\d{4}$" onChange={handleChange}  value={personalInfo.ssn}/>
+    <TextInputMask id="input-type-ssn" name="ssn" type="text" aria-labelledby="first-name" aria-describedby="hint-ssn" mask="___ __ ____" pattern="^(?!(000|666|9))\d{3} (?!00)\d{2} (?!0000)\d{4}$" onChange={handleChange}  value={formPersonalInfo.ssn}/>
 
         </Fieldset>
         </Form>
@@ -144,20 +256,20 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
             ).
           </p>
           <Label htmlFor="mailing-address-1">Street address</Label>
-          <TextInput id="mailing-address-1" name="address-street1" type="text" onChange={handleChange} value={address.street1} />
+          <TextInput id="mailing-address-1" name="address-street1" type="text" onChange={handleChange} value={formAddress.street1} />
 
           <Label htmlFor="mailing-address-2">Street address line 2</Label>
-          <TextInput id="mailing-address-2" name="address-street2" type="text"onChange={handleChange} value={address.street2}/>
+          <TextInput id="mailing-address-2" name="address-street2" type="text"onChange={handleChange} value={formAddress.street2}/>
 
           <Label htmlFor="city" requiredMarker>
             City
           </Label>
-          <TextInput id="city" name="address-city" type="text" required onChange={handleChange} value={address.city}/>
+          <TextInput id="city" name="address-city" type="text" required onChange={handleChange} value={formAddress.city}/>
 
           <Label htmlFor="state" requiredMarker>
             State, territory, or military post
           </Label>
-          <Select id="state" name="address-state" required onChange={handleChange} value={address.state}>
+          <Select id="state" name="address-state" required onChange={handleChange} value={formAddress.state}>
             <option>- Select -</option>
             <option value="AL">Alabama</option>
             <option value="AK">Alaska</option>
@@ -224,7 +336,7 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
     <span id="hint-zip" className="usa-hint">
       For example, 12345-6789
     </span>
-    <TextInputMask id="input-type-zip" name="address-zip" type="text" aria-labelledby="zip" aria-describedby="hint-zip" mask="_____-____" pattern="^[0-9]{5}(?:-[0-9]{4})?$" onChange={handleChange} value={address.zip}/>
+    <TextInputMask id="input-type-zip" name="address-postalCode" type="text" aria-labelledby="zip" aria-describedby="hint-zip" mask="_____-____" pattern="^[0-9]{5}(?:-[0-9]{4})?$" onChange={handleChange} value={formAddress.postalCode}/>
 
 
         </Fieldset>

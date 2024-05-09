@@ -7,8 +7,11 @@ export interface PersonalInfo {
   firstName: string;
   middleName: string;
   lastName: string;
-  birthdate: string;
+  email: string;
   ssn: string;
+  username: string;
+  birthday: string;
+  role: string;
 }
 
 export interface Address {
@@ -16,7 +19,7 @@ export interface Address {
   street2: string;
   city: string;
   state: string;
-  zip: string;
+  postalCode: string;
 }
 
 export interface FilingStatus {
@@ -78,8 +81,8 @@ export interface TaxInfoState {
 
 // Define the initial state based on the interfaces.
 const initialState: TaxInfoState = {
-    personalInfo: { firstName: '', middleName: '', lastName: '', birthdate: '', ssn: '' },
-    address: { street1: '', street2: '', city: '', state: '', zip: '' },
+    personalInfo: { firstName: '', middleName: '', lastName: '', email: '', ssn: '', username: '', birthday: '', role: ''},
+    address: { street1: '', street2: '', city: '', state: '', postalCode: '' },
     filingStatus: {status: '', numDependents: 0},
     w2Income: [],
     income1099: [],
@@ -181,6 +184,18 @@ export const updateUserInformation = createAsyncThunk(
           return response;
       } catch (error) {
           return rejectWithValue((error as any).toString());
+      }
+  }
+);
+
+export const fetchUserInfo = createAsyncThunk(
+  'userInfo/fetchUserInfo',
+  async (_, { rejectWithValue }) => {
+      try {
+          const data = await api.fetchUserInfoApi();
+          return data;
+      } catch (error) {
+        return rejectWithValue((error as any).toString());
       }
   }
 );
@@ -300,7 +315,19 @@ const taxInfoSlice = createSlice({
         state.loading = false;
     })
 
-
+    //get request from user/info in usercontroller
+    .addCase(fetchUserInfo.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+  })
+  .addCase(fetchUserInfo.fulfilled, (state, action) => {
+      state.personalInfo = action.payload;
+      state.loading = false;
+  })
+  .addCase(fetchUserInfo.rejected, (state, action) => {
+      state.error = action.payload as string;
+      state.loading = false;
+  })
 
 
     //handle filing status changes

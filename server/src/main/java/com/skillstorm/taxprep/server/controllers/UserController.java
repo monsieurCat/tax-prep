@@ -59,6 +59,7 @@ public class UserController {
 
   @PutMapping("/update")
   public ResponseEntity<?> updateUser(Principal principal, @RequestBody AppUserDTO user) {
+    System.out.println("Received update request with data: " + user); // Log the received data
     try {
       if (principal != null) {
         
@@ -90,8 +91,10 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Collections.singletonMap("error", "User is not authenticated"));
       }
     } catch (UsernameAlreadyExistsException | UsernameNotFoundException | NotFoundException e) {
+      System.out.println("Error from username: " + e.getMessage()); // Log specific exceptions
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.singletonMap("message", e.getMessage()));
     } catch (Exception e) {
+      System.out.println("Error from general exception: " + e.getMessage()); // Log unexpected exceptions
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.singletonMap("message", e.getMessage()));
     }
   }

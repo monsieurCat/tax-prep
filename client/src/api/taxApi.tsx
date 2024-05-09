@@ -69,6 +69,21 @@ export const updateAddress = async (addressData: any) => {
         throw new Error('Failed to update address');
     }
 };
+//get user info
+export const fetchUserInfoApi = async () => {
+    const response = await fetch(`${API_URL}/user/info`, {
+        method: 'GET',
+        credentials: 'include', 
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    if (response.ok) {
+        return response.json();
+    } else {
+        throw new Error('Failed to fetch user info');
+    }
+};
 
 //personal-form api call
 export const updateUser = async (userData: any) => {

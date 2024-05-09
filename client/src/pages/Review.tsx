@@ -13,7 +13,8 @@ export const Review = (): React.ReactElement => {
   const taxInfo = useSelector((state: RootState) => state.taxInfo);
  
 
-  const handleSubmit = () => {
+  const handleSubmit = async (e: { preventDefault: () => void; }) => {
+    e.preventDefault();
     dispatch(submitFullTaxInfo(taxInfo));
     navigate('/breakdown');
   };
