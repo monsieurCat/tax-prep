@@ -71,7 +71,7 @@ public class UserController {
         AppUserDTO updatedUser = userService.updateUser(currentUsername, user);
         
         // If the user is trying to change their username, update Spring Security's authentication
-        if (currentUsername != newUsername) {
+        if (!currentUsername.equals(newUsername)) {
           Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
           if (authentication != null && authentication.isAuthenticated()) {
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
