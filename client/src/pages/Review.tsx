@@ -194,10 +194,7 @@ return (
 
     
          
-          <ButtonGroup type="default" className="margin-top-4">
-                <Link to="/deductions" className="usa-button usa-button--outline">Back</Link>
-                
-              </ButtonGroup>
+          
               </Grid>
               
      

@@ -185,9 +185,10 @@ dispatch(updateAddress(addressFormData))
 
       <Form onSubmit={handleForm}>
    
-        <Fieldset legend="Personal Info" legendStyle="large">
+        <Fieldset legend="My Account" legendStyle="large">
 
-
+        <Label htmlFor="first-name">Username</Label>
+          <TextInput id="first-name" name="username" type="text" onChange={handleChange} value={personalFormData.username} />
           <Label htmlFor="first-name">First name</Label>
           <TextInput id="first-name" name="firstName" type="text" onChange={handleChange} value={personalFormData.firstName} />
           <Label htmlFor="middle-name" hint=" ">
@@ -199,6 +200,9 @@ dispatch(updateAddress(addressFormData))
 
           <Label htmlFor="email">Email</Label>
           <TextInput id="email" name="email" type="text" onChange={handleChange} value={personalFormData.email} />
+
+          
+         
 
           <Label htmlFor="birthdate">Date of birth</Label>
          {/* <DatePicker id="birthdate" name="birthday"  value={personalInfo.birthday} onChange={(e: any) => dispatch(updatePersonalInfo({ ...personalInfo, birthday: e.target.value }))} />*/}

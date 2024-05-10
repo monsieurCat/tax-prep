@@ -113,11 +113,11 @@ const MyAccount: React.FC = () => {
 
 
       <Grid col={4} style={{
-                marginLeft: '5rem'
+                marginLeft: '7rem', marginTop: '2rem'
             }}>
-              <Link to="/profile">
-      <Button type="button" size="big" bg-info-lighter>
-      Edit Personal Information
+              <Link to="/review">
+      <Button type="button" size="big" secondary>
+      My Taxes
   </Button>
   </Link>
       
@@ -125,11 +125,12 @@ const MyAccount: React.FC = () => {
 
     
 
-      <Grid col={4} >
+      <Grid col={4} style={{
+                marginTop: '0.3rem'
+            }}>
       <Link to="/profile">
   <Button type="button" size="big">
-   
-    Privacy Settings
+   User Information
   </Button>
   </Link>
       </Grid>
