@@ -292,6 +292,9 @@ const taxInfoSlice = createSlice({
     addW2Income: (state, action: PayloadAction<W2Income>) => {
       state.incomeW2.push(action.payload);
     },
+    deleteW2Income: (state, action: PayloadAction<number>) => {
+      state.incomeW2.splice(action.payload, 1);
+    },
      // Update an existing W2 form in the state
      updateW2Income: (state, action: PayloadAction<UpdateW2IncomePayload>) => {
       // Assumes forms array is completely replacing the existing w2Income
@@ -371,10 +374,41 @@ const taxInfoSlice = createSlice({
   })
 
 
+
+//VERY IMPORTANT!!!! to persist tax info
+  .addCase(fetchTaxInfo.fulfilled, (state, action) => {
+    if (action.payload) {
+      // Assuming the payload includes all the necessary tax information
+      state.filingStatus = action.payload.filingStatus;
+      state.numDependents = action.payload.numDependents;
+      state.donations = action.payload.donations;
+      state.mortgageInterest = action.payload.mortgageInterest;
+      state.propertyTax = action.payload.propertyTax;
+      state.medical = action.payload.medical;
+      state.studentLoanInterest = action.payload.studentLoanInterest;
+      state.otherDeduction = action.payload.otherDeduction;
+      state.otherIncome = action.payload.otherIncome;
+      state.incomeW2 = action.payload.incomeW2;
+      state.income1099 = action.payload.income1099;
+      state.loading = false;
+      state.error = null;
+  } else {
+      state.error = 'Failed to receive full tax information';
+      state.loading = false;
+  }
+  })
+  
+
+
+
+
+
 //this is for the taxinfoController  tax_info/full
   .addCase(submitFullTaxInfo.pending, (state) => {
     state.loading = true;
   })
+
+  //VERY VERY IMPORTANT!!!!!! 
   .addCase(submitFullTaxInfo.fulfilled, (state, action) => {
     // Assuming the backend returns the full updated tax info
     /*

@@ -354,65 +354,6 @@ dispatch(updateAddress(addressFormData))
   </GridContainer>
 
 
-
-
-  <main id="main-content">
-    <div >
-      <GridContainer className="usa-section">
-        <Grid row className="margin-x-neg-205 flex-justify-center">
-          <Grid col={12} mobileLg={{
-            col: 10
-          }} tablet={{
-            col: 8
-          }} desktop={{
-            col: 6
-          }} className="padding-x-205 margin-bottom-4">
-
-            <div className="bg-white padding-y-8 padding-x-5 border border-base-lighter">
-              <h1 className="margin-bottom-0">Create account</h1>
-             
-              <Fieldset legend="Mailing address" legendStyle="large">
-                <p>
-                  Required fields are marked with an asterisk (<RequiredMarker />
-                  ).
-                </p>
-                <Label htmlFor="mailing-address-1">Street address</Label>
-                <TextInput id="mailing-address-1" name="mailing-address-1" type="text" />
-
-                <Label htmlFor="mailing-address-2">Street address line 2</Label>
-                <TextInput id="mailing-address-2" name="mailing-address-2" type="text" />
-
-                <Label htmlFor="city" requiredMarker>
-                  City
-                </Label>
-                <TextInput id="city" name="city" type="text" required />
-
-                <Label htmlFor="state" requiredMarker>
-                  State, territory, or military post
-                </Label>
-                <Select id="state" name="state" required>
-                  <option>- Select -</option>
-                  <option value="AL">Alabama</option>
-                  <option value="AK">Alaska</option>
-
-                </Select>
-
-                <Label htmlFor="zip">ZIP Code</Label>
-                <TextInput id="zip" name="zip" type="text" inputSize="medium" pattern="[\d]{5}(-[\d]{4})?" />
-
-                <Label htmlFor="urbanization">Urbanization (Puerto Rico only)</Label>
-                <TextInput id="urbanization" name="urbanization" type="text" />
-              </Fieldset>
-            
-            </div>
-          </Grid>
-
-        </Grid>
-      </GridContainer>
-    </div>
-                </main>
-
-
 </div>
  </>
     );

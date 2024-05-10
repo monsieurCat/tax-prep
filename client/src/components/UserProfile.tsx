@@ -1,12 +1,19 @@
 import React, { useState } from 'react';
-import circle from '../assets/circle.png';
-import logoImg from '../assets/circle.png';
-import App from '../App.css';
-import { Address, Button, ExtendedNav, Footer, FooterNav, GovBanner, Grid, GridContainer, Header, Logo, MediaBlockBody, Menu, NavDropDownButton, NavMenuButton, Search, SocialLink, SocialLinks, Title } from '@trussworks/react-uswds';
+import logoImg from '../assets/logoImg.png';
+import { useSelector, useDispatch } from 'react-redux';
+import { login, logout , setUsername} from '../redux/slices/authSlice'; 
+import { RootState } from '../redux/storeTypes';
+import { Link, useNavigate } from "react-router-dom";
+import { Address, Button, ButtonGroup, ExtendedNav, Footer, FooterNav, GovBanner, Grid, GridContainer, Header, Logo, MediaBlockBody, Menu, NavDropDownButton, NavMenuButton, Search, SocialLink, SocialLinks, Title } from '@trussworks/react-uswds';
 
-const LandingPage: React.FC = () => {
+const MyAccount: React.FC = () => {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [navDropdownOpen, setNavDropdownOpen] = useState([false, false]);
+  const username = useSelector((state: RootState) => state.auth.username);
+
+
+
+
   const handleToggleNavDropdown = (index: number): void => {
     setNavDropdownOpen(prevNavDropdownOpen => {
       const newOpenState = Array(prevNavDropdownOpen.length).fill(false);
@@ -67,81 +74,115 @@ const LandingPage: React.FC = () => {
   
    
   
-      
-<main id="main-content">
-      <div className="bg-warning-light" style={{ padding: '0rem',  marginTop: '2rem'}}>
+      <main id="main-content">
+      <div className="bg-warning-light" style={{ padding: '6rem',  marginTop: '2rem'}}>
         <section id="test-section-id" className="usa-graphic-list usa-section bg-warning-light">
           <GridContainer  >
             <Grid row>
             <Grid col={12} style={{ marginLeft: 'auto', marginRight: 'auto' }}>
 
-            <img src={circle} alt="Logo" style={{ display: 'block', margin: '0 auto', maxWidth: '200px' }} />
+           
          
 
             <h1 className="font-sans text-black text-center margin-top-0 tablet:margin-bottom-1" style={{ fontSize: '5rem' }}>
-                Welcome!
+            Welcome to your account,
               </h1>
-              <h2 className="font-sans text-black text-center margin-top-0" style={{ fontSize: '3.5rem' , color: '#4B4B4B'}}>
-                Let's storm these taxes.
+              <h2 className="font-sans text-black text-center margin-top-0" style={{ fontSize: '4rem' , color: '#4B4B4B'}}>
+                 {username}
               </h2>
-              
-            </Grid>
-            </Grid>
-             </GridContainer>
              
-
-             <GridContainer>
-            
            
-              <Grid row >
-              <Grid col={2}></Grid>
-              <Grid col={1}></Grid>
-              <Grid col={2}></Grid>
+              
+      
+    <Grid row style={{
+                marginLeft: '9rem'
+            }}>
       <Grid col={3}>
-        <Button type="button" size = "big"  style={{ backgroundColor: '#007BFF', color: 'white', border: 'none', borderRadius: '5px' }} onClick={() => window.location.href = '/login'}>Get started</Button>
+        
       </Grid>
 
-      <Grid col={4}></Grid>
+    
 
-{/*
-      <Grid col={3}>
-        <Button type="button" size = "big" className="usa-button--big usa-button--outline-dark"onClick={() => window.location.href = '/login'}>Sign In</Button>
+
+      <Grid col={5}>
+        
+      <ButtonGroup type="default">
+
+<Link to="/personal-form" type="button" className="usa-button--big">My Tax Form </Link>
+
+<Grid col={6}>
+             
+<Link to="/profile" type="button" className="usa-button--big">My Profile </Link>
+            </Grid>
+
+
+</ButtonGroup>
       </Grid>
 
     
 
       <Grid col={5}>
-        <Button type="button"  className="usa-button--big usa-button--outline-dark"onClick={() => window.location.href = '/create-account'}>Create Account</Button>
-      </Grid>*/}
+       
+      </Grid>
     </Grid>
-      
-
 
 
    
             
+            </Grid>
+            </Grid>
       
             
           </GridContainer>
         </section>
        </div>
+
+       <section className="grid-container usa-section">
+        {/* My Tax Form Section */}
+        <GridContainer>
+          <Grid row>
+            <Grid col={12}>
+              <h2 className="font-heading-lg margin-top-2">My Tax Form</h2>
+              {/* Add your tax form display component here */}
+            </Grid>
+          </Grid>
+        </GridContainer>
+
+        {/* My Profile Section */}
+        <GridContainer>
+          <Grid row>
+            <Grid col={12}>
+              <h2 className="font-heading-lg margin-top-2">My Profile</h2>
+              {/* Add your profile display/edit component here */}
+            </Grid>
+          </Grid>
+        </GridContainer>
+      </section>
+
+
         <section className="grid-container usa-section">
           <Grid row gap>
             <Grid tablet={{
             col: 4
           }}>
               <h2 className="font-heading-xl margin-top-0 tablet:margin-bottom-0">
-               We're here to help. 
+                A tagline highlights your approach
               </h2>
             </Grid>
             <Grid tablet={{
             col: 8
           }} className="usa-prose">
               <p>
-                
+                The tagline should inspire confidence and interest, focusing on
+                the value that your overall approach offers to your audience.
+                Use a heading typeface and keep your tagline to just a few
+                words, and don’t confuse or mystify.
               </p>
               <p>
-                
+                Use the right side of the grid to explain the tagline a bit
+                more. What are your goals? How do you do your work? Write in the
+                present tense, and stay brief here. People who are interested
+                can find details on internal pages.
               </p>
             </Grid>
           </Grid>
@@ -237,4 +278,4 @@ const LandingPage: React.FC = () => {
     </>;
 }
 
-export default LandingPage;
+export default MyAccount;

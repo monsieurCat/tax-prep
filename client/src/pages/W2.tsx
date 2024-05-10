@@ -1,4 +1,4 @@
-import { Label, TextInput, Form, FormGroup, ErrorMessage, Textarea, Fieldset, Button, Checkbox, Grid, GridContainer, RequiredMarker, Select, DateRangePicker, DatePicker, ButtonGroup, ProcessListHeading, ProcessListItem, StepIndicator, StepIndicatorStep, Radio, TextInputMask } from "@trussworks/react-uswds";
+import { Label, TextInput, Form, FormGroup, ErrorMessage, Textarea, Accordion, Fieldset, Button, Checkbox, Grid, GridContainer, RequiredMarker, Select, DateRangePicker, DatePicker, ButtonGroup, ProcessListHeading, ProcessListItem, StepIndicator, StepIndicatorStep, Radio, TextInputMask } from "@trussworks/react-uswds";
 import { Link, useNavigate } from "react-router-dom";
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -150,16 +150,46 @@ const W2Income = (): React.ReactElement => {
     marginLeft: '18rem'}}>
     */}
 
+ 
+<ButtonGroup type="default">
+<Grid col ={1}>
+                <Link to="/filing-status" className="usa-button usa-button--outline">Back </Link>
+                <Grid col ={1}>
+              
+                </Grid>
+               
+                </Grid>
+              </ButtonGroup>
+
+
+              <GridContainer>
+              <Grid row>
+      <Grid col={3}></Grid>
+      <Grid col={3}></Grid>
+      <Grid col={3}></Grid>
+              <Grid col ={3}>
+              <ButtonGroup type="default">
+
+                
+              
+                <Button type="button" onClick={handleContinue}>Continue</Button>
+                
+                <Link to="/review" className="usa-button usa-button--outline">Go to Review</Link>
+                
+              </ButtonGroup>
+              </Grid>
+              </Grid>
+              </GridContainer>
 
 
               {/* <Form onSubmit={handleSubmit}>*/}
-              <Fieldset legend="Form W-2" legendStyle="large">
-
-
-
-
-
+            
+              <Fieldset legend="Form W-2" legendStyle="large"  style={{ marginBottom: '20px', marginTop: '30px'}}>
+             
+            
+             
                 {w2Forms.map((form, index) => (
+                   <div style={{ marginBottom: '90px', marginTop: '78px'}}>
                   <div key={index}>
                     <Label htmlFor={`income-${index}`}>W-2 Income</Label>
                     <TextInput id={`income-${index}`} name="income" type="number" value={form.income.toString()} onChange={e => handleInputChange(index, 'income', e)} />
@@ -169,6 +199,7 @@ const W2Income = (): React.ReactElement => {
 
                     <Label htmlFor={`employerEin-${index}`}>Employer EIN</Label>
                     <TextInput id={`employerEin-${index}`} name="employerEin" type="text" value={form.employerEin} onChange={e => handleInputChange(index, 'employerEin', e)} />
+                  </div>
                   </div>
                 ))}
 
@@ -180,11 +211,14 @@ const W2Income = (): React.ReactElement => {
             <Grid col={4}>
 
               <Fieldset legend="" legendStyle="large">
+             
                 <p>
                   Required fields are marked with an asterisk (<RequiredMarker />
                   ).
                 </p>
+             
                 {w2Forms.map((form, index) => (
+                     <div style={{ marginBottom: '80px', marginTop: '80px'}}>
                   <div key={index}>
                     <Label htmlFor={`employerStreet1-${index}`}>Street Address</Label>
                     <TextInput id={`employerStreet1-${index}`} name="employerStreet1" type="text" value={form.employerStreet1} onChange={e => handleInputChange(index, 'employerStreet1', e)} />
@@ -254,25 +288,25 @@ const W2Income = (): React.ReactElement => {
                     <Label htmlFor={`employerZipcode-${index}`}>ZIP Code</Label>
                     <TextInput id={`employerZipcode-${index}`} name="employerZipcode" type="text" value={form.employerZipcode} onChange={e => handleInputChange(index, 'employerZipcode', e)} />
 
-
+                    </div>
                   </div>
                 ))}
 
 
               </Fieldset>
+            
+             
               <Button type="button" onClick={handleAddForm}>Add W-2 Form</Button>
 
-              <ButtonGroup type="default">
-
-                <Link to="/filing-status" className="usa-button usa-button--outline">Back </Link>
-                <Button type="button" onClick={handleContinue}>Continue</Button>
-
-                <Link to="/review" className="usa-button usa-button--outline">Go to Review</Link>
-
-              </ButtonGroup>
+             
+   
             </Grid>
+            
           </Grid>
+          
         </GridContainer>
+       
+
 
         {/*
                 <Label htmlFor="w2">W-2 Income</Label>

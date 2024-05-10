@@ -1,4 +1,31 @@
 .no-margin-bottom {
-    margin-bottom: 0;
+    margin-bo
+    
+    .button-container {
+      background-color: #4CAF50; /* Set the background color */
+      border-radius: 10px; /* Set the border radius for rounded corners */
+      padding: 10px; /* Adjust padding for spacing */
+      display: inline-block; /* Ensure the container only takes up as much space as necessary */
+    }
+    
+    .accbutton-container Button {
+      border: none; /* Remove default button border */
+      background-color: transparent; /* Make button background transparent */
+      cursor: pointer; /* Set cursor to pointer for better UX */
+      color: white; /* Set text color */
+      font-size: 18px; /* Set font size */
+      padding: 10px 20px; /* Adjust padding for button size */
+      border-radius: 5px; /* Set border radius for button */
+    }
+    
+    .accbutton-container Button a {
+      text-decoration: none; /* Remove underline from link */
+      color: white; /* Set link color */
+    }
+    
+    .accbutton-container Button:hover {
+      background-color: #45a049; /* Change background color on hover */
+    }
+    ttom: 0;
   }
 

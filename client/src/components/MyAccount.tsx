@@ -3,7 +3,8 @@ import logoImg from '../assets/logoImg.png';
 import { useSelector, useDispatch } from 'react-redux';
 import { login, logout , setUsername} from '../redux/slices/authSlice'; 
 import { RootState } from '../redux/storeTypes';
-import { Address, Button, ExtendedNav, Footer, FooterNav, GovBanner, Grid, GridContainer, Header, Logo, MediaBlockBody, Menu, NavDropDownButton, NavMenuButton, Search, SocialLink, SocialLinks, Title } from '@trussworks/react-uswds';
+import { Link, useNavigate } from "react-router-dom";
+import { Address, Button, ButtonGroup, ExtendedNav, Footer, FooterNav, GovBanner, Grid, GridContainer, Header, Logo, MediaBlockBody, Menu, NavDropDownButton, NavMenuButton, Search, SocialLink, SocialLinks, Title } from '@trussworks/react-uswds';
 
 const MyAccount: React.FC = () => {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
@@ -104,7 +105,23 @@ const MyAccount: React.FC = () => {
 
 
       <Grid col={5}>
-        <Button type="button" size = "big" className="usa-button--big usa-button--outline-dark"onClick={() => window.location.href = '/login'}>Account Settings</Button>
+      <div className="button-container">
+      <Button type="button" size="big" >
+  <a href="/personal-form" >My Tax Form</a>
+</Button>
+</div>
+        
+      <ButtonGroup type="default">
+
+<Link to="/personal-form" type="button" className="usa-button--big">My Tax Form </Link>
+
+<Grid col={6}>
+             
+<Link to="/profile" type="button" className="usa-button--big">My Profile </Link>
+            </Grid>
+
+
+</ButtonGroup>
       </Grid>
 
     
@@ -124,6 +141,29 @@ const MyAccount: React.FC = () => {
           </GridContainer>
         </section>
        </div>
+
+       <section className="grid-container usa-section">
+        {/* My Tax Form Section */}
+        <GridContainer>
+          <Grid row>
+            <Grid col={12}>
+              <h2 className="font-heading-lg margin-top-2">My Tax Form</h2>
+              {/* Add your tax form display component here */}
+            </Grid>
+          </Grid>
+        </GridContainer>
+
+        {/* My Profile Section */}
+        <GridContainer>
+          <Grid row>
+            <Grid col={12}>
+              <h2 className="font-heading-lg margin-top-2">My Profile</h2>
+              {/* Add your profile display/edit component here */}
+            </Grid>
+          </Grid>
+        </GridContainer>
+      </section>
+
 
         <section className="grid-container usa-section">
           <Grid row gap>

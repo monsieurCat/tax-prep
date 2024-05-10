@@ -1,0 +1,154 @@
+{
+    "landingPage": {
+      "header": {
+        "welcome": "مرحباً!",
+        "subtitle": "لنتعامل مع الضرائب."
+      },
+      "buttons": {
+        "getStarted": "ابدأ"
+      },
+      "navigation": {
+        "signIn": "تسجيل الدخول",
+        "fileTaxes": "تقديم الضرائب",
+        "logOut": "تسجيل الخروج"
+      }
+    },
+    "loginHome": {
+      "header": {
+        "welcomeBack": "مرحباً بعودتك، {{username}}!",
+        "happyToSeeYou": "سعداء برؤيتك."
+      },
+      "buttons": {
+        "startFiling": "بدء التقديم",
+        "myTaxes": "ضرائبي",
+        "myAccount": "حسابي"
+      },
+      "navigation": {
+        "signIn": "تسجيل الدخول",
+        "fileTaxes": "تقديم الضرائب",
+        "logOut": "تسجيل الخروج"
+      }
+    },
+    "personalForm": {
+      "stepIndicator": {
+        "personalInformation": "المعلومات الشخصية",
+        "filingStatus": "حالة التقديم",
+        "w2Income": "دخل W2",
+        "1099Income": "دخل 1099",
+        "deductions": "الخصومات",
+        "review": "مراجعة",
+        "signAndSubmit": "توقيع وتقديم"
+      },
+      "personalInfo": {
+        "legend": "معلومات شخصية",
+        "firstName": "الاسم الأول",
+        "middleName": "الاسم الأوسط",
+        "lastName": "الاسم الأخير",
+        "email": "البريد الإلكتروني",
+        "dateOfBirth": "تاريخ الميلاد",
+        "ssn": "الرقم الوطني",
+        "ssnHint": "على سبيل المثال، 123 45 6789"
+      },
+      "addressInfo": {
+        "legend": "معلومات العنوان",
+        "streetAddress": "عنوان الشارع",
+        "streetAddressLine2": "عنوان الشارع الثاني",
+        "city": "المدينة",
+        "state": "الولاية أو الإقليم",
+        "postalCode": "الرمز البريدي",
+        "postalCodeHint": "على سبيل المثال، 12345-6789"
+      },
+      "buttons": {
+        "back": "الرجوع",
+        "continue": "استمرار"
+      },
+      "dateFormat": "yyyy-mm-dd"
+    },
+    
+        "ReviewPage": {
+            "personalInformation": "المعلومات الشخصية",
+            "edit": "تعديل",
+            "firstName": "الاسم الأول:",
+            "lastName": "الاسم الأخير:",
+            "ssn": "الرقم الضريبي:",
+            "email": "البريد الإلكتروني:",
+            "birthday": "تاريخ الميلاد:",
+            "street1": "الشارع 1:",
+            "street2": "الشارع 2:",
+            "city": "المدينة:",
+            "state": "الولاية:",
+            "zipCode": "الرمز البريدي:",
+            "filingStatus": "حالة التقديم",
+            "status": "الحالة:",
+            "dependents": "المعالون:",
+            "w2Income": "دخل W2",
+            "income": "الدخل:",
+            "withholdings": "المبالغ المحجوزة:",
+            "employerEIN": "رقم تعريف الموظف (EIN):",
+            "employerAddress": "عنوان الموظف:",
+            "income1099": "دخل 1099",
+            "deductions": "الخصومات",
+            "mortgageInterest": "فائدة الرهن العقاري:",
+            "donations": "التبرعات:",
+            "propertyTax": "ضريبة الملكية:",
+            "medicalExpenses": "المصاريف الطبية:",
+            "studentLoanInterest": "فائدة قرض الطالب:",
+            "otherDeductions": "خصومات أخرى:",
+            "otherIncome": "دخل آخر:",
+            "standardDeductions": "الخصومات القياسية:",
+            "submitAllInformation": "تقديم كافة المعلومات",
+            "back": "العودة",
+            "confirm": "تأكيد معلوماتك",
+            "reviewInfo": "مراجعة معلوماتك",
+            "reminder": "يرجى مراجعة معلوماتك بعناية قبل التقديم."
+        },
+        "DeductionsPage": {
+            "personalInformation": "المعلومات الشخصية",
+            "filingStatus": "حالة التقديم",
+            "w2Income": "دخل W2",
+            "income1099": "دخل 1099",
+            "deductions": "الخصومات",
+            "review": "مراجعة",
+            "signAndSubmit": "التوقيع والتقديم",
+            "itemizedDeductions": "الخصومات المفصلة",
+            "mortgageInterest": "فائدة الرهن العقاري",
+            "donations": "التبرعات",
+            "propertyTax": "ضريبة الملكية",
+            "medicalExpenses": "المصاريف الطبية",
+            "studentLoanInterest": "فائدة قرض الطالب",
+            "otherDeductions": "خصومات أخرى",
+            "back": "العودة",
+            "skipToReview": "التخطي إلى المراجعة",
+            "compareDeductions": "مقارنة الخصومات",
+            "weRecommend": "نوصي",
+            "standardDeductions": "الخصومات القياسية",
+            "chooseStandardDeductions": "اختيار الخصومات القياسية",
+            "chooseItemizedDeductions": "اختيار الخصومات المفصلة"
+        },
+        "BreakdownPage": {
+            "personalInformation": "المعلومات الشخصية",
+            "filingStatus": "حالة التقديم",
+            "w2Income": "دخل W2",
+            "income1099": "دخل 1099",
+            "deductions": "الخصومات",
+            "review": "مراجعة",
+            "submit": "التوقيع والتقديم",
+            "yourEstimatedTax": "الضريبة المقدرة لك",
+            "refund": "مبلغ الاسترداد",
+            "owed": "مبلغ مستحق",
+            "viewFederalTaxBreakdown": "عرض تفصيل الضريبة الفيدرالية",
+            "documentTitle": "عنوان الوثيقة",
+            "year": "السنة",
+            "w2IncomePlus1099Income": "دخل W-2 + دخل 1099",
+            "totalIncomeMinusDeductions": "الدخل الكلي - الخصومات",
+            "taxableIncomeTimesTaxRate": "الدخل الخاضع للضريبة * معدل الضريبة",
+            "totalFederalTaxMinusFederalIncomeTaxWithheldMinusChildTaxCredit": "إجمالي الضريبة الفيدرالية - الضريبة على الدخل الفيدرالي المحتجزة - الخصم الضريبي للطفل",
+            "amountRefunded": "المبلغ المسترد",
+            "amountOwed": "المبلغ المستحق",
+            "finalSubmit": "التوقيع والتقديم",
+            "back": "العودة"
+        }
+    
+    
+  }
+  

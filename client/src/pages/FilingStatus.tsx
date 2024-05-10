@@ -110,10 +110,12 @@ const handleSubmit = async (e: React.FormEvent) => {
           </StepIndicator>
 
           <Grid row gap>
+          <Grid col={4}></Grid>
 
 
             <Form onSubmit={handleSubmit}>
               <Fieldset legend="Filing Status" legendStyle="large">
+              <Grid col={12}>
 {/*
                 <Radio id="single" name="filing-status" label="Single" value="Single" onChange={handleStatusChange} checked={filingStatus === 'Single'} />
                 <Radio id="married-jointly" name="filing-status" label="Married filing jointly" value="Married filing jointly" onChange={handleStatusChange} checked={filingStatus === 'Married filing jointly'} />
@@ -124,9 +126,10 @@ const handleSubmit = async (e: React.FormEvent) => {
  {['Single', 'Married filing jointly', 'Married filing separately', 'Head of Household', 'Qualifying Surviving Spouse'].map(status => (
                   <Radio key={status} id={status.replace(/\s+/g, '-').toLowerCase()} name="status" label={status} value={status} onChange={handleStatusChange} checked={localStatus === status} />
                 ))}
+                 </Grid>
               </Fieldset>
-
-              <Label htmlFor="dependents">Dependents</Label>
+              <div style={{ marginBottom: '20px', marginTop: '30px'}}>
+              <Label htmlFor="dependents"><span style={{ color: '#000', fontWeight: 'bold',  fontSize: '30px'}}>Dependents</span></Label> </div>
               <TextInput id="dependents" name="numDependents" type="number"
                 value={localNumDependents.toString()} onChange={handleDependentsChange } /> {/*make sure that name="numDependents" this should match the state object exactly. look at taxslice and the filingStatus interface to check.*/ }
 
@@ -140,6 +143,7 @@ const handleSubmit = async (e: React.FormEvent) => {
 
               </ButtonGroup>
             </Form>
+           
           </Grid>
         </GridContainer>
 

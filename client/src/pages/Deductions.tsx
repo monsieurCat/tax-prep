@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { submitFullTaxInfo, updateDonations, updateMedical, updateMortgageInterest, updateOtherDeduction, updateOtherIncome, updatePropertyTax, updateStudentLoanInterest } from '../redux/slices/taxSlice';
 import { RootState } from "../redux/storeTypes";
 import { AppDispatch } from "../redux/store";
+import { BarChart } from '@mui/x-charts/BarChart';
 
 export const Deductions = (): React.ReactElement => {
   const dispatch = useDispatch<AppDispatch>();
@@ -64,6 +65,43 @@ const handleChange = (setter: React.Dispatch<React.SetStateAction<number>>) => (
   };
 
 
+
+  const bargraph = async (e: { preventDefault: () => void; }) => {
+    e.preventDefault();
+    
+    dispatch(updateMortgageInterest(mortgageInterest));
+    dispatch(updateDonations(donations));
+    dispatch(updatePropertyTax(propertyTax));
+    dispatch(updateMedical(medical));
+    dispatch(updateStudentLoanInterest(studentLoanInterest));
+    dispatch(updateOtherDeduction(otherDeduction));
+   
+    
+    
+  };
+
+
+
+
+
+
+  
+//bar chart
+  const totalItemizedDeductions = currentTaxInfo.mortgageInterest +
+                                  currentTaxInfo.donations +
+                                  currentTaxInfo.propertyTax +
+                                  currentTaxInfo.medical +
+                                  currentTaxInfo.studentLoanInterest +
+                                  currentTaxInfo.otherDeduction;
+
+                                  const standardDeduction = 24800;
+   // Update the chart data whenever tax info updates
+   const deductionData = [
+    { name: 'Itemized Deductions', value: totalItemizedDeductions },
+    { name: 'Standard Deduction', value: standardDeduction }
+  ];
+  const categories = deductionData.map(d => d.name);
+  const values = deductionData.map(d => d.value);
 
  return (
 
@@ -143,11 +181,16 @@ const handleChange = (setter: React.Dispatch<React.SetStateAction<number>>) => (
               <TextInput id="otherDeduction" name="otherDeduction" type="number"
                 value={otherDeduction.toString()} onChange={handleChange(setOtherDeduction)} />
 
-              <ButtonGroup type="default" className="margin-top-4">
+              <ButtonGroup type="default" className="margin-top-4" style={{
+              display: 'flex',
+                justifyContent: 'space-between', // Aligns buttons to the opposite ends
+              }}>
                 <Link to="/income1099" className="usa-button usa-button--outline">Back</Link>
-                <Link to="/review" className="usa-button usa-button--outline">Go to Review</Link>
+               
               </ButtonGroup>
-              <Button type="button" onClick={handleSubmit}>Continue</Button>
+             
+              <Link to="/review" className="usa-button usa-button--base">Skip to Review</Link>
+             
 
   
 </Fieldset>
@@ -155,14 +198,42 @@ const handleChange = (setter: React.Dispatch<React.SetStateAction<number>>) => (
 
 <Grid col={1}></Grid>
 
-<Grid col={4}>
+<Grid col={6}>
 {/* <Form onSubmit={mockSubmit}>*/}
+<Button type="button" onClick={bargraph}>Compare Deductions</Button>
+
+<BarChart
+      xAxis={[{ scaleType: 'band', data: categories }]}
+      series={[{ data: values }]}
+      width={500}
+      height={300}
+    />
 
 
 
 
 
-      
+<div style={{
+    display: 'flex',
+    flexDirection: 'column', // Stacks children vertically
+    alignItems: 'flex-end', // Aligns children to the right
+    marginTop: '20px', // Adds space on the top for the whole block
+    marginRight: '5px' // Ensures it doesn't touch the very edge of its container
+}}>
+<span style={{ color: '#000', fontWeight: 'bold',  fontSize: '45px',  marginBottom: '15px', marginTop: '20px'}}>
+                                            We recommend {standardDeduction > totalItemizedDeductions? 'Standard' : 'Itemized'} deductions.
+                                            </span> 
+                                            
+                                            <span style={{ color: '#000', fontWeight: 'bold',  marginBottom: '60px',fontSize: '60px'}}>
+                                        ${standardDeduction > totalItemizedDeductions? standardDeduction: totalItemizedDeductions}  </span> </div>
+
+
+                                        <Button type="button" secondary size="big" onClick={handleSubmit}>I choose Standard Deductions</Button>
+                                        <span style={{ color: '#000', fontWeight: 'bold',  marginTop: '80px',marginBottom: '80px',fontSize: '60px'}}>
+                                        <Button type="button" secondary size="big" onClick={handleSubmit}>I choose Itemized Deductions</Button>
+                                        </span>
+                                        <Grid col={12}></Grid>
+                                       {/* <Button type="button" onClick={handleSubmit}>Continue</Button>*/}
       </Grid>
     </Grid>
   </GridContainer>

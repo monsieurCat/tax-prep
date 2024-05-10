@@ -110,7 +110,7 @@ export const Breakdown = (): React.ReactElement => {
                                     <Accordion bordered={false} items={
                                         [
                                             {
-                                                title: <span style={{ color: '#000', fontWeight: 'bold' }}>View Federal Tax Breakdown</span>,
+                                                title: <span style={{ color: '#000', fontWeight: 'bold' ,  fontSize: '25px'}}>View Federal Tax Breakdown</span>,
                                                 content: (
                                                     <p style={{ color: '#000' }}>
                                                         <Table bordered={false} >

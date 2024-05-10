@@ -160,7 +160,8 @@ const CreateAccount=(): React.ReactElement => {
   
                         <Checkbox id="terms-and-conditions" name="terms-and-conditions" className="margin-y-3" required={true} label={checkboxLabel} />
   
-                        <Button type="submit">Create account</Button>
+                        <Button type="button" onClick={handleRegistration}>Create Account</Button>
+
                       </Fieldset>
                     </Form>
                   </div>

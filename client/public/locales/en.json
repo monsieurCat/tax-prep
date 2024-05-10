@@ -1,0 +1,159 @@
+{
+  "landingPage": {
+    "header": {
+      "welcome": "Welcome!",
+      "subtitle": "Let's storm these taxes."
+    },
+    "buttons": {
+      "getStarted": "Get started"
+    },
+
+    "navigation": {
+      "signIn": "Sign in",
+      "fileTaxes": "File Taxes",
+      "logOut": "Log out"
+    }
+  },
+
+  "loginHome": {
+    "header": {
+      "welcomeBack": "Welcome back, {{username}}!",
+      "happyToSeeYou": "We're happy to see you."
+    },
+    "buttons": {
+      "startFiling": "Start Filing",
+      "myTaxes": "My Taxes",
+      "myAccount": "My Account"
+    },
+
+    "navigation": {
+      "signIn": "Sign in",
+      "fileTaxes": "File Taxes",
+      "logOut": "Log out"
+    }
+  },
+  
+    "personalForm": {
+      "stepIndicator": {
+        "personalInformation": "Personal information",
+        "filingStatus": "Filing Status",
+        "w2Income": "W2 Income",
+        "1099Income": "1099 Income",
+        "deductions": "Deductions",
+        "review": "Review",
+        "signAndSubmit": "Sign and Submit"
+      },
+      "personalInfo": {
+        "legend": "Personal Info",
+        "firstName": "First name",
+        "middleName": "Middle initial",
+        "lastName": "Last name",
+        "email": "Email",
+        "dateOfBirth": "Date of birth",
+        "ssn": "Social Security Number",
+        "ssnHint": "For example, 123 45 6789"
+      },
+      "addressInfo": {
+        "legend": "Address Info",
+        "streetAddress": "Street address",
+        "streetAddressLine2": "Street address line 2",
+        "city": "City",
+        "state": "State, territory, or military post",
+        "postalCode": "ZIP Code",
+        "postalCodeHint": "For example, 12345-6789"
+      },
+      "buttons": {
+        "back": "Back",
+        "continue": "Continue"
+      },
+      "dateFormat": "yyyy-mm-dd"
+    },
+    "ReviewPage" : {
+        "personalInformation": "Personal Information",
+        "edit": "Edit",
+        "firstName": "First Name:",
+        "lastName": "Last Name:",
+        "ssn": "SSN:",
+        "email": "Email:",
+        "birthday": "Birthday:",
+        "street1": "Street 1:",
+        "street2": "Street 2:",
+        "city": "City:",
+        "state": "State",
+        "zipCode": "Zip Code",
+        "filingStatus": "Filing Status",
+        "status": "Status:",
+        "dependents": "Dependents:",
+        "w2Income": "W2 Income",
+        "income": "Income:",
+        "withholdings": "Withholdings:",
+        "employerEIN": "Employer EIN:",
+        "employerAddress": "Employer Address:",
+        "income1099": "1099 Income",
+        "deductions": "Deductions",
+        "mortgageInterest": "Mortgage Interest:",
+        "donations": "Donations:",
+        "propertyTax": "Property Tax:",
+        "medicalExpenses": "Medical Expenses:",
+        "studentLoanInterest": "Student Loan Interest:",
+        "otherDeductions": "Other Deductions:",
+        "otherIncome": "Other Income:",
+        "standardDeductions": "Standard Deductions:",
+        "submitAllInformation": "Submit All Information",
+        "back": "Back",
+        "confirm": "Confirm your information",
+        "reviewInfo": "Review Your Information",
+        "reminder": "Please review your information carefully before submitting."
+      
+    },
+    "deductionsPage" : {
+        "personalInformation": "Personal information",
+        "filingStatus": "Filing Status",
+        "w2Income": "W2 Income",
+        "income1099": "1099 Income",
+        "deductions": "Deductions",
+        "review": "Review",
+        "signAndSubmit": "Sign and Submit",
+        "itemizedDeductions": "Itemized Deductions",
+        "mortgageInterest": "Mortgage Interest",
+        "donations": "Donations",
+        "propertyTax": "Property Tax",
+        "medicalExpenses": "Medical Expenses",
+        "studentLoanInterest": "Student Loan Interest",
+        "otherDeductions": "Other Deductions",
+        "back": "Back",
+        "skipToReview": "Skip to Review",
+        "compareDeductions": "Compare Deductions",
+        "weRecommend": "We recommend",
+        "standardDeductions": "Standard deductions",
+        "chooseStandardDeductions": "I choose Standard Deductions",
+        "chooseItemizedDeductions": "I choose Itemized Deductions"
+      
+    },
+    "BreakdownPage" : {
+        "personalInformation": "Personal information",
+        "filingStatus": "Filing Status",
+        "w2Income": "W2 Income",
+        "income1099": "1099 Income",
+        "deductions": "Deductions",
+        "review": "Review",
+        "submit": "Sign and Submit",
+        "yourEstimatedTax": "Your estimated tax",
+        "refund": "refund",
+        "owed": "owed",
+        "viewFederalTaxBreakdown": "View Federal Tax Breakdown",
+        "documentTitle": "Document title",
+        "year": "Year",
+        "w2IncomePlus1099Income": "W-2 Income + 1099 Income",
+        "totalIncomeMinusDeductions": "Total Income - Deductions",
+        "taxableIncomeTimesTaxRate": "Taxable Income * Tax Rate",
+        "totalFederalTaxMinusFederalIncomeTaxWithheldMinusChildTaxCredit": "Total Federal Tax - Federal Income Tax Withheld - Child Tax Credit",
+        "amountRefunded": "Amount refunded",
+        "amountOwed": "Amount owed",
+        "finalSubmit": "Sign and submit",
+        "back": "Back"
+      
+    }
+  
+  
+}

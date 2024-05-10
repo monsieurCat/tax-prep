@@ -16,6 +16,11 @@ import Review from './pages/Review';
 import Breakdown from './pages/Breakdown';
 import LoginHome from './pages/LoginHome';
 import MyAccount from './components/MyAccount';
+import UserProfile from './components/UserProfile';
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
+
+
 
 
 function App() {
@@ -38,6 +43,7 @@ function App() {
         <Route path="/breakdown" element={<Breakdown />} />
         <Route path="/login-home" element={<LoginHome />} />
         <Route path="/my-account" element={<MyAccount />} />
+        <Route path="/profile" element={<UserProfile />} />
       </Routes>
     </Router>
 

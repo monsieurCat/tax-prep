@@ -1,5 +1,5 @@
 import React, { useEffect, useState} from "react";
-import { Header, NavDropDownButton, Menu, NavMenuButton, Button, Search, ExtendedNav, Footer, FooterNav, GovBanner, GridContainer, Logo, Address, Grid, SocialLinks, SocialLink, PrimaryNav, LanguageSelector, Title, IdentifierLogo, IdentifierLogos } from "@trussworks/react-uswds";
+import { Header, NavDropDownButton, Menu, NavMenuButton, LanguageSelectorButton, Icon, Button, Search, ExtendedNav, Footer, FooterNav, GovBanner, GridContainer, Logo, Address, Grid, SocialLinks, SocialLink, PrimaryNav, LanguageSelector, Title, IdentifierLogo, IdentifierLogos } from "@trussworks/react-uswds";
 import logoImg from '../assets/logoImg.png';
 import './Navbar.css';
 import { Link, useNavigate} from 'react-router-dom';
@@ -8,6 +8,8 @@ import '@trussworks/react-uswds/lib/uswds.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { login, logout , setUsername} from '../redux/slices/authSlice'; 
 import { RootState } from '../redux/storeTypes';
+import i18n from 'i18next';
+import { useTranslation } from 'react-i18next'; 
 
 const Navbar = (): React.ReactElement => {
 
@@ -19,6 +21,7 @@ const Navbar = (): React.ReactElement => {
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
   const dispatch = useDispatch();
   const username = useSelector((state: RootState) => state.auth.username);
+  const { t, i18n } = useTranslation();
 
 
 
@@ -140,25 +143,67 @@ useEffect(() => {
 
 */
 
+/*
+<LanguageSelector
+  langs={[
 
-  const onClick = (): void => setExpanded(prvExpanded => !prvExpanded);
+    {
+      attr: 'zh',
+      label: '简体字',
+      label_local: 'Chinese - Simplified',
+      on_click: () => i18n.changeLanguage('zh') },
+    },
+    {
+      attr: 'ar',
+      label: 'العربية',
+      label_local: 'Arabic',
+      on_click: () => i18n.changeLanguage('ar') },
+    },
+  
+    {
+      attr: 'en',
+      label: 'English',
+      on_click: () => i18n.changeLanguage('en') },
+    }
+  ]
+ />*/
+ const handleLanguageChange = (langAttr: string) => {
+  i18n.changeLanguage(langAttr);
+};
+
+ const languages = [
+  { attr: 'ar', label: 'العربية', label_local: 'Arabic' },
+  { attr: 'zh', label: '简体字', label_local: 'Chinese - Simplified' },
+  { attr: 'en', label: 'English' },
+];
 
 
-  const languages = [
-    { attr: 'ar', label: 'العربية', label_local: 'Arabic', on_click: function Ga() { } },
-    { attr: 'zh', label: '简体字', label_local: 'Chinese - Simplified', on_click: function Ga() { } },
-    { attr: 'en', label: 'English', on_click: function Ga() { } },
-    { attr: 'es', label: 'Español', label_local: 'Spanish', on_click: function Ga() { } },
-    { attr: 'fr', label: 'Français', label_local: 'French', on_click: function Ga() { } },
-    { attr: 'it', label: 'Italiano', label_local: 'Italian', on_click: function Ga() { } },
-    { attr: 'ru', label: 'Pусский', label_local: 'Russian', on_click: function Ga() { } },
-  ];
+
+
+
+
+
+
+ 
+  
+
+  
+ 
+  
+
+  
+
+
 
 
 
 
   const testMenuItems = languages.map((lang, index) => (
-    <a href="#" key={index} onClick={lang.on_click}>
+    <a href="/" key={index} onClick={(e) => {
+      e.preventDefault();
+      handleLanguageChange(lang.attr);
+      setIsOpen([false, false]);
+    }}>
       {lang.label}
     </a>
   ));
@@ -180,6 +225,8 @@ useEffect(() => {
 
   const primaryPages = [
 
+    
+
 
     <>
       <NavDropDownButton menuId="testDropDownOne" onToggle={(): void => {
@@ -190,14 +237,19 @@ useEffect(() => {
 
 
 
-    <Link to="/personal-form" key="personal" className="usa-nav__link">
-      <span>File Taxes</span>
-    </Link>,
+
+
+
+
+    
 
 ...(isAuthenticated ? [
     <Link to="/my-account" key="my-account" className="usa-nav__link">
-      <span>{username}</span>
+     <Icon.Verified />  <span>{username}</span>
     </Link>,
+    <Link to="/personal-form" key="personal" className="usa-nav__link">
+    <span>File Taxes</span>
+  </Link>,
     <Button type="button" onClick={handleLogout} className="usa-nav__link" key="logout">
       Log out
     </Button>
@@ -253,12 +305,16 @@ useEffect(() => {
                         </a>
   </Title>   */}
 
-              <NavMenuButton onClick={onClick} label="Menu" />
+<NavMenuButton onClick={() => setExpanded(prevExpanded => !prevExpanded)} label="Menu" />
             </div>
 
 
             <PrimaryNav items={primaryPages} >
             </PrimaryNav>
+
+           
+            
+
           </div>
         </GridContainer>
       </Header>

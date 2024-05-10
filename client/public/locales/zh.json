@@ -1,0 +1,154 @@
+{
+    "landingPage": {
+      "header": {
+        "welcome": "欢迎！",
+        "subtitle": "让我们一起解决这些税务问题。"
+      },
+      "buttons": {
+        "getStarted": "开始"
+      },
+      "navigation": {
+        "signIn": "登录",
+        "fileTaxes": "报税",
+        "logOut": "登出"
+      }
+    },
+    "loginHome": {
+      "header": {
+        "welcomeBack": "欢迎回来，{{username}}！",
+        "happyToSeeYou": "很高兴再次见到你。"
+      },
+      "buttons": {
+        "startFiling": "开始报税",
+        "myTaxes": "我的税务",
+        "myAccount": "我的账户"
+      },
+      "navigation": {
+        "signIn": "登录",
+        "fileTaxes": "报税",
+        "logOut": "登出"
+      }
+    },
+    "personalForm": {
+      "stepIndicator": {
+        "personalInformation": "个人信息",
+        "filingStatus": "报税状态",
+        "w2Income": "W2 收入",
+        "1099Income": "1099 收入",
+        "deductions": "扣除项",
+        "review": "审核",
+        "signAndSubmit": "签名并提交"
+      },
+      "personalInfo": {
+        "legend": "个人信息",
+        "firstName": "名",
+        "middleName": "中间名",
+        "lastName": "姓",
+        "email": "电子邮件",
+        "dateOfBirth": "出生日期",
+        "ssn": "社会安全号码",
+        "ssnHint": "例如，123 45 6789"
+      },
+      "addressInfo": {
+        "legend": "地址信息",
+        "streetAddress": "街道地址",
+        "streetAddressLine2": "街道地址第二行",
+        "city": "城市",
+        "state": "州、领地或军邮",
+        "postalCode": "邮政编码",
+        "postalCodeHint": "例如，12345-6789"
+      },
+      "buttons": {
+        "back": "返回",
+        "continue": "继续"
+      },
+      "dateFormat": "yyyy-mm-dd"
+    },
+    
+        "ReviewPage": {
+            "personalInformation": "个人信息",
+            "edit": "编辑",
+            "firstName": "名字：",
+            "lastName": "姓氏：",
+            "ssn": "社会安全号：",
+            "email": "电子邮箱：",
+            "birthday": "生日：",
+            "street1": "街道1：",
+            "street2": "街道2：",
+            "city": "城市：",
+            "state": "州：",
+            "zipCode": "邮政编码：",
+            "filingStatus": "申报状态",
+            "status": "状态：",
+            "dependents": "家属：",
+            "w2Income": "W2 收入",
+            "income": "收入：",
+            "withholdings": "预扣税：",
+            "employerEIN": "雇主EIN：",
+            "employerAddress": "雇主地址：",
+            "income1099": "1099 收入",
+            "deductions": "扣除项",
+            "mortgageInterest": "抵押贷款利息：",
+            "donations": "捐款：",
+            "propertyTax": "财产税：",
+            "medicalExpenses": "医疗费用：",
+            "studentLoanInterest": "学生贷款利息：",
+            "otherDeductions": "其他扣除项：",
+            "otherIncome": "其他收入：",
+            "standardDeductions": "标准扣除：",
+            "submitAllInformation": "提交所有信息",
+            "back": "返回",
+            "confirm": "确认您的信息",
+            "reviewInfo": "审查您的信息",
+            "reminder": "请在提交前仔细检查您的信息。"
+        },
+        "DeductionsPage": {
+            "personalInformation": "个人信息",
+            "filingStatus": "申报状态",
+            "w2Income": "W2 收入",
+            "income1099": "1099 收入",
+            "deductions": "扣除项",
+            "review": "审查",
+            "signAndSubmit": "签署并提交",
+            "itemizedDeductions": "逐项扣除",
+            "mortgageInterest": "抵押贷款利息",
+            "donations": "捐款",
+            "propertyTax": "财产税",
+            "medicalExpenses": "医疗费用",
+            "studentLoanInterest": "学生贷款利息",
+            "otherDeductions": "其他扣除项",
+            "back": "返回",
+            "skipToReview": "跳过至审查",
+            "compareDeductions": "比较扣除项",
+            "weRecommend": "我们推荐",
+            "standardDeductions": "标准扣除",
+            "chooseStandardDeductions": "选择标准扣除",
+            "chooseItemizedDeductions": "选择逐项扣除"
+        },
+        "BreakdownPage": {
+            "personalInformation": "个人信息",
+            "filingStatus": "申报状态",
+            "w2Income": "W2 收入",
+            "income1099": "1099 收入",
+            "deductions": "扣除项",
+            "review": "审查",
+            "submit": "签署并提交",
+            "yourEstimatedTax": "您的预估税款",
+            "refund": "退税",
+            "owed": "应缴税款",
+            "viewFederalTaxBreakdown": "查看联邦税收明细",
+            "documentTitle": "文件标题",
+            "year": "年份",
+            "w2IncomePlus1099Income": "W-2收入 + 1099收入",
+            "totalIncomeMinusDeductions": "总收入 - 扣除项",
+            "taxableIncomeTimesTaxRate": "应税收入 * 税率",
+            "totalFederalTaxMinusFederalIncomeTaxWithheldMinusChildTaxCredit": "总联邦税 - 预扣联邦所得税 - 儿童税收抵免",
+            "amountRefunded": "退款金额",
+            "amountOwed": "欠款金额",
+            "finalSubmit": "最终提交",
+            "back": "返回"
+        }
+    
+    
+  }
+  

@@ -165,6 +165,7 @@ return (
                   <p>Student Loan Interest: {taxInfo.studentLoanInterest}</p>
                   <p>Other Deductions: {taxInfo.otherDeduction}</p>
                   <p>Other Income: {taxInfo.otherIncome}</p>
+                  <p>Standard Deductions: {"28000"}</p>
         </Grid>
 
         <Grid col={12}>

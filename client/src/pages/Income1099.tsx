@@ -1,4 +1,4 @@
-import { Label, TextInput, FormGroup, Form, ErrorMessage, Textarea, Fieldset, Button, Checkbox, Grid, GridContainer, RequiredMarker, Select, DateRangePicker, DatePicker, ButtonGroup, ProcessListHeading, ProcessListItem, StepIndicator, StepIndicatorStep, Radio, TextInputMask } from "@trussworks/react-uswds";
+import { Label, TextInput, FormGroup, Form, ErrorMessage, Textarea, Fieldset, Accordion, Button, Checkbox, Grid, GridContainer, RequiredMarker, Select, DateRangePicker, DatePicker, ButtonGroup, ProcessListHeading, ProcessListItem, StepIndicator, StepIndicatorStep, Radio, TextInputMask } from "@trussworks/react-uswds";
 import { Link, useNavigate } from "react-router-dom";
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -57,9 +57,24 @@ export const Income1099 = (): React.ReactElement => {
     navigate('/deductions'); // Navigate to the next form
   };
 
+
+
+  
+//accordion opening
+  const [openPanelId, setOpenPanelId] = useState<number | null>(null);  // Track the ID of the currently open panel
+
+  // Function to handle accordion changes
+  const handleAccordionChange = (panelId: number) => {
+    // Toggle panel: close it if it's already open, or open the selected panel
+     setOpenPanelId(prevId => prevId === panelId ? null : panelId);
+  };
+
+
+
+
 return (
 
-<div style={{ marginLeft: '2rem' }}>
+<div style={{ marginLeft: '1rem' }}>
   <GridContainer className="usa-section">
 
     <StepIndicator
@@ -92,48 +107,87 @@ return (
       <StepIndicatorStep label="Review"  />
       <StepIndicatorStep label="Sign and Submit" />
     </StepIndicator>
+ 
+<Grid row gap>
 
-    <Grid row gap>
-
-
-    <Grid col={4}>
-        {/*
-    <Grid col={4} style={{
-    marginLeft: '18rem'}}>
-    */}
+    <Grid col={12} style={{
+                        marginLeft: '3rem'
+                    }}>
+                       
 
 
 
+
+                        <main id="main-content">
+
+
+                            <section id="" className="">
+                                
+<Grid row>
+    <Grid col={12} >
+                                    <h1 className="usa-hero__heading">
+                                        <span className="usa-hero__heading--alt ">
+                                            Other Income
+                                        </span>
+                                        
+                                    </h1>
+                                   {/* <Button type="button" onClick={handleAddForm}>Add Income Form</Button>*/}
+                                   <Button type = "button" onClick={handleAddForm}>Add New Accordion Item</Button>
+                                    <Accordion bordered={false} items={forms.map((form, index) => ({
+                                      
+                              
+                                                title: <span style={{ color: '#000', fontWeight: 'bold' }}>Form {index + 1}</span>,
+                                                content: (
+                                                    <p style={{ color: '#000' , width: '80%'}}>
+
+
+
+<Fieldset legend="Other Income" legendStyle="large"  className="" >
+<Grid row>
+              <Grid col={5}>
 {/* <Form onSubmit={mockSubmit}>*/}
-<Fieldset legend="Other Income" legendStyle="large">
 
-{forms.map((form, index) => (
-                  <div key={index}>
-                    <Label htmlFor={`income-${index}`}>Other Income</Label>
+
+
+                  <div key={index} style={{
+                    
+                }}>
+
+{index > 0 && <hr style={{ height: '5px', backgroundColor: 'black', border: 'none' }}  />} 
+
+<div style={{ marginBottom: '50px', marginTop: '50px'}}>
+                    <Label htmlFor={`income-${index}`}>{index === 0 ? "1099 Income" : `Other Income ${index}`}</Label>
                     <TextInput id={`income-${index}`} name="income" type="number" value={form.income.toString()} onChange={e => handleInputChange(index, 'income', e)} />
-
+                    </div>
+                    <div style={{ marginBottom: '70px', marginTop: '30px'}}>
                     <Label htmlFor={`withholdings-${index}`}>Federal Tax Withheld</Label>
                     <TextInput id={`withholdings-${index}`} name="withholdings" type="number" value={form.withholdings.toString()} onChange={e => handleInputChange(index, 'withholdings', e)} />
-
+                    </div>
+                    <div style={{ marginBottom: '60px', marginTop: '30px'}}>
                     <Label htmlFor={`employerEin-${index}`}>Employer EIN</Label>
                     <TextInput id={`employerEin-${index}`} name="employerEin" type="text" value={form.employerEin} onChange={e => handleInputChange(index, 'employerEin', e)} />
+
+                    
                   </div>
-                ))}
+                  </div>
+                
+              
 
-              </Fieldset>
-            </Grid>
+          </Grid>
+          
+             
+                   
+       
 
-            <Grid col={1}></Grid>
-
-            <Grid col={4}>
-
-              <Fieldset legend="" legendStyle="large">
-                <p>
-                  Required fields are marked with an asterisk (<RequiredMarker />
-                  ).
-                </p>
-                {forms.map((form, index) => (
-                  <div key={index}>
+              <Grid col={2}></Grid>
+              <Grid col={5}>
+           
+               
+               
+                  <div key={index} style={{
+                    
+                }}>
+                    
                     <Label htmlFor={`employerStreet1-${index}`}>Street Address</Label>
                     <TextInput id={`employerStreet1-${index}`} name="employerStreet1" type="text" value={form.employerStreet1} onChange={e => handleInputChange(index, 'employerStreet1', e)} />
 
@@ -201,102 +255,21 @@ return (
 
                     <Label htmlFor={`employerZipcode-${index}`}>ZIP Code</Label>
                     <TextInput id={`employerZipcode-${index}`} name="employerZipcode" type="text" value={form.employerZipcode} onChange={e => handleInputChange(index, 'employerZipcode', e)} />
-
-
+                 
+                    {index < forms.length - 1 && <hr  style={{ height: '5px', backgroundColor: 'black', border: 'none' }} />} 
+                    <Button type="button" onClick={() => handleDeleteForm(index)}>Delete Form</Button>
+                    
                   </div>
-                ))}
+                   
+              
 
-<Button type="button" onClick={() => handleDeleteForm}>Delete Form</Button>
-              </Fieldset>
-              <Button type="button" onClick={handleAddForm}>Add Income Form</Button>
+</Grid>
 
-              <ButtonGroup type="default">
-
-                <Link to="/filing-status" className="usa-button usa-button--outline">Back </Link>
-                <Button type="button" onClick={handleContinue}>Continue</Button>
-                <Link to="/review" className="usa-button usa-button--outline">Go to Review</Link>
-              </ButtonGroup>
-            </Grid>
-          </Grid>
-        </GridContainer>
-
-
-        {/*
-<Label htmlFor="w2">1099 Income</Label>
-<TextInput id="w2" name="w2" type="text" />
-
-<Label htmlFor="w2">Federal Tax Withheld</Label>
-<TextInput id="w2" name="w2" type="text" />
-
-<Label htmlFor="w2">Other Income</Label>
-<TextInput id="w2" name="w2" type="text" />
-
-
-<Label htmlFor="first-name">Employer name</Label>
-  <span id="hint-fed-id" className="usa-hint">
-    You'll find this in Box c on your 1099.
-    </span>
-  <TextInput id="first-name" name="first-name" type="text" />
- 
-
-  <Label id="first-name" htmlFor="first-name">
-      Employer ID Number (EIN)
-    </Label>
-    <span id="hint-fed-id" className="usa-hint">
-    You'll find this in Box b on your 1099.
-    </span>
-    <TextInputMask id="input-type-ssn" name="input-type-ssn" type="text" aria-labelledby="first-name" aria-describedby="hint-ssn" mask="__ _______" pattern="^(?!(000|666|9))\d{3} (?!00)\d{2} (?!0000)\d{4}$" />
-    
-</Fieldset>
 </Grid>
 
 
-<Grid col={1}></Grid>
-
-<Grid col={4}>
-
-<Fieldset legend="" legendStyle="large">
-  <p>
-    Required fields are marked with an asterisk (<RequiredMarker />
-    ).
-  </p>
-  <Label htmlFor="mailing-address-1">Employer Street address</Label>
-  <TextInput id="mailing-address-1" name="mailing-address-1" type="text" />
-
-  <Label htmlFor="mailing-address-2">Street address line 2</Label>
-  <TextInput id="mailing-address-2" name="mailing-address-2" type="text" />
-
-  <Label htmlFor="city" requiredMarker>
-    City
-  </Label>
-  <TextInput id="city" name="city" type="text" required />
-
-  <Label htmlFor="state" requiredMarker>
-    State, territory, or military post
-  </Label>
-  <Select id="state" name="state" required>
-    <option>- Select -</option>
-   
-  
-  </Select>
-
-  <Label id="zip" htmlFor="first-name">
-      ZIP Code
-    </Label>
-    <span id="hint-zip" className="usa-hint">
-      For example, 12345-6789
-    </span>
-    <TextInputMask id="input-type-zip" name="input-type-zip" type="text" aria-labelledby="zip" aria-describedby="hint-zip" mask="_____-____" pattern="^[0-9]{5}(?:-[0-9]{4})?$" />
-
-
-</Fieldset>
-
-
-
-
-
-
- 
+              </Fieldset>
+                                                       
 
 
 
@@ -304,25 +277,77 @@ return (
 
 
 
-     
-
-
-      <ButtonGroup type="default">
-
-        <Link to="/w2" className="usa-button usa-button--outline">Back </Link>
-        <Link to="/deductions" className="usa-button">Continue </Link>
-
-      </ButtonGroup>
-      </Grid>
-    </Grid>
-  </GridContainer>
 
 
 
-  */}
 
 
-  {/*</Form>*/}
+
+
+
+                                                    </p>
+                                                ),
+                                                id: `form-${form.id}`,
+                                                expanded: openPanelId === form.id,
+                                                onToggle: () => handleAccordionChange(form.id),
+                                                headingLevel: 'h3'
+                                              }))} />
+
+
+
+                                            
+                                    
+
+</Grid>
+</Grid>
+                               
+                            </section>
+
+
+
+
+
+
+
+
+
+                            <section id="test-section-id" className="usa-graphic-list usa-section">
+                                <GridContainer>
+                                    <Grid row style={{
+                                        marginLeft: '16rem'
+                                    }}>
+                                        <ButtonGroup type="default">
+
+<Link to="/w2-income" className="usa-button usa-button--outline">Back </Link>
+<Button type="button" onClick={handleContinue}>Continue</Button>
+<Link to="/review" className="usa-button usa-button--outline">Go to Review</Link>
+</ButtonGroup>
+
+
+                                    </Grid>
+
+                                </GridContainer>
+                            </section>
+
+                        </main> 
+              
+            </Grid>
+            </Grid>
+
+              </GridContainer>
+
+            
+             
+
+              <ButtonGroup type="default">
+
+                <Link to="/w2-income" className="usa-button usa-button--outline">Back </Link>
+                <Button type="button" onClick={handleContinue}>Continue</Button>
+                <Link to="/review" className="usa-button usa-button--outline">Go to Review</Link>
+              </ButtonGroup>
+            
+
+
 </div>
 
 );

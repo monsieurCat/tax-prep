@@ -38,6 +38,7 @@ const Login = (): React.ReactElement => {
               navigate('/login-home');  // Redirect on successful login
           } else {
               // If login failed but the server responded
+             
               setErrorMessage('Failed to log in. Please check your credentials and try again.');
           }
       })
@@ -68,16 +69,23 @@ const Login = (): React.ReactElement => {
 
    return <>
 
-{logoutMessage && <Alert type="info" headingLevel="h4" noIcon>
-                {logoutMessage}
+{logoutMessage && <Alert type="info" heading="You have been successfully logged out." headingLevel="h4" noIcon>
+                {"Come back again."}
             </Alert>}
 
-            {logoutError && <Alert type="error" heading="Error status" headingLevel="h4">{logoutError}</Alert>}
+            {logoutError && <Alert type="error" heading="Error status" headingLevel="h4">{"Error!!"}</Alert>}
             
+         
+
+  {errorMessage && (
+            <Alert type="error" heading="Failed to log in." headingLevel="h4">
+              {"Incorrect username or password. Try again."}
+            </Alert>
+         )}
 
 
       <main id="main-content">
-         <div className="bg-warning-light" style={{ padding: '3rem',  marginTop: '2rem'}}>
+         <div className="" style={{ padding: '3rem',  marginTop: '2rem'}}>
             <GridContainer className="usa-section  ">
                <Grid row={true} className="flex-justify-center">
                   <Grid col={12} tablet={{
@@ -85,12 +93,12 @@ const Login = (): React.ReactElement => {
                   }} desktop={{
                      col: 6
                   }}>
-                     <div className="bg-white padding-y-3 padding-x-5 border border-base-lighter">
+                     <div className="bg-white padding-y-3 padding-x-5 border border-base-lighter bg-warning-light">
                         <h1 className="margin-bottom-0"></h1>
                         <Form onSubmit={handleLogin}>
                            <Fieldset legend="Sign in" legendStyle="large" >
-                              <Label htmlFor="email">Email address</Label>
-                              <TextInput id="email" name="email" type="email" autoCorrect="off" autoCapitalize="off" required={true} />
+                              <Label htmlFor="email">Username</Label>
+                              <TextInput id="input-type-text" name="email" type="text" autoCorrect="off" autoCapitalize="off" required={true} />
 
                               <Label htmlFor="password-sign-in">Password</Label>
                               <TextInput id="password-sign-in" name="password" type={showPassword ? 'text' : 'password'} autoCorrect="off" autoCapitalize="off" required={true} />

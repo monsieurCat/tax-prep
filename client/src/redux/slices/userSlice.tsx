@@ -5,7 +5,7 @@ import * as api from '../../api/taxApi';
 
 
 // Define separate interfaces for clarity and modularity
-interface PersonalInfo {
+export interface PersonalInfo {
     firstName: string;
     middleName?: string;
     lastName: string;
@@ -16,7 +16,7 @@ interface PersonalInfo {
     role: string;
   }
   
-  interface Address {
+  export interface Address {
     street1: string;
     street2?: string;
     city: string;
@@ -25,7 +25,7 @@ interface PersonalInfo {
   }
 
   // Unified state interface
-interface UserInfoState {
+export interface UserInfoState {
     personalInfo: PersonalInfo;
     address: Address;
     loading: boolean;
