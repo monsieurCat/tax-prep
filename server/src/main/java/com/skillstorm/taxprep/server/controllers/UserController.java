@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -30,10 +31,8 @@ import com.skillstorm.taxprep.server.utilities.mappers.AppUserMapper;
 
 @RestController
 @RequestMapping("/user")
+@CrossOrigin("*")
 public class UserController {
-
-  /* @Autowired
-  AuthenticationManager authenticationManager; */
 
   @Autowired
   UserService userService;
@@ -74,16 +73,29 @@ public class UserController {
         
         // If the user is trying to change their username, update Spring Security's authentication
         if (!currentUsername.equals(newUsername)) {
+
+          // First get the authenticatin from the Security Context Holder
           Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+          // If the authentication is valid
           if (authentication != null && authentication.isAuthenticated()) {
+
+            // get the user's details
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
             if (userDetails.getUsername().equals(currentUsername)) {
-                UserDetails updatedUserDetails = userService.loadUserByUsername(newUsername);
-                Authentication updatedAuthentication = new UsernamePasswordAuthenticationToken(
-                        updatedUserDetails, 
-                        authentication.getCredentials(), 
-                        authentication.getAuthorities());
-                SecurityContextHolder.getContext().setAuthentication(updatedAuthentication);
+
+              // Get the updated user's full record
+              UserDetails updatedUserDetails = userService.loadUserByUsername(newUsername);
+
+              // Now update the authentication token for Spring Security
+              Authentication updatedAuthentication = new UsernamePasswordAuthenticationToken(
+                      updatedUserDetails, 
+                      authentication.getCredentials(), 
+                      authentication.getAuthorities());
+
+              // And set the token back into the Security Context Holder for safe keeping :)
+              SecurityContextHolder.getContext().setAuthentication(updatedAuthentication);
             }
           }
         }
@@ -100,15 +112,5 @@ public class UserController {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.singletonMap("message", e.getMessage()));
     }
   }
-
-  /* @PutMapping("/updatePassword")
-  public ResponseEntity<?> updatePassword (Principal principal, @RequestBody AppUser user) {
-    if (principal != null) {
-      AppUser user = userService.loadUserByUsername(principal.getName());
-      return ResponseEntity.ok().body(user);
-    } else {
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Collections.singletonMap("error", "User is not authenticated"));
-    }
-  } */
 
 }

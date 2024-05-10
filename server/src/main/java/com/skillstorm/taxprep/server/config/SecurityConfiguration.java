@@ -3,67 +3,36 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.session.SessionManagementFilter;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
 
-import com.skillstorm.taxprep.server.services.UserService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.Arrays;
 
 @Configuration
-//@EnableWebSecurity
+@EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true, jsr250Enabled = true) // what allows for security checks
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class SecurityConfiguration {
 
-  @Autowired
-  UserService userService;
-
-  @Bean
-  public CorsConfigurationSource corsConfigurationSource() {
-    CorsConfiguration corsConfig = new CorsConfiguration();
-
-    corsConfig.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
-    corsConfig.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-    corsConfig.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
-    corsConfig.setAllowCredentials(true);
-    corsConfig.setMaxAge(3600L);
-
-    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    source.registerCorsConfiguration("/**", corsConfig);
-
-    return source;
-  }
-
-  @Bean
-  public CorsFilter corsFilter() {
-    CorsConfiguration corsConfig = new CorsConfiguration();
-
-    corsConfig.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
-    corsConfig.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
-    corsConfig.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
-    corsConfig.setAllowCredentials(true);
-    corsConfig.setMaxAge(3600L);
-
-    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    source.registerCorsConfiguration("/**", corsConfig);
-
-      return new CorsFilter(source);
-   }
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-    http.authorizeHttpRequests(authorizeHttpRequests -> {
+    String BASE_URL = "https://group11.skillstorm-congo.com";
+    String BASE_FRONT_URL = "https://taxstorm.skillstorm-congo.com";
+
+    // permit users to register and authenticate, and require authentication to receive user details
+    http
+      .authorizeHttpRequests(authorizeHttpRequests -> {
       authorizeHttpRequests
-        .requestMatchers("/").permitAll()
         .requestMatchers("/api/auth/**").permitAll()
         .requestMatchers("/login").permitAll()
         .requestMatchers("/user/**").hasRole("USER")
@@ -71,14 +40,28 @@ public class SecurityConfiguration {
         .requestMatchers("/tax_info/**").hasRole("USER")
         .anyRequest().authenticated();
     })
-    .addFilterBefore(corsFilter(), SessionManagementFilter.class)
-    .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-    .sessionManagement(sm -> sm.sessionFixation().changeSessionId())
+    // configure cors
+    .cors(cors -> cors.configurationSource(request -> {
+      CorsConfiguration configuration = new CorsConfiguration();
+      configuration.setAllowedOrigins(Arrays.asList("https://taxstorm.skillstorm-congo.com", 
+                                                          "http://taxstorm.skillstorm-congo.com",
+                                                          "http://localhost:3000"));
+      configuration.setAllowedMethods(Arrays.asList("*"));
+      configuration.setAllowedHeaders(Arrays.asList("*"));
+      configuration.setAllowCredentials(true);
+      return configuration;
+  }))
     .csrf(csrf -> csrf.disable())
     .formLogin(form -> form
-      .defaultSuccessUrl("/user/info")
+      .successHandler((req, res, auth) -> res.setStatus(HttpStatus.OK.value()))
+      .failureHandler(new SimpleUrlAuthenticationFailureHandler())
+      //.defaultSuccessUrl(BASE_URL + "/user/info", true)
+      //.failureUrl(BASE_URL + "/")
       .permitAll())
     .logout(logout -> logout
+      //.logoutUrl(BASE_URL + "/logout")
+      //.logoutSuccessUrl(BASE_URL + "/")
+      .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK))
       .invalidateHttpSession(true)
       .clearAuthentication(true)
       .deleteCookies("JSESSIONID"));
@@ -86,8 +69,6 @@ public class SecurityConfiguration {
     
     return http.build();
   }
-
-
 
   @Bean
   public static PasswordEncoder passwordEncoder() {

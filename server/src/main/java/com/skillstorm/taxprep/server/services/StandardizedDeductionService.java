@@ -15,6 +15,7 @@ public class StandardizedDeductionService {
   @Autowired
   private StandardizedDeductionRepository standardizedDeductionRepository;
 
+  // Get the standardized deduction amount by Filing Status id
   public StandardizedDeduction getByFilingStatusId(int filingStatusId) {
     Optional<StandardizedDeduction> standardizedDeduction = standardizedDeductionRepository.findByFilingStatus_Id(filingStatusId);
 

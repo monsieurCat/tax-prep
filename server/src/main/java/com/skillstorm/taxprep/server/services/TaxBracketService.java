@@ -14,6 +14,7 @@ public class TaxBracketService {
   @Autowired
   TaxBracketRepository taxBracketRepository;
 
+  // Get the tax bracket by filing status id
   public List<TaxBracket> findByFilingStatusID(int id) {
     List<TaxBracket> taxBrackets = taxBracketRepository.findByFilingStatus_Id(id);
     return taxBrackets;

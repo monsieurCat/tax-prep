@@ -16,10 +16,12 @@ public class IncomeW2Service {
     @Autowired
     private IncomeW2Repository incomeW2Repository;
 
+    // Get all incomes
     public List<IncomeW2> getAllIncome() {
         return incomeW2Repository.findAll();
     }
 
+    // Get specific income by income id
     public IncomeW2 getIncomeById(int id) {
       Optional<IncomeW2> income = incomeW2Repository.findById(id);
 
@@ -30,6 +32,7 @@ public class IncomeW2Service {
       return null;
     }
 
+    // Get incomes by tax info id
     public List<IncomeW2> getIncomeByTaxInfoId(int taxInfoId) {
       Optional<List<IncomeW2>> incomes = incomeW2Repository.findByTaxInfoId(taxInfoId);
 
@@ -40,10 +43,12 @@ public class IncomeW2Service {
       }
     }
 
+    // Save/update income
     public IncomeW2 saveOrUpdateIncome(IncomeW2 income) {
         return incomeW2Repository.save(income);
     }
 
+    // Delete income by id
     public void deleteIncomeById(int id) {
         incomeW2Repository.deleteById(id);
     }

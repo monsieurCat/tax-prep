@@ -1,7 +1,6 @@
 package com.skillstorm.taxprep.server.models;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
 
 import org.junit.jupiter.api.Test;
 

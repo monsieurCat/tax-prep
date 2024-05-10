@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +28,7 @@ import com.skillstorm.taxprep.server.utilities.mappers.AddressMapper;
 
 @RestController
 @RequestMapping("/address")
+@CrossOrigin("*")
 public class AddressController {
 
   @Autowired
@@ -35,6 +37,7 @@ public class AddressController {
   @Autowired
   UserService userService;
 
+  // Mapping to get a logged in user's address
   @GetMapping()
   public ResponseEntity<?> findAddress(Principal principal) {
     try {
@@ -49,6 +52,7 @@ public class AddressController {
     }
   }
 
+  // Mapping to update the address of the currently authenticated user
   @PutMapping()
   public ResponseEntity<?> updateAddress(Principal principal, @RequestBody AddressDTO addressDTO) {
     try {
@@ -65,6 +69,7 @@ public class AddressController {
     }
   }
   
+  // Mapping to get the address of a specific user by ID
   @GetMapping("/{addressId}")
   public ResponseEntity<?> findAddressById(@PathVariable int addressId) {
     Address address = addressService.findByAddressId(addressId);
@@ -72,6 +77,7 @@ public class AddressController {
     return new ResponseEntity<Address>(address, HttpStatus.OK);
   }
 
+  // Mapping to create an address
   @PostMapping()
   public ResponseEntity<?> createAddress(@RequestBody Address address) {
     Address createdAddress = addressService.saveAddress(address);
@@ -79,6 +85,7 @@ public class AddressController {
     return new ResponseEntity<Address>(createdAddress, HttpStatus.OK);
   }
 
+  // Mapping to delete an address
   @DeleteMapping()
   public ResponseEntity<?> deleteAddress(@RequestBody Address address) {
     addressService.deleteAddress(address);

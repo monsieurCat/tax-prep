@@ -26,6 +26,7 @@ public class UserService implements UserDetailsService {
   @Autowired
   UserRepository userRepository;
 
+  // load user by username; used by Spring Security
   @Override
   public AppUser loadUserByUsername(String username) throws UsernameNotFoundException {
     AppUser user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username + " not found."));
@@ -33,6 +34,7 @@ public class UserService implements UserDetailsService {
     return user;
   }
 
+  // Find id associated with user's username
   public int findUserIdByUsername(String username) {
     Optional<Integer> userId = userRepository.findUserIdByUsername(username);
 
@@ -43,25 +45,7 @@ public class UserService implements UserDetailsService {
     }
   }
 
-  /* public AppUserDTO updateUsername(String currentUsername, String newUsername) {
-    AppUser currentUser = loadUserByUsername(currentUsername);
-    
-    if (currentUsername != newUsername) {
-      Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-      if (authentication != null && authentication.isAuthenticated()) {
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        if (userDetails.getUsername().equals(currentUsername)) {
-            UserDetails updatedUserDetails = userService.loadUserByUsername(newUsername);
-            Authentication updatedAuthentication = new UsernamePasswordAuthenticationToken(
-                    updatedUserDetails, 
-                    authentication.getCredentials(), 
-                    authentication.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(updatedAuthentication);
-        }
-      }
-    }
-  } */
-
+  // Update a user's information
   public AppUserDTO updateUser(String currentUsername, AppUserDTO user) {
     
     // Check if new username is already taken
@@ -87,6 +71,7 @@ public class UserService implements UserDetailsService {
     }
   }
 
+  // Update a user's password
   public AppUserDTO updateUserPassword(String username, String currentPassword, String newEncodedPassword) {
 
     // Get current user to update
@@ -107,6 +92,7 @@ public class UserService implements UserDetailsService {
     }
   }
 
+  // Register a new user
   public AppUser register(AppUser user) {
     Optional<AppUser> foundUser = userRepository.findByUsername(user.getUsername());
     if (foundUser.isPresent()) {
@@ -118,6 +104,7 @@ public class UserService implements UserDetailsService {
     return userRepository.save(user);
   }
 
+  // Register an administrator
   @PreAuthorize("hasAuthority('ROLE_ADMIN')")
   public void registerAdmin(AppUser user) {
 
@@ -135,11 +122,13 @@ public class UserService implements UserDetailsService {
     userRepository.save(user);
   }
 
+  // Delete a user
   public void deleteUser(AppUser user) {
     userRepository.delete(user);
   }
 
-  @PreAuthorize("hasAuthority('ROLE_ADMIN')")     // security advice - works like @Before 
+  // additional functionality for administrators
+  @PreAuthorize("hasAuthority('ROLE_ADMIN')")
   public long countAllUsers() {
       return userRepository.count();
   }

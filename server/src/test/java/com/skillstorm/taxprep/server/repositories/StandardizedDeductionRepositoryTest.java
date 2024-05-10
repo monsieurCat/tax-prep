@@ -3,7 +3,6 @@ package com.skillstorm.taxprep.server.repositories;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Optional;
 
@@ -42,7 +41,6 @@ public class StandardizedDeductionRepositoryTest {
       assertNotNull(savedStandardizedDeduction.getId());
       assertEquals(1000, savedStandardizedDeduction.getDeductionAmount());
 
-      // Additional assertions if needed
     }
 
     @Test

@@ -32,12 +32,9 @@ import com.skillstorm.taxprep.server.utilities.mappers.AppUserMapper;
 
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin("*")
 @RequestMapping("/api/auth")
 public class LoginController {
-
-  /* @Autowired
-  AuthenticationManager authenticationManager; */
   
   @Autowired
   private UserService userService;
@@ -58,6 +55,7 @@ public class LoginController {
   private PasswordEncoder passwordEncoder;
 
 
+  // Mapping to register a new user
   @PostMapping("/register")
   public ResponseEntity<?> registerUser(@RequestBody AppUser user) {
     try {
@@ -88,6 +86,7 @@ public class LoginController {
     }
   }
 
+  // Mapping to change the password of a curretly authenticated user
   @PreAuthorize("hasRole('USER')")
   @PostMapping("/change_password")
   public ResponseEntity<?> changePassword(Principal principal, @RequestBody ChangePasswordDTO changePasswordRequest) {
@@ -100,6 +99,7 @@ public class LoginController {
               username, changePasswordRequest.getCurrentPassword());
       authenticationManager.authenticate(authToken); */
 
+      // encode the user's current password to check agaist db's value
       String currentPassword = changePasswordRequest.getCurrentPassword();
       String encodedCurrentPassword = passwordEncoder.encode(currentPassword);
 

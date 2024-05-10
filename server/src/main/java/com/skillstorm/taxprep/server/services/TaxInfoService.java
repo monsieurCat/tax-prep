@@ -31,6 +31,7 @@ public class TaxInfoService {
   @Autowired
   FilingStatusRepository filingStatusRepository;
 
+  // Find tax info by tax info id
   public TaxInfo findByTaxInfoId(int taxInfoId) {
     Optional<TaxInfo> taxInfo = taxInfoRepository.findById(taxInfoId);
 
@@ -41,6 +42,7 @@ public class TaxInfoService {
     return null;
   }
 
+  // Find tax info by user id
   public TaxInfo findTaxInfoByUserId(int userId) {
     Optional<TaxInfo> taxInfo = taxInfoRepository.findByUser_Id(userId);
 
@@ -51,6 +53,7 @@ public class TaxInfoService {
     return null;
   }
 
+  // Find tax info id by user id; for quick lookups
   public int findTaxInfoIdByUserId(int userId) {
     Optional<Integer> taxInfoId = taxInfoRepository.findTaxInfoIdByUserId(userId);
 
@@ -61,6 +64,7 @@ public class TaxInfoService {
     }
   }
 
+  // Find the 1099 incomes associated with a tax info id
   public List<Income1099> find1099IncomeByTaxInfoId(int taxInfoId) {
     Optional<List<Income1099>> incomes = income1099Repository.findByTaxInfoId(taxInfoId);
 
@@ -71,6 +75,7 @@ public class TaxInfoService {
     return null;
   }
 
+  // Find the W2 incomes associated with a tax info id
   public List<IncomeW2> findW2IncomeByTaxInfoId(int taxInfoId) {
     Optional<List<IncomeW2>> incomes = incomeW2Repository.findByTaxInfoId(taxInfoId);
 
@@ -81,6 +86,7 @@ public class TaxInfoService {
     return null;
   }
 
+  // Find filing status by tax info id
   public FilingStatus findFilingStatusByTaxInfoId(int taxInfoId) {
     Optional<TaxInfo> taxInfo = taxInfoRepository.findById(taxInfoId);
     TaxInfo foundTaxInfo;
@@ -94,10 +100,12 @@ public class TaxInfoService {
     return foundTaxInfo.getFilingStatus();
   }
 
+  // Save/update tax info
   public TaxInfo saveTaxInfo(TaxInfo taxInfo) {
     return taxInfoRepository.save(taxInfo);
   }
 
+  // Save/update W2 incomes associated with a specific tax info id
   public List<IncomeW2> saveW2Income(List<IncomeW2> incomesW2, int taxInfoId) {
     for (int i = 0; i < incomesW2.size(); i++) {
       IncomeW2 curIncome = incomesW2.get(i);
@@ -108,6 +116,7 @@ public class TaxInfoService {
     return incomesW2;
   }
 
+  // Save/update 1099 incomes associated with a specific tax info id
   public List<Income1099> save1099Income(List<Income1099> incomes1099, int taxInfoId) {
     for (int i = 0; i < incomes1099.size(); i++) {
       Income1099 curIncome = incomes1099.get(i);
@@ -118,6 +127,7 @@ public class TaxInfoService {
     return incomes1099;
   }
 
+  // Delete a tax info record
   public void deleteTaxInfo(TaxInfo taxInfo) {
     taxInfoRepository.delete(taxInfo);
   }

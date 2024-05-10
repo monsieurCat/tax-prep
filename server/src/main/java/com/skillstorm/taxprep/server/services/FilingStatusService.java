@@ -15,6 +15,7 @@ public class FilingStatusService {
   @Autowired
   private FilingStatusRepository filingStatusRepository;
 
+  // Get filing status by the status string
   public FilingStatus getByStatus(String status) {
     Optional<FilingStatus> filingStatus = filingStatusRepository.findByStatus(status);
 

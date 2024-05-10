@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,6 +36,7 @@ import com.skillstorm.taxprep.server.utilities.TaxCalculator;
 
 @RestController
 @RequestMapping("/tax_info")
+@CrossOrigin("*")
 public class TaxInfoController {
   
   @Autowired
@@ -55,10 +57,15 @@ public class TaxInfoController {
   @Autowired
   TaxCalculator taxCalculator;
 
+  // Mapping to find tax info of the currently authenticated user
   @GetMapping()
   public ResponseEntity<?> findTaxInfo(Principal principal) {
     try {
+
+      // Get user's id
       int userId = userService.findUserIdByUsername(principal.getName());
+
+      // Find the user's tax info by user id
       TaxInfo taxInfo = taxInfoService.findTaxInfoByUserId(userId);
 
       return new ResponseEntity<TaxInfo>(taxInfo, HttpStatus.OK);
@@ -67,13 +74,23 @@ public class TaxInfoController {
     }
   }
 
+  // Get the user's financial details
   @GetMapping("/full")
   public ResponseEntity<?> findFullTaxInfo(Principal principal) {
     try {
+      // Get the user's id
       int userId = userService.findUserIdByUsername(principal.getName());
+
+      // Get the user's tax info by user id
       TaxInfo taxInfo = taxInfoService.findTaxInfoByUserId(userId);
+
+      // Get the user's saved list of W2 incomes
       List<IncomeW2> incomesW2 = incomeW2Service.getIncomeByTaxInfoId(taxInfo.getId());
+
+      // Get the user's saved list of 1099 incomes
       List<Income1099> incomes1099 = income1099Service.getIncomeByTaxInfoId(taxInfo.getId());
+
+      // Construct the return values
       TaxInfoDTO taxInfoDTO = new TaxInfoDTO();
       taxInfoDTO.setFilingStatus(taxInfo.getFilingStatus());
       taxInfoDTO.setNumDependents(taxInfo.getNumDependents());
@@ -93,15 +110,25 @@ public class TaxInfoController {
     }
   }
 
+  // Mapping to get the calculations of a user's federal taxes
   @GetMapping("/calculate")
   public ResponseEntity<?> calculateTax(Principal principal) {
     
     try {
+
+      // Get the user's id
       int userId = userService.findUserIdByUsername(principal.getName());
+
+      // Get the user's tax info by user id
       TaxInfo taxInfo = taxInfoService.findTaxInfoByUserId(userId);
+
+      // Get the user's saved list of W2 incomes
       List<IncomeW2> incomesW2 = incomeW2Service.getIncomeByTaxInfoId(taxInfo.getId());
+
+      // Get the user's saved list of 1099 incomes
       List<Income1099> incomes1099 = income1099Service.getIncomeByTaxInfoId(taxInfo.getId());
 
+      // Calculate the user's federal tax information
       TaxResultsDTO results = taxCalculator.calculate(taxInfo, incomesW2, incomes1099);
 
       return new ResponseEntity<TaxResultsDTO>(results, HttpStatus.OK);
@@ -111,22 +138,37 @@ public class TaxInfoController {
     }
   }
 
+  // Mapping to get the user's saved filing status
   @GetMapping("/filing_status")
   public ResponseEntity<?> findFilingStatus(Principal principal) {
+    // Get the user's id
     int userId = userService.findUserIdByUsername(principal.getName());
+
+    // Get the user's tax information by user id
     TaxInfo taxInfo = taxInfoService.findTaxInfoByUserId(userId);
+
+    // Get the user's filing status from the tax info
     FilingStatus filingStatus = taxInfo.getFilingStatus();
 
     return new ResponseEntity<FilingStatus>(filingStatus, HttpStatus.OK);
   }
 
+  // Mapping to update the user's filing status
   @PutMapping("/filing_status")
   public ResponseEntity<?> updateFilingStatus(Principal principal, @RequestBody FilingStatusDTO filingStatusDTO) {
     try {
+
+      // Get the user's id
       int userId = userService.findUserIdByUsername(principal.getName());
+
+      // Get the user's tax info by user id
       TaxInfo taxInfo = taxInfoService.findTaxInfoByUserId(userId);
+
+      // Set the user's filing status within tax info
       FilingStatus newFilingStatus = filingStatusService.getByStatus(filingStatusDTO.getStatus());
       taxInfo.setFilingStatus(newFilingStatus);
+
+      // Save updated record in table
       taxInfoService.saveTaxInfo(taxInfo);
 
       return new ResponseEntity<FilingStatus>(newFilingStatus, HttpStatus.OK);
@@ -137,11 +179,18 @@ public class TaxInfoController {
     }
   }
 
+  // Mapping to get the list of w2 incomes the user has saved
   @GetMapping("/income_w2")
   public ResponseEntity<?> findW2Income(Principal principal) {
     try {
+
+      // Get the user's id
       int userId = userService.findUserIdByUsername(principal.getName());
+
+      // Get the user's tax info by user id
       int taxInfoId = taxInfoService.findTaxInfoIdByUserId(userId);
+
+      // Get the user's saved w2 incomes based on the tax info's id
       List<IncomeW2> incomes = incomeW2Service.getIncomeByTaxInfoId(taxInfoId);
 
       return new ResponseEntity<List<IncomeW2>>(incomes, HttpStatus.OK);
@@ -150,11 +199,18 @@ public class TaxInfoController {
     }
   }
 
+  // Mapping to get the list of 1099 incomes the user has saved
   @GetMapping("/income_1099")
   public ResponseEntity<?> find1099Income(Principal principal) {
     try {
+
+      // Get the user's id
       int userId = userService.findUserIdByUsername(principal.getName());
+
+      // Get the user's tax info by user id
       int taxInfoId = taxInfoService.findTaxInfoIdByUserId(userId);
+
+      // Get the user's saved 1099 incomes based on the tax info's id
       List<Income1099> incomes = income1099Service.getIncomeByTaxInfoId(taxInfoId);
 
       return new ResponseEntity<List<Income1099>>(incomes, HttpStatus.OK);
@@ -163,10 +219,14 @@ public class TaxInfoController {
     }
   }
 
+  // Mapping to save/update the user's financial information
   @PostMapping("/full")
   public ResponseEntity<?> createFullTaxInfo(Principal principal, @RequestBody TaxInfoDTO taxInfoDTO) {
     try {
+      // Get the user's id
       int userId = userService.findUserIdByUsername(principal.getName());
+
+      // Get the user's tax info by user id
       TaxInfo taxInfo = taxInfoService.findTaxInfoByUserId(userId);
 
       // get existing income records to compare incoming income records to
@@ -255,6 +315,7 @@ public class TaxInfoController {
     }
   }
 
+  // Mapping to delete a user's tax info record
   @DeleteMapping()
   public void deleteTaxInfo(@RequestBody TaxInfo taxInfo) {
     taxInfoService.deleteTaxInfo(taxInfo);

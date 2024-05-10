@@ -16,10 +16,12 @@ public class AddressService {
   @Autowired
   private AddressRepository addressRepository;
 
+  // Find all addresses
   public List<Address> findAllAddresses() {
     return addressRepository.findAll();
   }
 
+  // Find address by specific address id
   public Address findByAddressId(int id) {
     Optional<Address> address = addressRepository.findById(id);
 
@@ -30,6 +32,7 @@ public class AddressService {
     return null;
   }
 
+  // Find address by user id
   public Address findByUserId(int id) {
     Optional<Address> address = addressRepository.findByUserId(id);
 
@@ -40,10 +43,12 @@ public class AddressService {
     }
   }
 
+  // Save address to database
   public Address saveAddress(Address address) {
     return addressRepository.save(address);
   }
 
+  // Delete address
   public void deleteAddress(Address address) {
     addressRepository.delete(address);
   }
