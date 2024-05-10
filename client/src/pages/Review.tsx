@@ -72,11 +72,25 @@ return (
     marginLeft: '18rem'}}>
     */}
 
+</Grid></Grid></GridContainer>
 
+<GridContainer>
+  <Grid row>
+    <Grid col={1}></Grid>
+    <Grid col={10}>
 
 {/* <Form onSubmit={mockSubmit}>*/}
 <Fieldset legend="Confirm your information" legendStyle="large">
-<h1>Review Your Information</h1>
+<ButtonGroup type="default">          
+
+<Grid col = {10}></Grid>
+
+<Grid col = {2}> 
+                                        <Button type="button" onClick={handleSubmit}>Confirm</Button>
+
+
+                                        </Grid>
+</ButtonGroup> 
 
 <Alert type="info" headingLevel={"h1"}>Please review your information carefully before submitting.</Alert>
 
@@ -85,23 +99,34 @@ return (
 
 <Grid row gap>
         <Grid col={12}>
-          <h2>Personal Information</h2>
+          
+        <GridContainer>
+                                    <Grid row style={{
+                                        marginLeft: '50rem'
+                                    }}>
+                                      
+
+
+                                    </Grid>
+
+                                </GridContainer>
+                                <span style={{ color: "black", fontWeight: 'bold' ,  fontSize: '30px'}} >Personal Information</span>
           <ButtonGroup type="default" >
                 <Link to="/personal-form" className="usa-button usa-button--outline">Edit</Link>
                 
               </ButtonGroup>
-              <p><strong>First Name:</strong> {personalInfo.firstName}</p>
-          <p><strong>Last Name:</strong> {personalInfo.lastName}</p>
-          <p><strong>SSN:</strong> {personalInfo.ssn}</p>
-          <p><strong>Email:</strong> {personalInfo.email}</p>
+              <p><strong style={{ color: '#000', fontWeight: 'bold' ,  fontSize: '20px'}}>First Name:</strong> <span style={{ color: '#000', fontWeight: 'bold' ,  fontSize: '20px'}} >{personalInfo.firstName}</span></p>
+          <p><strong style={{ color: '#000', fontWeight: 'bold' ,  fontSize: '20px'}}>Last Name:</strong> <span style={{ color: '#000', fontWeight: 'bold' ,  fontSize: '20px'}} >{personalInfo.lastName}</span></p>
+          <p><strong style={{ color: '#000', fontWeight: 'bold' ,  fontSize: '20px'}}>SSN:</strong> <span style={{ color: '#000', fontWeight: 'bold' ,  fontSize: '20px'}} >{personalInfo.ssn}</span></p>
+          <p><strong style={{ color: '#000', fontWeight: 'bold' ,  fontSize: '20px'}}>Email:</strong> <span style={{ color: '#000', fontWeight: 'bold' ,  fontSize: '20px'}} >{personalInfo.email}</span></p>
           
-          <p><strong>Birthday:</strong> {personalInfo.birthday}</p>
+          <p><strong style={{ color: '#000', fontWeight: 'bold' ,  fontSize: '20px'}}>Birthday:</strong> <span style={{ color: '#000', fontWeight: 'bold' ,  fontSize: '20px'}} >{personalInfo.birthday}</span></p>
        
-          <p><strong>Street 1:</strong> {address.street1}</p>
-          <p><strong>Street 2:</strong> {address.street2}</p>
-          <p><strong>City:</strong> {address.city}</p>
-          <p><strong>State</strong> {address.state}</p>
-          <p><strong>Zip Code</strong> {address.postalCode}</p>
+          <p><strong style={{ color: '#000', fontWeight: 'bold' ,  fontSize: '20px'}}>Street 1:</strong> <span style={{ color: '#000', fontWeight: 'bold' ,  fontSize: '20px'}} >{address.street1}</span></p>
+          <p><strong style={{ color: '#000', fontWeight: 'bold' ,  fontSize: '20px'}}>Street 2:</strong> <span style={{ color: '#000', fontWeight: 'bold' ,  fontSize: '20px'}} >{address.street2}</span></p>
+          <p><strong style={{ color: '#000', fontWeight: 'bold' ,  fontSize: '20px'}}>City:</strong><span style={{ color: '#000', fontWeight: 'bold' ,  fontSize: '20px'}} >{address.city}</span></p>
+          <p><strong style={{ color: '#000', fontWeight: 'bold' ,  fontSize: '20px'}}>State</strong> <span style={{ color: '#000', fontWeight: 'bold' ,  fontSize: '20px'}} >{address.state}</span></p>
+          <p><strong style={{ color: '#000', fontWeight: 'bold' ,  fontSize: '20px'}}>Zip Code</strong> <span style={{ color: '#000', fontWeight: 'bold' ,  fontSize: '20px'}} >{address.postalCode}</span></p>
 
 
 
@@ -114,8 +139,8 @@ return (
                 <Link to="/filing-status" className="usa-button usa-button--outline">Edit</Link>
                 
               </ButtonGroup>
-              <p><strong>Status:</strong> {taxInfo.filingStatus.status}</p>
-                  <p><strong>Dependents:</strong> {taxInfo.numDependents}</p>
+              <p><strong style={{ fontSize: '20px'}}>Status:</strong> {taxInfo.filingStatus.status}</p>
+                  <p style={{ color: '#000', fontWeight: 'bold' ,  fontSize: '20px'}}><strong>Dependents:</strong> {taxInfo.numDependents}</p>
           </Grid>
 
         <Grid col={12}>
@@ -169,7 +194,7 @@ return (
         </Grid>
 
         <Grid col={12}>
-          <Button type="button" onClick={handleSubmit}>Submit All Information</Button>
+         
           <ButtonGroup type="default" className="margin-top-4">
                 <Link to="/deductions" className="usa-button usa-button--outline">Back</Link>
                 
@@ -178,10 +203,8 @@ return (
         
       </Grid>
       </Fieldset>
+     </Grid>
       </Grid>
-      
-      </Grid>
-      
     </GridContainer>
   
 

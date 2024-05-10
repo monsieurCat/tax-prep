@@ -98,7 +98,7 @@ return (
 
       />
       <StepIndicatorStep
-        label="1099 Income"
+        label="Other Income"
         status="current"
         
 
@@ -110,8 +110,8 @@ return (
  
 <Grid row gap>
 
-    <Grid col={12} style={{
-                        marginLeft: '3rem'
+    <Grid col={10} style={{
+                        marginLeft: '1rem'
                     }}>
                        
 
@@ -119,7 +119,7 @@ return (
 
 
                         <main id="main-content">
-
+<h1>Other Income Forms</h1>
 
                             <section id="" className="">
                                 
@@ -132,11 +132,41 @@ return (
                                         
                                     </h1>
                                    {/* <Button type="button" onClick={handleAddForm}>Add Income Form</Button>*/}
-                                   <Button type = "button" onClick={handleAddForm}>Add New Accordion Item</Button>
+                                  
+                                   
+
+                                   <GridContainer>
+                                    <Grid row >
+                                        
+                                        <Grid col={4}>
+                                        <ButtonGroup type="default">
+
+<Link to="/w2" className="usa-button usa-button--outline">Back </Link>
+
+
+</ButtonGroup>
+                                        </Grid>
+                                        <Grid col={4}></Grid>
+                                       
+                                        
+                                        
+<Grid col ={4}>
+<span className="usa-hero__heading--alt  tablet:margin-bottom-3"  style={{ fontWeight: 'bold' , fontSize: '10px'}}>
+                                        <Button type = "button" secondary onClick={handleAddForm}>Add Other Income</Button>
+                                        </span>
+                                        
+</Grid>
+
+                                    </Grid>
+
+                                </GridContainer>
+                           
+
+
                                     <Accordion bordered={false} items={forms.map((form, index) => ({
                                       
                               
-                                                title: <span style={{ color: '#000', fontWeight: 'bold' }}>Form {index + 1}</span>,
+                                                title: <span style={{ color: '#000', fontWeight: 'bold' }}>Other Income Form {index + 1}</span>,
                                                 content: (
                                                     <p style={{ color: '#000' , width: '80%'}}>
 
@@ -188,10 +218,10 @@ return (
                     
                 }}>
                     
-                    <Label htmlFor={`employerStreet1-${index}`}>Street Address</Label>
+                    <Label htmlFor={`employerStreet1-${index}`}>Employer Address</Label>
                     <TextInput id={`employerStreet1-${index}`} name="employerStreet1" type="text" value={form.employerStreet1} onChange={e => handleInputChange(index, 'employerStreet1', e)} />
 
-                    <Label htmlFor={`employerStreet2-${index}`}>Street Address Line 2</Label>
+                    <Label htmlFor={`employerStreet2-${index}`}>Employer Address Line 2</Label>
                     <TextInput id={`employerStreet2-${index}`} name="employerStreet2" type="text" value={form.employerStreet2} onChange={e => handleInputChange(index, 'employerStreet2', e)} />
 
                     <Label htmlFor={`employerCity-${index}`}>City</Label>
@@ -256,9 +286,37 @@ return (
                     <Label htmlFor={`employerZipcode-${index}`}>ZIP Code</Label>
                     <TextInput id={`employerZipcode-${index}`} name="employerZipcode" type="text" value={form.employerZipcode} onChange={e => handleInputChange(index, 'employerZipcode', e)} />
                  
-                    {index < forms.length - 1 && <hr  style={{ height: '5px', backgroundColor: 'black', border: 'none' }} />} 
+                    {index < forms.length - 1 } 
+
+
+
+
+                    <GridContainer>
+                                    <Grid row >
+                                        
+                                        <Grid col={10}>
+                                        <ButtonGroup type="default">
+
+
+
+
+
+                                       
+                                        < span className="usa-hero__heading--alt  tablet:margin-top-3"  style={{ fontWeight: 'bold' , fontSize: '10px'}}>
                     <Button type="button" onClick={() => handleDeleteForm(index)}>Delete Form</Button>
-                    
+                    </span>
+                                        
+
+
+                                        <Button type = "button" secondary onClick={handleAddForm}>Add Other Income</Button>
+                                         </ButtonGroup>
+                                        
+</Grid>
+
+                                    </Grid>
+
+                                </GridContainer>
+
                   </div>
                    
               
@@ -314,13 +372,14 @@ return (
                             <section id="test-section-id" className="usa-graphic-list usa-section">
                                 <GridContainer>
                                     <Grid row style={{
-                                        marginLeft: '16rem'
+                                        marginLeft: '50rem'
                                     }}>
                                         <ButtonGroup type="default">
+                                        <Button type="button" onClick={handleContinue}>Continue</Button>
 
-<Link to="/w2-income" className="usa-button usa-button--outline">Back </Link>
-<Button type="button" onClick={handleContinue}>Continue</Button>
-<Link to="/review" className="usa-button usa-button--outline">Go to Review</Link>
+
+                                        <Link to="/review" className="usa-button usa-button--outline">Skip to Review</Link>
+
 </ButtonGroup>
 
 
@@ -339,12 +398,7 @@ return (
             
              
 
-              <ButtonGroup type="default">
-
-                <Link to="/w2-income" className="usa-button usa-button--outline">Back </Link>
-                <Button type="button" onClick={handleContinue}>Continue</Button>
-                <Link to="/review" className="usa-button usa-button--outline">Go to Review</Link>
-              </ButtonGroup>
+              
             
 
 

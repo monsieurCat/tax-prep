@@ -2,9 +2,10 @@ import { Label, TextInput, Form, FormGroup, ErrorMessage, Textarea, Accordion, F
 import { Link, useNavigate } from "react-router-dom";
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchTaxInfo, submitFullTaxInfo, updateW2Income } from '../redux/slices/taxSlice';
+import { deleteW2Income, fetchTaxInfo, submitFullTaxInfo, updateW2Income } from '../redux/slices/taxSlice';
 import { RootState } from "../redux/storeTypes";
 import { AppDispatch } from "../redux/store";
+
 
 const W2Income = (): React.ReactElement => {
 
@@ -69,6 +70,14 @@ const W2Income = (): React.ReactElement => {
     }]);
   };
 
+  const handleDeleteForm = (index: number) => {
+    const newForms = [...w2Forms];
+    newForms.splice(index, 1);
+    setW2Forms(newForms);
+    // Optionally dispatch a delete action to update the backend
+    dispatch(deleteW2Income(index));
+  };
+
   // Updates Redux state and navigates to the next form
   const handleContinue = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
@@ -103,9 +112,18 @@ const W2Income = (): React.ReactElement => {
   
   */
 
+   //accordion opening
+   const [openPanelId, setOpenPanelId] = useState<number | null>(null);  // Track the ID of the currently open panel
+
+   // Function to handle accordion changes
+   const handleAccordionChange = (panelId: number) => {
+     // Toggle panel: close it if it's already open, or open the selected panel
+     setOpenPanelId(prevId => prevId === panelId ? null : panelId);
+   };
+
 
   return (
-    <>
+    
 
       <div style={{ marginLeft: '2rem' }}>
 
@@ -132,7 +150,7 @@ const W2Income = (): React.ReactElement => {
 
             />
             <StepIndicatorStep
-              label="1099 Income"
+              label="Other Income"
 
 
             />
@@ -144,51 +162,73 @@ const W2Income = (): React.ReactElement => {
           <Grid row gap>
 
 
-            <Grid col={4}>
+            <Grid col={10}>
               {/*
     <Grid col={4} style={{
     marginLeft: '18rem'}}>
     */}
 
  
-<ButtonGroup type="default">
-<Grid col ={1}>
-                <Link to="/filing-status" className="usa-button usa-button--outline">Back </Link>
-                <Grid col ={1}>
-              
-                </Grid>
-               
-                </Grid>
-              </ButtonGroup>
+<main id="main-content">
+              <h1>Other Income Forms</h1>
+
+              <section id="" className="">
+
+                <Grid row>
+                  <Grid col={12} >
+                    <h1 className="usa-hero__heading">
+                      <span className="usa-hero__heading--alt ">
+                        Other Income
+                      </span>
+
+                    </h1>
+                    {/* <Button type="button" onClick={handleAddForm}>Add Income Form</Button>*/}
 
 
-              <GridContainer>
+
+                    <GridContainer>
+                      <Grid row >
+
+                        <Grid col={4}>
+                          <ButtonGroup type="default">
+
+                            <Link to="/filing-status" className="usa-button usa-button--outline">Back </Link>
+
+
+                          </ButtonGroup>
+                        </Grid>
+                        <Grid col={4}></Grid>
+
+
+
+                        <Grid col={4}>
+                          <span className="usa-hero__heading--alt  tablet:margin-bottom-3" style={{ fontWeight: 'bold', fontSize: '10px' }}>
+                            <Button type="button" secondary onClick={handleAddForm}>Add W2</Button>
+                          </span>
+
+                        </Grid>
+
+                      </Grid>
+
+                    </GridContainer>
+
+
+
+                    <Accordion bordered={false} items={w2Forms.map((form, index) => ({
+
+
+                      title: <span style={{ color: '#000', fontWeight: 'bold' }}>W2 Form {index + 1}</span>,
+                      content: (
+                        <p style={{ color: '#000', width: '80%' }}>
+
+
+
+<Fieldset legend="Form W-2" legendStyle="large"  style={{ marginBottom: '20px', marginTop: '30px'}}>
               <Grid row>
-      <Grid col={3}></Grid>
-      <Grid col={3}></Grid>
-      <Grid col={3}></Grid>
-              <Grid col ={3}>
-              <ButtonGroup type="default">
+              <Grid col={5}>
 
-                
+
               
-                <Button type="button" onClick={handleContinue}>Continue</Button>
-                
-                <Link to="/review" className="usa-button usa-button--outline">Go to Review</Link>
-                
-              </ButtonGroup>
-              </Grid>
-              </Grid>
-              </GridContainer>
-
-
-              {/* <Form onSubmit={handleSubmit}>*/}
-            
-              <Fieldset legend="Form W-2" legendStyle="large"  style={{ marginBottom: '20px', marginTop: '30px'}}>
-             
-            
-             
-                {w2Forms.map((form, index) => (
                    <div style={{ marginBottom: '90px', marginTop: '78px'}}>
                   <div key={index}>
                     <Label htmlFor={`income-${index}`}>W-2 Income</Label>
@@ -201,29 +241,26 @@ const W2Income = (): React.ReactElement => {
                     <TextInput id={`employerEin-${index}`} name="employerEin" type="text" value={form.employerEin} onChange={e => handleInputChange(index, 'employerEin', e)} />
                   </div>
                   </div>
-                ))}
+                
 
-              </Fieldset>
-            </Grid>
 
-            <Grid col={1}></Grid>
 
-            <Grid col={4}>
+                              </Grid>
 
-              <Fieldset legend="" legendStyle="large">
-             
-                <p>
-                  Required fields are marked with an asterisk (<RequiredMarker />
-                  ).
-                </p>
-             
-                {w2Forms.map((form, index) => (
+
+
+
+
+                              <Grid col={2}></Grid>
+                              <Grid col={5}>
+
+                              
                      <div style={{ marginBottom: '80px', marginTop: '80px'}}>
                   <div key={index}>
-                    <Label htmlFor={`employerStreet1-${index}`}>Street Address</Label>
+                    <Label htmlFor={`employerStreet1-${index}`}>Employer Street Address</Label>
                     <TextInput id={`employerStreet1-${index}`} name="employerStreet1" type="text" value={form.employerStreet1} onChange={e => handleInputChange(index, 'employerStreet1', e)} />
 
-                    <Label htmlFor={`employerStreet2-${index}`}>Street Address Line 2</Label>
+                    <Label htmlFor={`employerStreet2-${index}`}>Employer Street Address Line 2</Label>
                     <TextInput id={`employerStreet2-${index}`} name="employerStreet2" type="text" value={form.employerStreet2} onChange={e => handleInputChange(index, 'employerStreet2', e)} />
 
                     <Label htmlFor={`employerCity-${index}`}>City</Label>
@@ -290,112 +327,124 @@ const W2Income = (): React.ReactElement => {
 
                     </div>
                   </div>
-                ))}
+                
 
 
-              </Fieldset>
-            
-             
-              <Button type="button" onClick={handleAddForm}>Add W-2 Form</Button>
 
-             
-   
-            </Grid>
-            
+
+                                  <GridContainer>
+                                    <Grid row >
+
+                                      <Grid col={10}>
+                                        <ButtonGroup type="default">
+
+
+
+
+
+
+                                          < span className="usa-hero__heading--alt  tablet:margin-top-2" style={{ fontWeight: 'bold', fontSize: '10px' }}>
+                                            <Button type="button" onClick={() => handleDeleteForm(index)}>Delete Form</Button>
+                                          </span>
+
+
+
+                                          <Button type="button" secondary onClick={handleAddForm}>Add W2</Button>
+                                        </ButtonGroup>
+
+                                      </Grid>
+
+                                    </Grid>
+
+                                  </GridContainer>
+
+                                
+
+
+
+                              </Grid>
+
+                            </Grid>
+
+
+                          </Fieldset>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        </p>
+                      ),
+                      id: `form-${form.id}`,
+                      expanded: openPanelId === form.id,
+                      onToggle: () => handleAccordionChange(form.id),
+                      headingLevel: 'h3'
+                    }))} />
+
+
+
+
+
+
+                  </Grid>
+                </Grid>
+
+              </section>
+
+
+
+
+
+
+
+
+
+              <section id="test-section-id" className="usa-graphic-list usa-section">
+                <GridContainer>
+                  <Grid row style={{
+                    marginLeft: '50rem'
+                  }}>
+                    <ButtonGroup type="default">
+                      <Button type="button" onClick={handleContinue}>Continue</Button>
+
+
+                      <Link to="/review" className="usa-button usa-button--outline">Skip to Review</Link>
+
+                    </ButtonGroup>
+
+
+                  </Grid>
+
+                </GridContainer>
+              </section>
+
+            </main>
+
           </Grid>
-          
-        </GridContainer>
-       
+        </Grid>
 
-
-        {/*
-                <Label htmlFor="w2">W-2 Income</Label>
-                <TextInput id="w2" name="w2" type="text" />
-
-                <Label htmlFor="w2">Federal Tax Withheld</Label>
-                <TextInput id="w2" name="w2" type="text" />
-
-                <Label htmlFor="first-name">Employer name</Label>
-                <span id="hint-fed-id" className="usa-hint">
-                  You'll find this in Box c on your W-2.
-                </span>
-                <TextInput id="first-name" name="first-name" type="text" />
-
-
-                <Label id="first-name" htmlFor="first-name">
-                  Employer ID Number (EIN)
-                </Label>
-                <span id="hint-fed-id" className="usa-hint">
-                  You'll find this in Box b on your W-2.
-                </span>
-                <TextInputMask id="input-type-ssn" name="input-type-ssn" type="text" aria-labelledby="first-name" aria-describedby="hint-ssn" mask="__ _______" pattern="^(?!(000|666|9))\d{3} (?!00)\d{2} (?!0000)\d{4}$" />
-
-              </Fieldset>
-            </Grid>
-
-            <Grid col={1}></Grid>
-
-            <Grid col={4}>
-              
-              <Fieldset legend="" legendStyle="large">
-                <p>
-                  Required fields are marked with an asterisk (<RequiredMarker />
-                  ).
-                </p>
-                <Label htmlFor="mailing-address-1">Employer Street address</Label>
-                <TextInput id="mailing-address-1" name="mailing-address-1" type="text" />
-
-                <Label htmlFor="mailing-address-2">Street address line 2</Label>
-                <TextInput id="mailing-address-2" name="mailing-address-2" type="text" />
-
-                <Label htmlFor="city" requiredMarker>
-                  City
-                </Label>
-                <TextInput id="city" name="city" type="text" required />
-
-                <Label htmlFor="state" requiredMarker>
-                  State, territory, or military post
-                </Label>
-                <Select id="state" name="state" required>
-                  <option>- Select -</option>
-
-
-                </Select>
-
-                <Label id="zip" htmlFor="first-name">
-                  ZIP Code
-                </Label>
-                <span id="hint-zip" className="usa-hint">
-                  For example, 12345-6789
-                </span>
-                <TextInputMask id="input-type-zip" name="input-type-zip" type="text" aria-labelledby="zip" aria-describedby="hint-zip" mask="_____-____" pattern="^[0-9]{5}(?:-[0-9]{4})?$" />
-
-
-              </Fieldset>
-
-
-              <Button type="button" onClick={handleAddForm}>Add Another W-2 Form</Button>
-
-              <ButtonGroup type="default">
-
-                <Link to="/filing-status" className="usa-button usa-button--outline">Back </Link>
-                <Button type="button" onClick={handleContinue}>Continue</Button>
-
-              </ButtonGroup>
-            </Grid>
-          </Grid>
-        </GridContainer>
-
-/*}
+      </GridContainer>
 
 
 
 
-        {/*</Form>*/}
-      </div>
-    </>
+
+
+
+
+    </div>
 
   );
-
 };
 export default W2Income;

@@ -45,7 +45,7 @@ export const Breakdown = (): React.ReactElement => {
 
     return (
 
-        <div style={{ marginLeft: '2rem' }}>
+        <div style={{ marginLeft: '1rem' }}>
 
             <GridContainer className="usa-section">
 
@@ -82,6 +82,9 @@ export const Breakdown = (): React.ReactElement => {
                     <Grid col={12} style={{
                         marginLeft: '5rem'
                     }}>
+
+
+                        
                         {/*
     <Grid col={4} style={{
     marginLeft: '18rem'}}>
@@ -91,87 +94,215 @@ export const Breakdown = (): React.ReactElement => {
 
                         {/* <Form onSubmit={mockSubmit}>*/}
 
+                        
+                                <GridContainer>
+                                    <Grid row >
+                                        
+                                        <Grid col={4}>
+                                        <ButtonGroup type="default">
 
+<Link to="/review" className="usa-button usa-button--outline">Back </Link>
+
+
+</ButtonGroup>
+                                        </Grid>
+                                        <Grid col={4}></Grid>
+                                        <span className="usa-hero__heading--alt  tablet:margin-bottom-3"  style={{ fontWeight: 'bold' , fontSize: '10px'}}>
+                                        <a href="/submit" className="usa-button usa-button--big">
+                                            Sign and submit
+                                        </a>
+                                        </span>
+                                    </Grid>
+
+                                </GridContainer>
+                           
 
 
                         <main id="main-content">
 
 
                             <section id="test-section-id" className="usa-graphic-list usa-section usa-section--dark ">
-                                <GridContainer className="">
+                                <GridContainer className="" >
 <Grid row>
     <Grid col={12} >
+        
                                     <h1 className="usa-hero__heading">
-                                        <span className="usa-hero__heading--alt ">
-                                            Your estimated tax {taxResults!.finalTaxAmount >= 0 ? 'refund' : 'owed'}
+                                        <span className="usa-hero__heading--alt  tablet:margin-bottom-4"  style={{ fontWeight: 'bold' }}>
+                                            Your Estimated Tax {taxResults!.finalTaxAmount >= 0 ? 'Refund:' : 'Owed:'}
                                         </span>
+                                        <span className= " tablet:margin-bottom-6" style={{ fontWeight: 'bold' ,  fontSize: '40px'}}>
                                         ${Math.abs(taxResults!.finalTaxAmount)}
+                                        </span>
                                     </h1>
                                     <Accordion bordered={false} items={
                                         [
                                             {
-                                                title: <span style={{ color: '#000', fontWeight: 'bold' ,  fontSize: '25px'}}>View Federal Tax Breakdown</span>,
+                                                title: <span style={{ color: '#000', fontWeight: 'bold' ,  fontSize: '30px'}}>View Federal Tax Breakdown</span>,
                                                 content: (
                                                     <p style={{ color: '#000' }}>
-                                                        <Table bordered={false} >
-                                                            <thead>
-                                                                <tr>
-                                                                    <th scope="col">Document title</th>
-                                                                    <th scope="col">Year</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
 
 
-                                                                <tr>
-                                                                    <th scope="row"  >
-                                                                        <span className="font-sans-xl text-black margin-top-0 tablet:margin-bottom-0">W-2 Income <br /> + 1099 Income</span>
-                                                                    </th>
-                                                                    <td>
-                                                                        <span className="font-sans-xl text-black margin-top-0 tablet:margin-bottom-0">{taxResults!.incomeW2} <br />{taxResults!.income1099}</span>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <th scope="row">
-                                                                        <span className="font-sans-xl text-black margin-top-0 tablet:margin-bottom-0">Total Income <br />- Deductions</span>
-                                                                    </th>
-                                                                    <span className="font-sans-xl text-black margin-top-0 tablet:margin-bottom-0">{taxResults!.totalIncome}<br />{taxResults!.deductions}</span>
-                                                                </tr>
+                                                        <GridContainer>
+
+                                                            <Grid row style={{ borderBottom: '', paddingBottom: '1px' }}>
+                                                                <Grid col={9} >
+                                                                <span className="font-sans-xl text-black margin-top-0 tablet:margin-bottom-0">  W-2 Income  </span>
+                                                                </Grid>
+
+                                                                <Grid col={3}>
+                                                                <span className="font-sans-xl text-black margin-top-0 tablet:margin-bottom-0" style={{ minWidth: '200px' }}>{taxResults!.incomeW2} <br /></span>
+                                                                </Grid>
+                                                            </Grid>
+                                                            <Grid row style={{ borderBottom: '', paddingBottom: '1px' }}>
+                                                                <Grid col={9} >
+                                                                <span className="font-sans-xl text-black margin-top-0 tablet:margin-bottom-0" style={{ fontWeight: 'bold' }}>   + </span>
+                                                                </Grid>
+                                                        
+
+                                                                </Grid>
+                                                                <Grid row style={{ borderBottom: '4px solid black', paddingBottom: '20px' }}>
+                                                                    <Grid col={9}>
+                                                                    <span className="font-sans-xl text-black margin-top-0 tablet:margin-bottom-0">   1099 Income</span>
+                                                                    </Grid>
+                                                                    <Grid col={3}>
+                                                                    <span className="font-sans-xl text-black margin-top-0 tablet:margin-bottom-0"style={{ minWidth: '200px' }}> {taxResults!.income1099}</span>
+                                                                    </Grid>
+                                                                </Grid>
 
 
 
 
-                                                                <tr>
-                                                                    <th scope="row"  >
-                                                                        <span className="font-sans-xl text-black margin-top-0 tablet:margin-bottom-0">Taxable Income <br /> * Tax Rate</span>
-                                                                    </th>
-                                                                    <td>
-                                                                        <span className="font-sans-xl text-black margin-top-0 tablet:margin-bottom-0">{taxResults!.taxableIncome}<br />{taxResults!.effectiveTaxRate}</span>
-                                                                    </td>
-                                                                </tr>
 
-                                                                <tr>
-                                                                    <th scope="row"  >
-                                                                        <span className="font-sans-xl text-black margin-top-0 tablet:margin-bottom-0">Total Federal Tax <br /> -Federal Income Tax Withheld <br /> -Child Tax Credit</span>
-                                                                    </th>
-                                                                    <td>
-                                                                        <span className="font-sans-xl text-black margin-top-0 tablet:margin-bottom-0">{taxResults!.totalTaxAmount}<br />{taxResults!.taxWithheld} <br />{taxResults!.childTaxCredit}</span>
-                                                                    </td>
-                                                                </tr>
 
-                                                                <tr>
-                                                                    <th scope="row"  >
-                                                                        <span className="font-sans-xl text-black margin-top-0 tablet:margin-bottom-0">Amount {taxResults!.finalTaxAmount >= 0 ? 'refunded' : 'owed'}</span>
-                                                                    </th>
-                                                                    <td>
-                                                                        <span className="font-sans-xl text-black margin-top-0 tablet:margin-bottom-0"> ${Math.abs(taxResults!.finalTaxAmount)}</span>
-                                                                    </td>
-                                                                </tr>
+
+                                                                <Grid row style={{ borderBottom: '', paddingBottom: '1px', paddingTop: '20px' }}>
+                                                                <Grid col={9} >
+                                                                <span className="font-sans-xl text-black margin-top-0 tablet:margin-bottom-0" style={{ fontWeight: 'bold' }}>  Total Income  </span>
+                                                                </Grid>
+
+                                                                <Grid col={3}>
+                                                                <span className="font-sans-xl text-black margin-top-0 tablet:margin-bottom-0" style={{ minWidth: '200px', fontWeight: 'bold'  }}>{taxResults!.totalIncome} <br /></span>
+                                                                </Grid>
+                                                            </Grid>
+                                                            <Grid row style={{ borderBottom: '', paddingBottom: '1px' }}>
+                                                                <Grid col={9} >
+                                                                <span className="font-sans-xl text-black margin-top-0 tablet:margin-bottom-0" style={{ fontWeight: 'bold' }}>   - </span>
+                                                                </Grid>
                                                                
 
+                                                                </Grid>
+                                                                <Grid row style={{ borderBottom: '4px solid black', paddingBottom: '20px' }}>
+                                                                    <Grid col={9}>
+                                                                    <span className="font-sans-xl text-black margin-top-0 tablet:margin-bottom-0">  Deductions</span>
+                                                                    </Grid>
+                                                                    <Grid col={3}>
+                                                                    <span className="font-sans-xl text-black margin-top-0 tablet:margin-bottom-0"style={{ minWidth: '200px' }}> {taxResults!.deductions}</span>
+                                                                    </Grid>
+                                                                </Grid>
 
-                                                            </tbody>
-                                                        </Table>
+
+
+
+
+
+                                                                <Grid row style={{ borderBottom: '', paddingBottom: '2px', paddingTop: '20px' } }>
+                                                                <Grid col={9} >
+                                                                <span className="font-sans-xl text-black margin-top-0 tablet:margin-bottom-0"  style={{ fontWeight: 'bold' }}>  Taxable Income  </span>
+                                                                </Grid>
+
+                                                                <Grid col={3}>
+                                                                <span className="font-sans-xl text-black margin-top-0 tablet:margin-bottom-0" style={{ minWidth: '200px' , fontWeight: 'bold'}}>{taxResults!.taxableIncome} <br /></span>
+                                                                </Grid>
+                                                            </Grid>
+                                                            <Grid row style={{ borderBottom: '', paddingBottom: '1px' }}>
+                                                                <Grid col={9} >
+                                                                <span className="font-sans-xl text-black margin-top-0 tablet:margin-bottom-0" style={{ fontWeight: 'bold' }}>   *  </span>
+                                                                </Grid>
+                                                               
+
+                                                                </Grid>
+                                                                <Grid row style={{ borderBottom: '4px solid black', paddingBottom: '20px' }}>
+                                                                    <Grid col={9}>
+                                                                    <span className="font-sans-xl text-black margin-top-0 tablet:margin-bottom-0">  Tax Rate</span>
+                                                                    </Grid>
+                                                                    <Grid col={3}>
+                                                                    <span className="font-sans-xl text-black margin-top-0 tablet:margin-bottom-0"style={{ minWidth: '200px' }}> {taxResults!.effectiveTaxRate}</span>
+                                                                    </Grid>
+                                                                </Grid>
+
+
+
+
+
+
+
+                                                                
+                                                                <Grid row style={{ borderBottom: '', paddingBottom: '1px', paddingTop: '20px'}}>
+                                                                <Grid col={9} >
+                                                                <span className="font-sans-xl text-black margin-top-0 tablet:margin-bottom-0" style={{ fontWeight: 'bold' }}>  Total Federal Tax  </span>
+                                                                </Grid>
+
+                                                                <Grid col={3}>
+                                                                <span className="font-sans-xl text-black margin-top-0 tablet:margin-bottom-0" style={{ minWidth: '200px' ,fontWeight: 'bold' }}>{taxResults!.totalTaxAmount} <br /></span>
+                                                                </Grid>
+                                                            </Grid>
+                                                            <Grid row style={{ borderBottom: '', paddingBottom: '1px' }}>
+                                                                <Grid col={9} >
+                                                                <span className="font-sans-xl bold text-black margin-top-0 tablet:margin-bottom-0" style={{ fontWeight: 'bold' }}>   -  </span>
+                                                                </Grid>
+                                                               
+
+                                                                </Grid>
+                                                                <Grid row style={{ borderBottom: '', paddingBottom: '1px' }}>
+                                                                    <Grid col={9}>
+                                                                    <span className="font-sans-xl text-black margin-top-0 tablet:margin-bottom-0">  Income Tax Withheld </span>
+                                                                    </Grid>
+                                                                    <Grid col={3}>
+                                                                    <span className="font-sans-xl text-black margin-top-0 tablet:margin-bottom-0"style={{ minWidth: '200px' }}> {taxResults!.taxWithheld}</span>
+                                                                    </Grid>
+                                                                </Grid>
+                                                                <Grid row style={{ borderBottom: '', paddingBottom: '1px' }}>
+                                                                <Grid col={9} >
+                                                                <span className="font-sans-xl bold  text-black margin-top-0 tablet:margin-bottom-0" style={{ fontWeight: 'bold' }}>   -  </span>
+                                                                </Grid>
+                                                               
+
+                                                                </Grid>
+                                                                <Grid row style={{ borderBottom: '10px solid black', paddingBottom: '20px' }}>
+                                                                    <Grid col={9}>
+                                                                    <span className="font-sans-xl text-black margin-top-0 tablet:margin-bottom-0">  Child Tax Credit </span>
+                                                                    </Grid>
+                                                                    <Grid col={3}>
+                                                                    <span className="font-sans-xl text-black margin-top-0 tablet:margin-bottom-0"style={{ minWidth: '200px' }}> {taxResults!.childTaxCredit}</span>
+                                                                    </Grid>
+                                                                </Grid>
+
+
+
+
+
+                                                          
+
+
+
+
+
+
+                                                           
+                                                    
+                                                            <Grid row style={{ borderBottom: '', paddingBottom: '30px', paddingTop: '30px'}}>
+                                                                <Grid col={9}>
+                                                                <span className="font-sans-xl text-red margin-top-0 tablet:margin-bottom-0" style={{ fontWeight: 'bold' }}>AMOUNT {taxResults!.finalTaxAmount >= 0 ? 'REFUNDED' : 'OWED'}</span>
+                                                                </Grid>
+
+                                                                <Grid col={3}>
+                                                                <span className="font-sans-xl text-red margin-top-0 tablet:margin-bottom-0" style={{ fontWeight: 'bold' }}>  ${Math.abs(taxResults!.finalTaxAmount)}</span>
+                                                                </Grid>
+
+                                                            </Grid>
+
+                                                        </GridContainer>
+
                                                     </p>
                                                 ),
                                                 expanded: false,
@@ -193,19 +324,7 @@ export const Breakdown = (): React.ReactElement => {
 
 
 
-                            <section id="test-section-id" className="usa-graphic-list usa-section">
-                                <GridContainer>
-                                    <Grid row style={{
-                                        marginLeft: '16rem'
-                                    }}>
-                                        <a href="#" className="usa-button usa-button--big">
-                                            Sign and submit
-                                        </a>
-
-                                    </Grid>
-
-                                </GridContainer>
-                            </section>
+                         
 
                         </main>
 
@@ -215,12 +334,7 @@ export const Breakdown = (): React.ReactElement => {
                     {/* <Form onSubmit={mockSubmit}>*/}
 
 
-                    <ButtonGroup type="default">
-
-                        <Link to="/review" className="usa-button usa-button--outline">Back </Link>
-
-
-                    </ButtonGroup>
+                   
 
                 </Grid>
 

@@ -19,6 +19,7 @@ import MyAccount from './components/MyAccount';
 import UserProfile from './components/UserProfile';
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
+import Submission from './pages/Submission';
 
 
 
@@ -44,6 +45,7 @@ function App() {
         <Route path="/login-home" element={<LoginHome />} />
         <Route path="/my-account" element={<MyAccount />} />
         <Route path="/profile" element={<UserProfile />} />
+        <Route path="/submit" element={<Submission />} />
       </Routes>
     </Router>
 

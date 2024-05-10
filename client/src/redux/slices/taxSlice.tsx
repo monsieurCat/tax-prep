@@ -475,6 +475,7 @@ export const {
   updateFilingStatus,
   addW2Income,
   updateW2Income,
+  deleteW2Income,
   addIncome1099,
   deleteIncome1099,
   updateIncome1099,

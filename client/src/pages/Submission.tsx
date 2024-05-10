@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import circle from '../assets/circle.png';
-import logoImg from '../assets/circle.png';
+import logoImg from '../assets/logoImg.png';
 import App from '../App.css';
 import { Address, Button, ExtendedNav, Footer, FooterNav, GovBanner, Grid, GridContainer, Header, Logo, MediaBlockBody, Menu, NavDropDownButton, NavMenuButton, Search, SocialLink, SocialLinks, Title } from '@trussworks/react-uswds';
 
-const LandingPage: React.FC = () => {
+const Submission: React.FC = () => {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [navDropdownOpen, setNavDropdownOpen] = useState([false, false]);
   const handleToggleNavDropdown = (index: number): void => {
@@ -79,10 +79,10 @@ const LandingPage: React.FC = () => {
          
 
             <h1 className="font-sans text-black text-center margin-top-0 tablet:margin-bottom-1" style={{ fontSize: '5rem' }}>
-                Welcome!
+                Congrats on submitting your tax return. 
               </h1>
               <h2 className="font-sans text-black text-center margin-top-0" style={{ fontSize: '3.5rem' , color: '#4B4B4B'}}>
-                Let's storm these taxes.
+                
               </h2>
               
             </Grid>
@@ -98,7 +98,7 @@ const LandingPage: React.FC = () => {
               <Grid col={1}></Grid>
               <Grid col={2}></Grid>
       <Grid col={3}>
-        <Button type="button" size = "big"  style={{ backgroundColor: '#007BFF', color: 'white', border: 'none', borderRadius: '5px' }} onClick={() => window.location.href = '/login'}>Get started</Button>
+        <Button type="button" size = "big"  style={{ backgroundColor: '#007BFF', color: 'white', border: 'none', borderRadius: '5px' }} onClick={() => window.location.href = '/my-account'}>My Account</Button>
       </Grid>
 
       <Grid col={4}></Grid>
@@ -127,117 +127,26 @@ const LandingPage: React.FC = () => {
 
 
 
+       <Footer size="medium" primary={<FooterNav size="medium" links={Array(4).fill(<a className="usa-footer__primary-link" href="#">
+          
+          </a>)} />} secondary={<div className="grid-row grid-gap">
+        <Logo size="big" image={<img className="usa-footer__logo-img" alt="img alt text" src={logoImg} />} heading={<p className="usa-footer__logo-heading"></p>} />
+      
+         
+          <h3 className="usa-footer__contact-heading"></h3>
+          <Address size="medium" items={[<a key="telephone" href="tel:1-800-555-5555">
+                (800) CALL-TAXSTORM
+              </a>, <a key="email" href="mailto:info@storm.tax">
+                info@storm.tax
+              </a>]} />
+        
+      </div>} />
+       
 
-        <section className="grid-container usa-section">
-          <Grid row gap>
-            <Grid tablet={{
-            col: 4
-          }}>
-              <h2 className="font-heading-xl margin-top-0 tablet:margin-bottom-0">
-               We're here to help. 
-              </h2>
-            </Grid>
-            <Grid tablet={{
-            col: 8
-          }} className="usa-prose">
-              <p>
-                
-              </p>
-              <p>
-                
-              </p>
-            </Grid>
-          </Grid>
-        </section>
-
-        <section className="usa-graphic-list usa-section bg-primary-lighter">
-          <GridContainer>
-            <Grid row gap className="usa-graphic-list__row">
-              <Grid tablet={{
-              col: true
-            }} className="usa-media-block">
-                <img className="usa-media-block__img" src={logoImg} alt="Alt text" />
-                <MediaBlockBody>
-                  <h2 className="usa-graphic-list__heading">
-                    Graphic headings can vary.
-                  </h2>
-                  <p>
-                    Graphic headings can be used a few different ways, depending
-                    on what your landing page is for. Highlight your values,
-                    specific program areas, or results.
-                  </p>
-                </MediaBlockBody>
-              </Grid>
-              <Grid tablet={{
-              col: true
-            }} className="usa-media-block">
-                <img className="usa-media-block__img" src={logoImg} alt="Alt text" />
-                <MediaBlockBody>
-                  <h2 className="usa-graphic-list__heading">
-                    Stick to 6 or fewer words.
-                  </h2>
-                  <p>
-                    Keep body text to about 30 words. They can be shorter, but
-                    try to be somewhat balanced across all four. It creates a
-                    clean appearance with good spacing.
-                  </p>
-                </MediaBlockBody>
-              </Grid>
-            </Grid>
-            <Grid row gap className="usa-graphic-list__row">
-              <Grid tablet={{
-              col: true
-            }} className="usa-media-block">
-                <img className="usa-media-block__img" src={logoImg} alt="Alt text" />
-                <MediaBlockBody>
-                  <h2 className="usa-graphic-list__heading">
-                    Never highlight anything without a goal.
-                  </h2>
-                  <p>
-                    For anything you want to highlight here, understand what
-                    your users know now, and what activity or impression you
-                    want from them after they see it.
-                  </p>
-                </MediaBlockBody>
-              </Grid>
-              <Grid tablet={{
-              col: true
-            }} className="usa-media-block">
-                <img className="usa-media-block__img" src={logoImg} alt="Alt text" />
-                <MediaBlockBody>
-                  <h2 className="usa-graphic-list__heading">
-                    Could also have 2 or 6.
-                  </h2>
-                  <p>
-                    In addition to your goal, find out your users’ goals. What
-                    do they want to know or do that supports your mission? Use
-                    these headings to show these.
-                  </p>
-                </MediaBlockBody>
-              </Grid>
-            </Grid>
-          </GridContainer>
-        </section>
-
-        <section id="test-section-id" className="usa-section">
-          <GridContainer>
-            <h2 className="font-heading-xl margin-y-0">Section heading</h2>
-            <p className="usa-intro">
-              Everything up to this point should help people understand your
-              agency or project: who you are, your goal or mission, and how you
-              approach it. Use this section to encourage them to act. Describe
-              why they should get in touch here, and use an active verb on the
-              button below. “Get in touch,” “Learn more,” and so on.
-            </p>
-            <a href="#" className="usa-button usa-button--big">
-              Call to action
-            </a>
-          </GridContainer>
-        </section>
+        
       </main>
 
-      <Footer returnToTop={returnToTop} primary={footerPrimary} secondary={footerSecondary} />
     </>;
 }
 
-export default LandingPage;
+export default Submission;
