@@ -60,10 +60,8 @@ public class TaxInfoDTOTest {
 
     @Test
     void testDefaultValues() {
-        // Arrange
         TaxInfoDTO taxInfoDTO = new TaxInfoDTO();
 
-        // Assert
         assertNull(taxInfoDTO.getFilingStatus());
         assertEquals(0, taxInfoDTO.getNumDependents());
         assertNull(taxInfoDTO.getIncomeW2());

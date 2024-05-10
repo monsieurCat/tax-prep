@@ -27,7 +27,7 @@ const Navbar = (): React.ReactElement => {
 
   
   const checkUserSession = () => {
-    fetch('http://localhost:8282/user/username', {
+    fetch('https://group11.skillstorm-congo.com/user/username', {
         method: 'GET',
         credentials: 'include',
     })
@@ -86,7 +86,7 @@ useEffect(() => {
 
   function handleLogout(event: any) {
     event.preventDefault();
-    const url = 'http://localhost:8282/logout';
+    const url = 'https://group11.skillstorm-congo.com/logout';
 
     fetch(url, {
        method: "POST",

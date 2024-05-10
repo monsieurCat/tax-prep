@@ -8,10 +8,8 @@ public class AppUserDTOTest {
 
     @Test
     void testGettersAndSetters() {
-        // Arrange
         AppUserDTO appUserDTO = new AppUserDTO();
 
-        // Act
         appUserDTO.setFirstName("John");
         appUserDTO.setMiddleName("Doe");
         appUserDTO.setLastName("Smith");
@@ -21,7 +19,6 @@ public class AppUserDTOTest {
         appUserDTO.setBirthday(LocalDate.of(1990, 5, 15));
         appUserDTO.setRole("USER");
 
-        // Assert
         assertEquals("John", appUserDTO.getFirstName());
         assertEquals("Doe", appUserDTO.getMiddleName());
         assertEquals("Smith", appUserDTO.getLastName());
@@ -34,10 +31,8 @@ public class AppUserDTOTest {
 
     @Test
     void testDefaultConstructor() {
-        // Arrange & Act
         AppUserDTO appUserDTO = new AppUserDTO();
 
-        // Assert
         assertNull(appUserDTO.getFirstName());
         assertNull(appUserDTO.getMiddleName());
         assertNull(appUserDTO.getLastName());
@@ -50,10 +45,8 @@ public class AppUserDTOTest {
 
     @Test
     void testSettersWithNullValues() {
-        // Arrange
         AppUserDTO appUserDTO = new AppUserDTO();
 
-        // Act
         appUserDTO.setFirstName(null);
         appUserDTO.setMiddleName(null);
         appUserDTO.setLastName(null);
@@ -63,7 +56,6 @@ public class AppUserDTOTest {
         appUserDTO.setBirthday(null);
         appUserDTO.setRole(null);
 
-        // Assert
         assertNull(appUserDTO.getFirstName());
         assertNull(appUserDTO.getMiddleName());
         assertNull(appUserDTO.getLastName());

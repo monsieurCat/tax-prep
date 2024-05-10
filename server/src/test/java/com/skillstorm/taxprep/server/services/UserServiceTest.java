@@ -104,7 +104,6 @@ class UserServiceTest {
 
     @Test
     void testDeleteUser() {
-        // Mock repository behavior
         AppUser userToDelete = new AppUser.AppUserBuilder()
                 .id(1)
                 .username("userToDelete")
@@ -112,10 +111,8 @@ class UserServiceTest {
                 .role("USER")
                 .build();
 
-        // Call service method
         userService.deleteUser(userToDelete);
 
-        // Verify that user is deleted
         verify(userRepository, times(1)).delete(userToDelete);
     }
 

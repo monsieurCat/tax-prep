@@ -31,28 +31,23 @@ class StandardizedDeductionServiceTest {
 
     @Test
     void testGetByFilingStatusId_ExistingId_ReturnsStandardizedDeduction() {
-        // Arrange
         int filingStatusId = 1;
         FilingStatus filingStatus = new FilingStatus();
         StandardizedDeduction mockStandardizedDeduction = new StandardizedDeduction(1, filingStatus, 100);
         when(standardizedDeductionRepository.findByFilingStatus_Id(filingStatusId))
                 .thenReturn(Optional.of(mockStandardizedDeduction));
 
-        // Act
         StandardizedDeduction result = standardizedDeductionService.getByFilingStatusId(filingStatusId);
 
-        // Assert
         assertNotNull(result);
         assertEquals(mockStandardizedDeduction, result);
     }
 
     @Test
     void testGetByFilingStatusId_NonExistingId_ThrowsNotFoundException() {
-        // Arrange
         int nonExistingId = 999;
         when(standardizedDeductionRepository.findByFilingStatus_Id(nonExistingId)).thenReturn(Optional.empty());
 
-        // Act and Assert
         assertThrows(NotFoundException.class, () -> standardizedDeductionService.getByFilingStatusId(nonExistingId));
     }
 }

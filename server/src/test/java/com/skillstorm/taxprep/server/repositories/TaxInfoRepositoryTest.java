@@ -59,7 +59,6 @@ public class TaxInfoRepositoryTest {
         // Then
         assertNotNull(savedTaxInfo);
         assertEquals(testUser.getId(), savedTaxInfo.getUser().getId());
-        // Additional assertions if needed
     }
 
     @Test
@@ -74,7 +73,6 @@ public class TaxInfoRepositoryTest {
         // Then
         assertTrue(foundTaxInfo.isPresent());
         assertEquals(testUser.getId(), foundTaxInfo.get().getUser().getId());
-        // Additional assertions if needed
     }
 
     @Test
@@ -100,19 +98,15 @@ public class TaxInfoRepositoryTest {
 
         // Then
         assertTrue(foundTaxInfoId.isPresent());
-        // Additional assertions if needed
     }
 
     @Test
     public void testFindTaxInfoIdByUserId_WithNonExistingData_ShouldReturnEmptyOptional() {
-        // Given
-        int nonExistingUserId = 999;
+      int nonExistingUserId = 999;
 
-        // When
-        Optional<Integer> foundTaxInfoId = taxInfoRepository.findTaxInfoIdByUserId(nonExistingUserId);
+      Optional<Integer> foundTaxInfoId = taxInfoRepository.findTaxInfoIdByUserId(nonExistingUserId);
 
-        // Then
-        assertFalse(foundTaxInfoId.isPresent());
+      assertFalse(foundTaxInfoId.isPresent());
     }
 
     private TaxInfo createSampleTaxInfo() {

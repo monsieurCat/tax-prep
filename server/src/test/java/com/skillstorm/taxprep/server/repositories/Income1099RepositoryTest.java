@@ -61,13 +61,10 @@ public class Income1099RepositoryTest {
 
     @Test
     public void testFindByTaxInfoId_WithNonExistingData_ShouldReturnEmptyOptional() {
-        // Given
         int nonExistingTaxInfoId = 999;
 
-        // When
         Optional<List<Income1099>> result = income1099Repository.findByTaxInfoId(nonExistingTaxInfoId);
 
-        // Then
         assertTrue(result.isPresent());
         List<Income1099> income1099List = result.get();
         assertEquals(0, income1099List.size());
