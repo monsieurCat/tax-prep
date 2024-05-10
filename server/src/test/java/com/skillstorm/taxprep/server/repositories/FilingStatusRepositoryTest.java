@@ -35,10 +35,8 @@ public class FilingStatusRepositoryTest {
 
     @Test
     public void testFindByStatus() {
-        // Given
         String status = "Single";
 
-        // When
         Optional<FilingStatus> result = filingStatusRepository.findByStatus(status);
 
         // Then
@@ -48,41 +46,32 @@ public class FilingStatusRepositoryTest {
 
     @Test
     public void testFindByStatus_NotFound() {
-        // Given
         String status = "Head of Household";
 
-        // When
         Optional<FilingStatus> result = filingStatusRepository.findByStatus(status);
 
-        // Then
         assertFalse(result.isPresent());
     }
 
     @Test
     public void testSave() {
-        // Given
         FilingStatus newStatus = new FilingStatus();
         newStatus.setStatus("Head of Household");
 
-        // When
         FilingStatus savedStatus = filingStatusRepository.save(newStatus);
 
-        // Then
         assertTrue(savedStatus.getId() > 0);
         assertEquals(newStatus.getStatus(), savedStatus.getStatus());
     }
 
     @Test
     public void testSave_WithExistingStatus() {
-      // Given
       FilingStatus existingStatus = new FilingStatus();
       existingStatus.setStatus("Single");
-      existingStatus.setId(singleStatus.getId()); // Set the ID to match the existing status
+      existingStatus.setId(singleStatus.getId()); 
 
-      // When
       FilingStatus savedStatus = filingStatusRepository.save(existingStatus);
 
-      // Then
       assertEquals(singleStatus.getId(), savedStatus.getId());
       assertEquals(existingStatus.getStatus(), savedStatus.getStatus());
     }

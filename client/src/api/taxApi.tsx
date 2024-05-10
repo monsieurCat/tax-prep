@@ -1,6 +1,6 @@
 import { TaxInfoState } from '../redux/slices/taxSlice';
 
-const API_URL = 'http://localhost:8282';
+const API_URL = 'https://group11.skillstorm-congo.com';
 
 
 

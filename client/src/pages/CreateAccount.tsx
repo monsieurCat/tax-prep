@@ -34,7 +34,7 @@ const CreateAccount=(): React.ReactElement => {
       password
       
   };
-    fetch("http://localhost:8282/api/auth/register", {
+    fetch("https://group11.skillstorm-congo.com/api/auth/register", {
         method: "POST",
         credentials: 'include',
         headers: {
@@ -42,21 +42,14 @@ const CreateAccount=(): React.ReactElement => {
         },
         body: JSON.stringify(userData)
     })
-
     .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      // Assuming response type is JSON, modify this part as needed
-      return response.json();
-    })
-    .then(data => {
-      // Assuming response data structure has a different format
-      if (data.code === 200) { // Adjust this condition based on your response structure
+      if (response.status === 200) {
+        // If the response status is 200, indicating success
         console.log('Registration successful');
-        navigate('/login');
+        navigate('/login'); // Redirect to login page
       } else {
-        setErrorMessage(data.message || 'Registration failed. Please try again.');
+        // If the response status is not 200, handle the error
+        return response.json(); // Parse JSON response in case of error
       }
     })
     .catch(error => {

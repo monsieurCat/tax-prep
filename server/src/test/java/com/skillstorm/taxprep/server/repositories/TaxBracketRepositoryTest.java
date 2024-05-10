@@ -26,7 +26,6 @@ public class TaxBracketRepositoryTest {
 
     @Test
     public void testFindByFilingStatusId_WithExistingData_ShouldReturnMatchingTaxBrackets() {
-        // Given
         FilingStatus filingStatus = new FilingStatus("Single");
         FilingStatus savedFilingStatus = filingStatusRepository.save(filingStatus);
 
@@ -35,25 +34,19 @@ public class TaxBracketRepositoryTest {
         taxBracketRepository.save(taxBracket1);
         taxBracketRepository.save(taxBracket2);
 
-        // When
         List<TaxBracket> taxBrackets = taxBracketRepository.findByFilingStatus_Id(savedFilingStatus.getId());
 
-        // Then
         assertNotNull(taxBrackets);
         assertFalse(taxBrackets.isEmpty());
         assertEquals(2, taxBrackets.size());
-        // Additional assertions if needed
     }
 
     @Test
     public void testFindByFilingStatusId_WithNonExistingData_ShouldReturnEmptyList() {
-        // Given
         int nonExistingFilingStatusId = 999;
 
-        // When
         List<TaxBracket> taxBrackets = taxBracketRepository.findByFilingStatus_Id(nonExistingFilingStatusId);
 
-        // Then
         assertNotNull(taxBrackets);
         assertTrue(taxBrackets.isEmpty());
     }

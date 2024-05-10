@@ -67,16 +67,12 @@ public class AddressControllerTest {
 
     @Test
     public void testDeleteAddress() {
-        // Mock data
         Address address = new Address();
 
-        // Invoke controller method
         ResponseEntity<?> responseEntity = addressController.deleteAddress(address);
 
-        // Verify service method invocation
         verify(addressService).deleteAddress(address);
 
-        // Assert response
         assertEquals(HttpStatus.NO_CONTENT, responseEntity.getStatusCode());
     }
 }

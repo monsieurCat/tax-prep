@@ -45,17 +45,14 @@ class FilingStatusServiceTest {
 
     @Test
     void testGetByStatus_NonExistingStatus_ThrowsNotFoundException() {
-        // Arrange
         String status = "NonExistentStatus";
         when(filingStatusRepository.findByStatus(status)).thenReturn(Optional.empty());
 
-        // Act and Assert
         assertThrows(NotFoundException.class, () -> filingStatusService.getByStatus(status));
     }
 
     @Test
     void testGetByStatus_NullStatus_ThrowsIllegalArgumentException() {
-        // Act and Assert
         assertThrows(NotFoundException.class, () -> filingStatusService.getByStatus(null));
     }
 }

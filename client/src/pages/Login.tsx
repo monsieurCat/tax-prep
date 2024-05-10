@@ -16,7 +16,7 @@ const Login = (): React.ReactElement => {
 
    function handleLogin(event: any) {
       event.preventDefault();
-      const url = 'http://localhost:8282/login';
+      const url = 'https://group11.skillstorm-congo.com/login';
 
       const formData = new URLSearchParams();
       formData.append("username", event.target.email.value);
@@ -30,17 +30,15 @@ const Login = (): React.ReactElement => {
          },
          body: formData.toString(), // Convert form data to string
       })
-      .then(response => response.json())  // Assuming the server responds with JSON
-      .then(data => {
-          if (data.username) {
-              // If the login is successful and the username is provided
-              dispatch(login({ username: data.username }));
-              navigate('/login-home');  // Redirect on successful login
-          } else {
-              // If login failed but the server responded
-             
-              setErrorMessage('Failed to log in. Please check your credentials and try again.');
-          }
+      .then(response => {
+        if (response.ok) {
+            // If the response indicates success (HTTP 200 status)
+            dispatch(login({ username: event.target.email.value }));
+            navigate('/login-home');  // Redirect on successful login
+        } else {
+            // If the response indicates failure (non-200 status)
+            setErrorMessage('Failed to log in. Please check your credentials and try again.');
+        }
       })
          .catch((error) => console.error("Error:", error));
          setErrorMessage('An error occurred during login. Please try again later.');
