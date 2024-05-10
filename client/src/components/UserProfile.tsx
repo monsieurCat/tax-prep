@@ -1,281 +1,335 @@
-import React, { useState } from 'react';
-import logoImg from '../assets/logoImg.png';
-import { useSelector, useDispatch } from 'react-redux';
-import { login, logout , setUsername} from '../redux/slices/authSlice'; 
-import { RootState } from '../redux/storeTypes';
+import { Label, TextInput, FormGroup, ErrorMessage, Textarea, Fieldset, Form, Button, Checkbox, Grid, GridContainer, RequiredMarker, Select, DateRangePicker, DatePicker, ButtonGroup, ProcessListHeading, ProcessListItem, StepIndicator, StepIndicatorStep, TextInputMask } from "@trussworks/react-uswds";
 import { Link, useNavigate } from "react-router-dom";
-import { Address, Button, ButtonGroup, ExtendedNav, Footer, FooterNav, GovBanner, Grid, GridContainer, Header, Logo, MediaBlockBody, Menu, NavDropDownButton, NavMenuButton, Search, SocialLink, SocialLinks, Title } from '@trussworks/react-uswds';
-
-const MyAccount: React.FC = () => {
-  const [mobileNavOpen, setMobileNavOpen] = useState(false);
-  const [navDropdownOpen, setNavDropdownOpen] = useState([false, false]);
-  const username = useSelector((state: RootState) => state.auth.username);
-
-
+import { useSelector, useDispatch } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { RootState } from '../redux/storeTypes';
+import { AppDispatch } from '../redux/store';
+import { fetchUserInfo, updateUserInformation, updateAddress, fetchAddress } from '../redux/slices/userSlice';
+import { fetchTaxInfo } from "../redux/slices/taxSlice";
 
 
-  const handleToggleNavDropdown = (index: number): void => {
-    setNavDropdownOpen(prevNavDropdownOpen => {
-      const newOpenState = Array(prevNavDropdownOpen.length).fill(false);
-      // eslint-disable-next-line security/detect-object-injection
-      newOpenState[index] = !prevNavDropdownOpen[index];
-      return newOpenState;
+
+const PersonalForm = (): React.ReactElement => {
+
+
+  const dispatch = useDispatch<AppDispatch>();
+const navigate = useNavigate(); 
+const { personalInfo, address} = useSelector((state: RootState) => state.user);
+const [personalFormData, setPersonalFormData] = useState(personalInfo);
+const [addressFormData, setAddressFormData] = useState(address);
+
+
+useEffect(() => {
+  // Fetch tax information when the component mounts
+  dispatch(fetchTaxInfo());
+}, [dispatch]);
+
+useEffect(() => {
+  if (!personalInfo.firstName) { // Check if personalInfo is initially empty and fetch
+    dispatch(fetchUserInfo());
+  }
+  if (!address.street1) { // Check if address is initially empty and fetch
+    dispatch(fetchAddress());
+  }
+}, [dispatch]);
+
+useEffect(() => {
+  setPersonalFormData(personalInfo); // Update local state when Redux state updates
+  setAddressFormData(address);
+}, [personalInfo, address]);
+
+
+
+
+
+
+
+
+
+
+/*
+useEffect(() => {
+
+  console.log('Updated personalInfo from Redux:', personalInfo);
+  console.log('Updated address from Redux:', address);
+  if (personalInfo) {
+    setFormPersonalInfo({
+      firstName: personalInfo.firstName || '',
+      middleName: personalInfo.middleName || '',
+      lastName: personalInfo.lastName || '',
+      email: personalInfo.email || '',
+      ssn: personalInfo.ssn || '',
+      username: personalInfo.username || '',
+      birthday: personalInfo.birthday || '',
+      role: personalInfo.role || '',
     });
-  };
-  const toggleMobileNav = (): void => {
-    setMobileNavOpen(prevOpen => !prevOpen);
-  };
-  const handleSearch = (): void => {
-    /* */
-  };
-  const primaryNavItems = [<React.Fragment key="primaryNav_0">
-      <NavDropDownButton menuId="extended-nav-section-one" isOpen={navDropdownOpen[0]} label="Current section" onToggle={(): void => {
-      handleToggleNavDropdown(0);
-    }} isCurrent />
-      <Menu id="extended-nav-section-one" items={new Array(3).fill(<a href="#">Navigation link</a>)} isOpen={navDropdownOpen[0]} />
-    </React.Fragment>, <React.Fragment key="primaryNav_1">
-      <NavDropDownButton menuId="extended-nav-section-two" isOpen={navDropdownOpen[1]} label="Section" onToggle={(): void => {
-      handleToggleNavDropdown(1);
-    }} />
-      <Menu id="extended-nav-section-two" items={new Array(3).fill(<a href="#">Navigation link</a>)} isOpen={navDropdownOpen[1]} />
-    </React.Fragment>, <a key="primaryNav_2" className="usa-nav__link" href="javascript:void(0)">
-      <span>Simple link</span>
-    </a>];
-  const secondaryNavItems = [<a key="secondaryNav_0" href="">
-      Secondary link
-    </a>, <a key="secondaryNav_1" href="">
-      Another secondary link
-    </a>];
-  const returnToTop = <GridContainer className="usa-footer__return-to-top">
-      <a href="#">Return to top</a>
-    </GridContainer>;
-  const socialLinkItems = [<SocialLink key="facebook" name="Facebook" href="#" />, <SocialLink key="twitter" name="Twitter" href="#" />, <SocialLink key="youtube" name="YouTube" href="#" />, <SocialLink key="instagram" name="Instagram" href="#" />, <SocialLink key="rss" name="RSS" href="#" />];
-  const footerPrimary = <FooterNav aria-label="Footer navigation" size="medium" links={Array(5).fill(<a href="javascript:void(0)" className="usa-footer__primary-link">
-          Primary link
-        </a>)} />;
-  const footerSecondary = <>
-      <Grid row gap>
-        <Logo size="medium" image={<img className="usa-footer__logo-img" src={logoImg} alt="" />} heading={<p className="usa-footer__logo-heading">Name of Agency</p>} />
-        <Grid className="usa-footer__contact-links" mobileLg={{
-        col: 6
-      }}>
-          <SocialLinks links={socialLinkItems} />
-          <h3 className="usa-footer__contact-heading">Agency Contact Center</h3>
-          <Address size="medium" items={[<a key="telephone" href="tel:1-800-555-5555">
-                (800) CALL-GOVT
-              </a>, <a key="email" href="mailto:info@agency.gov">
-                info@agency.gov
-              </a>]} />
-        </Grid>
-      </Grid>
-    </>;
-  return <>
+  }
+  if (address) {
+      setFormAddress(address);
+  }
+}, [personalInfo, address]);
 
+*/
+
+
+
+/*  this is the most recent one out of the other!!! 
+const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+  const { name, value } = e.target;
+  if (name.startsWith("address-")) {
+    // This removes the 'address-' prefix and uses the rest as the key for the address state
+    dispatch(updateAddress({ [name.replace("address-", "")]: value }));
+  } else {
+    // Handles personal info fields without any prefix
+    dispatch(updatePersonalInfo({ ...personalInfo, [name]: value }));
+  }
+};
+*/
+
+const formatDate = (date: string | number | Date) => {
+  if (!date) return '';
+  const d = new Date(date);
+  let month = `${d.getMonth() + 1}`;
+  let day = `${d.getDate()}`;
+  const year = d.getFullYear();
+  if (month.length < 2) month = '0' + month;
+  if (day.length < 2) day = '0' + day;
+  return [year, month, day].join('-');
+};
+
+
+const handleDateChange = (newDate?: string) => {
+  if (newDate) {
+    const formattedDate = formatDate(newDate); // Assume formatDate can handle the date string correctly
+    setPersonalFormData((prev: any) => ({
+        ...prev,
+        birthday: formattedDate
+    }));
+  }
+};
+
+const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement> | Date) => {
+  let name, value;
+
+   // Check if the event is a date (from DatePicker)
+   if (e instanceof Date) {
+    name = 'birthday'; // the field name this DatePicker controls
+    value = formatDate(e);   // Format date as needed
+} else {
+    name = e.target.name;
+    value = e.target.value;
+}
+console.log(`Handling change for ${name}:`, value);
+  // Update local form state for address fields
+  if (name.startsWith("address-")) {
+      const key = name.replace("address-", "");
+      setAddressFormData((prev: any) => ({ ...prev, [key]: value }));
+  } else {
+      // Update local form state for personal info fields
+      setPersonalFormData((prev: any) => ({ ...prev, [name]: value }));
+  }
+};
+
+
+/*
+    const handleChange = (e: { target: { name: any; value: any; }; }) => {
+        const { name, value } = e.target;
+        // Update the Redux state
+        dispatch(updatePersonalInfo({ ...personalInfo, [name]: value }));
+    };
+*/
+
+/*
+    const handleForm = (event: React.FormEvent) => {
+      event.preventDefault(); // Prevent the default form submission behavior
+      dispatch(updatePersonalInfo(personalInfo));
+  };
+  */
   
+
+
+  const handleForm = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+     
+    console.log('Submitting personal info:', personalFormData);
+  
+    try {
+/*
+      dispatch(updateUserInformation(personalFormData));
+dispatch(updateAddress({ street1: addressFormData.street1, street2: addressFormData.street2, city: addressFormData.city, state: addressFormData.state, postalCode: addressFormData.postalCode}));*/
+dispatch(updateUserInformation(personalFormData)),
+dispatch(updateAddress(addressFormData))
+
+        navigate('/filing-status'); 
+    } catch (error) {
+        console.error('Update failed:', error);
+    }
+};
+
+
+
+
+    return (<>
+
+<div style={{ marginLeft: '2rem' }}>
+
+  <GridContainer className="usa-section">
+
+    
+
+    <Grid row gap>
+
+
+      <Grid col={4}>
+
+
+      <Form onSubmit={handleForm}>
    
-  
-      <main id="main-content">
-      <div className="bg-warning-light" style={{ padding: '6rem',  marginTop: '2rem'}}>
-        <section id="test-section-id" className="usa-graphic-list usa-section bg-warning-light">
-          <GridContainer  >
-            <Grid row>
-            <Grid col={12} style={{ marginLeft: 'auto', marginRight: 'auto' }}>
+        <Fieldset legend="Personal Info" legendStyle="large">
 
-           
-         
 
-            <h1 className="font-sans text-black text-center margin-top-0 tablet:margin-bottom-1" style={{ fontSize: '5rem' }}>
-            Welcome to your account,
-              </h1>
-              <h2 className="font-sans text-black text-center margin-top-0" style={{ fontSize: '4rem' , color: '#4B4B4B'}}>
-                 {username}
-              </h2>
-             
-           
-              
-      
-    <Grid row style={{
-                marginLeft: '9rem'
-            }}>
-      <Grid col={3}>
-        
+          <Label htmlFor="first-name">First name</Label>
+          <TextInput id="first-name" name="firstName" type="text" onChange={handleChange} value={personalFormData.firstName} />
+          <Label htmlFor="middle-name" hint=" ">
+            Middle initial
+          </Label>
+          <TextInput id="middle-name" name="middleName" type="text" onChange={handleChange} value={personalFormData.middleName}/>
+          <Label htmlFor="last-name">Last name</Label>
+          <TextInput id="last-name" name="lastName" type="text" onChange={handleChange} value={personalFormData.lastName} />
+
+          <Label htmlFor="email">Email</Label>
+          <TextInput id="email" name="email" type="text" onChange={handleChange} value={personalFormData.email} />
+
+          <Label htmlFor="birthdate">Date of birth</Label>
+         {/* <DatePicker id="birthdate" name="birthday"  value={personalInfo.birthday} onChange={(e: any) => dispatch(updatePersonalInfo({ ...personalInfo, birthday: e.target.value }))} />*/}
+         <DatePicker
+    id="birthdate"
+    name="birthday"
+    type="date"
+    value={personalFormData.birthday || ''}
+    onChange={handleDateChange}
+/>
+
+
+          <Label id="first-name" htmlFor="first-name">
+      Social Security Number
+    </Label>
+    <span id="hint-ssn" className="usa-hint">
+      For example, 123 45 6789
+    </span>
+    <TextInputMask id="input-type-ssn" name="ssn" type="text" aria-labelledby="first-name" aria-describedby="hint-ssn" mask="___ __ ____" pattern="^(?!(000|666|9))\d{3} (?!00)\d{2} (?!0000)\d{4}$" onChange={handleChange}  value={personalFormData.ssn}/>
+
+        </Fieldset>
+        </Form>
       </Grid>
 
-    
+      <Grid col={1}></Grid>
+
+      <Grid col={4}>
+        <Form onSubmit={handleForm}>
+        <Fieldset legend="" legendStyle="large">
+          
+          <Label htmlFor="mailing-address-1">Street address</Label>
+          <TextInput id="mailing-address-1" name="address-street1" type="text" onChange={handleChange} value={addressFormData.street1} />
+
+          <Label htmlFor="mailing-address-2">Street address line 2</Label>
+          <TextInput id="mailing-address-2" name="address-street2" type="text"onChange={handleChange} value={addressFormData.street2}/>
+
+          <Label htmlFor="city" requiredMarker>
+            City
+          </Label>
+          <TextInput id="city" name="address-city" type="text" required onChange={handleChange} value={addressFormData.city}/>
+
+          <Label htmlFor="state" requiredMarker>
+            State, territory, or military post
+          </Label>
+          <Select id="state" name="address-state" required onChange={handleChange} value={addressFormData.state}>
+            <option>- Select -</option>
+            <option value="AL">Alabama</option>
+            <option value="AK">Alaska</option>
+            <option value="AZ">Arizona</option>
+            <option value="AR">Arkansas</option>
+            <option value="CA">California</option>
+            <option value="CO">Colorado</option>
+            <option value="CT">Connecticut</option>
+            <option value="DE">Delaware</option>
+            <option value="DC">District of Columbia</option>
+            <option value="FL">Florida</option>
+            <option value="GA">Georgia</option>
+            <option value="HI">Hawaii</option>
+            <option value="ID">Idaho</option>
+            <option value="IL">Illinois</option>
+            <option value="IN">Indiana</option>
+            <option value="IA">Iowa</option>
+            <option value="KS">Kansas</option>
+            <option value="KY">Kentucky</option>
+            <option value="LA">Louisiana</option>
+            <option value="ME">Maine</option>
+            <option value="MD">Maryland</option>
+            <option value="MA">Massachusetts</option>
+            <option value="MI">Michigan</option>
+            <option value="MN">Minnesota</option>
+            <option value="MS">Mississippi</option>
+            <option value="MO">Missouri</option>
+            <option value="MT">Montana</option>
+            <option value="NE">Nebraska</option>
+            <option value="NV">Nevada</option>
+            <option value="NH">New Hampshire</option>
+            <option value="NJ">New Jersey</option>
+            <option value="NM">New Mexico</option>
+            <option value="NY">New York</option>
+            <option value="NC">North Carolina</option>
+            <option value="ND">North Dakota</option>
+            <option value="OH">Ohio</option>
+            <option value="OK">Oklahoma</option>
+            <option value="OR">Oregon</option>
+            <option value="PA">Pennsylvania</option>
+            <option value="RI">Rhode Island</option>
+            <option value="SC">South Carolina</option>
+            <option value="SD">South Dakota</option>
+            <option value="TN">Tennessee</option>
+            <option value="TX">Texas</option>
+            <option value="UT">Utah</option>
+            <option value="VT">Vermont</option>
+            <option value="VA">Virginia</option>
+            <option value="WA">Washington</option>
+            <option value="WV">West Virginia</option>
+            <option value="WI">Wisconsin</option>
+            <option value="WY">Wyoming</option>
+            <option value="AA">AA - Armed Forces Americas</option>
+            <option value="AE">AE - Armed Forces Africa</option>
+            <option value="AE">AE - Armed Forces Canada</option>
+            <option value="AE">AE - Armed Forces Europe</option>
+            <option value="AE">AE - Armed Forces Middle East</option>
+            <option value="AP">AP - Armed Forces Pacific</option>
+          </Select>
+
+          <Label id="zip" htmlFor="first-name">
+      ZIP Code
+    </Label>
+    <span id="hint-zip" className="usa-hint">
+      For example, 12345-6789
+    </span>
+    <TextInputMask id="input-type-zip" name="address-postalCode" type="text" aria-labelledby="zip" aria-describedby="hint-zip" mask="_____-____" pattern="^[0-9]{5}(?:-[0-9]{4})?$" onChange={handleChange} value={addressFormData.postalCode}/>
 
 
-      <Grid col={5}>
+        </Fieldset>
         
-      <ButtonGroup type="default">
 
-<Link to="/personal-form" type="button" className="usa-button--big">My Tax Form </Link>
-
-<Grid col={6}>
-             
-<Link to="/profile" type="button" className="usa-button--big">My Profile </Link>
-            </Grid>
-
-
-</ButtonGroup>
-      </Grid>
-
-    
-
-      <Grid col={5}>
-       
+        <Link to="/my-account">
+        <Button type="submit" >Save</Button>
+        </Link>
+        </Form>
       </Grid>
     </Grid>
+  </GridContainer>
 
 
-   
-            
-            </Grid>
-            </Grid>
-      
-            
-          </GridContainer>
-        </section>
-       </div>
+</div>
+ </>
+    );
 
-       <section className="grid-container usa-section">
-        {/* My Tax Form Section */}
-        <GridContainer>
-          <Grid row>
-            <Grid col={12}>
-              <h2 className="font-heading-lg margin-top-2">My Tax Form</h2>
-              {/* Add your tax form display component here */}
-            </Grid>
-          </Grid>
-        </GridContainer>
+                
+              };
 
-        {/* My Profile Section */}
-        <GridContainer>
-          <Grid row>
-            <Grid col={12}>
-              <h2 className="font-heading-lg margin-top-2">My Profile</h2>
-              {/* Add your profile display/edit component here */}
-            </Grid>
-          </Grid>
-        </GridContainer>
-      </section>
-
-
-        <section className="grid-container usa-section">
-          <Grid row gap>
-            <Grid tablet={{
-            col: 4
-          }}>
-              <h2 className="font-heading-xl margin-top-0 tablet:margin-bottom-0">
-                A tagline highlights your approach
-              </h2>
-            </Grid>
-            <Grid tablet={{
-            col: 8
-          }} className="usa-prose">
-              <p>
-                The tagline should inspire confidence and interest, focusing on
-                the value that your overall approach offers to your audience.
-                Use a heading typeface and keep your tagline to just a few
-                words, and don’t confuse or mystify.
-              </p>
-              <p>
-                Use the right side of the grid to explain the tagline a bit
-                more. What are your goals? How do you do your work? Write in the
-                present tense, and stay brief here. People who are interested
-                can find details on internal pages.
-              </p>
-            </Grid>
-          </Grid>
-        </section>
-
-        <section className="usa-graphic-list usa-section bg-primary-lighter">
-          <GridContainer>
-            <Grid row gap className="usa-graphic-list__row">
-              <Grid tablet={{
-              col: true
-            }} className="usa-media-block">
-                <img className="usa-media-block__img" src={logoImg} alt="Alt text" />
-                <MediaBlockBody>
-                  <h2 className="usa-graphic-list__heading">
-                    Graphic headings can vary.
-                  </h2>
-                  <p>
-                    Graphic headings can be used a few different ways, depending
-                    on what your landing page is for. Highlight your values,
-                    specific program areas, or results.
-                  </p>
-                </MediaBlockBody>
-              </Grid>
-              <Grid tablet={{
-              col: true
-            }} className="usa-media-block">
-                <img className="usa-media-block__img" src={logoImg} alt="Alt text" />
-                <MediaBlockBody>
-                  <h2 className="usa-graphic-list__heading">
-                    Stick to 6 or fewer words.
-                  </h2>
-                  <p>
-                    Keep body text to about 30 words. They can be shorter, but
-                    try to be somewhat balanced across all four. It creates a
-                    clean appearance with good spacing.
-                  </p>
-                </MediaBlockBody>
-              </Grid>
-            </Grid>
-            <Grid row gap className="usa-graphic-list__row">
-              <Grid tablet={{
-              col: true
-            }} className="usa-media-block">
-                <img className="usa-media-block__img" src={logoImg} alt="Alt text" />
-                <MediaBlockBody>
-                  <h2 className="usa-graphic-list__heading">
-                    Never highlight anything without a goal.
-                  </h2>
-                  <p>
-                    For anything you want to highlight here, understand what
-                    your users know now, and what activity or impression you
-                    want from them after they see it.
-                  </p>
-                </MediaBlockBody>
-              </Grid>
-              <Grid tablet={{
-              col: true
-            }} className="usa-media-block">
-                <img className="usa-media-block__img" src={logoImg} alt="Alt text" />
-                <MediaBlockBody>
-                  <h2 className="usa-graphic-list__heading">
-                    Could also have 2 or 6.
-                  </h2>
-                  <p>
-                    In addition to your goal, find out your users’ goals. What
-                    do they want to know or do that supports your mission? Use
-                    these headings to show these.
-                  </p>
-                </MediaBlockBody>
-              </Grid>
-            </Grid>
-          </GridContainer>
-        </section>
-
-        <section id="test-section-id" className="usa-section">
-          <GridContainer>
-            <h2 className="font-heading-xl margin-y-0">Section heading</h2>
-            <p className="usa-intro">
-              Everything up to this point should help people understand your
-              agency or project: who you are, your goal or mission, and how you
-              approach it. Use this section to encourage them to act. Describe
-              why they should get in touch here, and use an active verb on the
-              button below. “Get in touch,” “Learn more,” and so on.
-            </p>
-            <a href="#" className="usa-button usa-button--big">
-              Call to action
-            </a>
-          </GridContainer>
-        </section>
-      </main>
-
-      <Footer returnToTop={returnToTop} primary={footerPrimary} secondary={footerSecondary} />
-    </>;
-}
-
-export default MyAccount;
+export default PersonalForm;

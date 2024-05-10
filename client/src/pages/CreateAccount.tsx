@@ -42,20 +42,28 @@ const CreateAccount=(): React.ReactElement => {
         },
         body: JSON.stringify(userData)
     })
-    .then(response => response.json())
+
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      // Assuming response type is JSON, modify this part as needed
+      return response.json();
+    })
     .then(data => {
-        if (data.success) {
-            console.log('Registration successful');
-            navigate('/login'); // Redirect or handle post-registration flow
-        } else {
-            setErrorMessage(data.message || 'Registration failed. Please try again.');
-        }
+      // Assuming response data structure has a different format
+      if (data.code === 200) { // Adjust this condition based on your response structure
+        console.log('Registration successful');
+        navigate('/login');
+      } else {
+        setErrorMessage(data.message || 'Registration failed. Please try again.');
+      }
     })
     .catch(error => {
-        console.error("Registration error:", error);
-        setErrorMessage('An error occurred during registration.');
+      console.error("Registration error:", error);
+      setErrorMessage('An error occurred during registration.');
     });
-}
+  }
 
 
 
@@ -102,24 +110,14 @@ const CreateAccount=(): React.ReactElement => {
         
   
         <main id="main-content">
-          <div className="bg-base-lightest">
+          <div className="bg-base-lightest" style={{ padding: '2rem',  marginTop: '2rem'}}>
             <GridContainer className="usa-section">
               <Grid row className="margin-x-neg-205 flex-justify-center">
-                <Grid col={12} mobileLg={{
-                col: 10
-              }} tablet={{
-                col: 8
-              }} desktop={{
-                col: 6
-              }} className="padding-x-205 margin-bottom-4">
-                  <h1 className="desktop:display-none font-sans-lg margin-bottom-4 tablet:margin-top-neg-3">
-                    A tagline that explains the benefit of creating an account.
-                  </h1>
-  
-                  <div className="bg-white padding-y-3 padding-x-5 border border-base-lighter">
-                    <h1 className="margin-bottom-0">Create account</h1>
-                   <Form onSubmit={handleRegistration}>
-                      <Fieldset legend="Get started with an account.">
+              <Grid col={12} mobileLg={{ col: 10 }} tablet={{ col: 8 }} desktop={{ col: 6 }} className="padding-x-205 margin-bottom-4">
+              <div className="bg-white padding-y-3 padding-x-5 border border-base-lighter" style={{ marginLeft: '1rem', marginRight: '1rem' }}>
+                <h1 className="margin-bottom-0">Create account</h1>
+                <Form onSubmit={handleRegistration}>
+                  <Fieldset legend="Get started with an account.">
                         <p>
                           <abbr title="required" className="usa-hint usa-hint--required">
                             *
@@ -128,12 +126,12 @@ const CreateAccount=(): React.ReactElement => {
                         </p>
   
                         <Label htmlFor="email">
-                          Email address{' '}
+                          Username{' '}
                           <abbr title="required" className="usa-label--required">
                             *
                           </abbr>
                         </Label>
-                        <TextInput id="email" name="email" type="email" autoCapitalize="off" autoCorrect="off" required={true}  value={username}
+                        <TextInput id="username" name="username" type="text" autoCapitalize="off" autoCorrect="off" required={true}  value={username}
     onChange={(e) => setUsername(e.target.value)}/>
   
                         <Label htmlFor="password-create-account">

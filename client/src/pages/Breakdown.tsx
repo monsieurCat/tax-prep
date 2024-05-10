@@ -45,7 +45,7 @@ export const Breakdown = (): React.ReactElement => {
 
     return (
 
-        <div style={{ marginLeft: '1rem' }}>
+        <div >
 
             <GridContainer className="usa-section">
 
@@ -80,7 +80,7 @@ export const Breakdown = (): React.ReactElement => {
 
 
                     <Grid col={12} style={{
-                        marginLeft: '5rem'
+                        marginLeft: '3rem'
                     }}>
 
 

@@ -85,7 +85,7 @@ const Login = (): React.ReactElement => {
 
 
       <main id="main-content">
-         <div className="" style={{ padding: '3rem',  marginTop: '2rem'}}>
+         <div className="" style={{ padding: '0.5rem',  marginTop: '2rem'}}>
             <GridContainer className="usa-section  ">
                <Grid row={true} className="flex-justify-center">
                   <Grid col={12} tablet={{
@@ -93,7 +93,7 @@ const Login = (): React.ReactElement => {
                   }} desktop={{
                      col: 6
                   }}>
-                     <div className="bg-white padding-y-3 padding-x-5 border border-base-lighter bg-warning-light">
+                     <div className="bg-white padding-y-3 padding-x-5 border border-base-lighter bg-base-lighter">
                         <h1 className="margin-bottom-0"></h1>
                         <Form onSubmit={handleLogin}>
                            <Fieldset legend="Sign in" legendStyle="large" >

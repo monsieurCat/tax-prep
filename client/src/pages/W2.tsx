@@ -7,7 +7,7 @@ import { RootState } from "../redux/storeTypes";
 import { AppDispatch } from "../redux/store";
 
 
-const W2Income = (): React.ReactElement => {
+export const incomeW2 = (): React.ReactElement => {
 
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
@@ -26,14 +26,14 @@ const W2Income = (): React.ReactElement => {
       // Fetch tax information when the component mounts
       dispatch(fetchTaxInfo());
   }, [dispatch]);
+
+
   
-  useEffect(() => {
-    // Check if currentTaxInfo is defined and has incomeW2 property before setting w2Forms
-    if (currentTaxInfo && currentTaxInfo.incomeW2) {
-      setW2Forms(currentTaxInfo.incomeW2);
-    }
-  }, [currentTaxInfo]);
-  
+
+
+
+
+
 
     useEffect(() => {
       console.log("W2 Forms Updated:", w2Forms);
@@ -42,20 +42,26 @@ const W2Income = (): React.ReactElement => {
         setW2Forms(currentTaxInfo.incomeW2);
       }
     }, [currentTaxInfo.incomeW2]);
-    
+  
   
 
-  const handleInputChange = (index: number, field: string, event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const value = event.target.value;
-    const newForms = [...w2Forms];
-    newForms[index] = {
-      ...newForms[index],
-      [field]: (field === 'income' || field === 'withholdings') ? parseFloat(value) : value
+    const handleInputChange = (index: number, field: string, event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+      const value = event.target.value;
+      const newForms = [...w2Forms];
+      
+      // Type guard to ensure event.target.value is a string
+      if (typeof value === 'string') {
+        newForms[index] = {
+          ...newForms[index],
+          [field]: (field === 'income' || field === 'withholdings') ? parseFloat(value) : value
+        };
+        console.log(`W2 Form ${index} Change:`, newForms[index]);
+        setW2Forms(newForms);
+      } else {
+        // Handle unexpected value type
+        console.error('Unexpected value type:', typeof value);
+      }
     };
-    console.log(`W2 Form ${index} Change:`, newForms[index]);
-    setW2Forms(newForms);
-  };
-
   const handleAddForm = () => {
     setW2Forms([...w2Forms, {
       id:0,
@@ -84,7 +90,7 @@ const W2Income = (): React.ReactElement => {
     console.log("Submitting W2 Forms:", w2Forms);
     await dispatch(updateW2Income({ forms: w2Forms }));
     await dispatch(submitFullTaxInfo(currentTaxInfo));
-    console.log('Submit response:',  await dispatch(submitFullTaxInfo(currentTaxInfo)));
+    
     navigate('/income1099'); // Navigate to the next form
   };
   /*
@@ -447,4 +453,4 @@ const W2Income = (): React.ReactElement => {
 
   );
 };
-export default W2Income;
+export default incomeW2;

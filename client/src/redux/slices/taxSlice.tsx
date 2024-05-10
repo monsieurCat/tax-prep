@@ -117,6 +117,7 @@ const initialState: TaxInfoState = {
   export const submitFullTaxInfo = createAsyncThunk(
     'taxInfo/submitFullTaxInfo',
     async (taxInfo: TaxInfoState, { rejectWithValue }) => {
+      console.log("Final data being sent to API:", taxInfo);
         try {
             const response = await api.postTaxInfo(taxInfo);
             return response.data;
